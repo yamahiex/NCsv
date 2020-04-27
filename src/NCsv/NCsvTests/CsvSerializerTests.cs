@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace NCsv.Tests
 {
@@ -25,6 +26,20 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
+        public async Task SerializeAsyncTest()
+        {
+            var examples = CreateExamples();
+
+            var cs = new CsvSerializer<Example>
+            {
+                HasHeader = true
+            };
+
+            var csv = await cs.SerializeAsync(examples);
+            Assert.AreEqual(CreateExamplesCsv(), csv);
+        }
+
+        [TestMethod()]
         public void SerializeWriterTest()
         {
             var examples = CreateExamples();
@@ -36,6 +51,22 @@ namespace NCsv.Tests
 
             var writer = new StringWriter();
             cs.Serialize(writer, examples);
+
+            Assert.AreEqual(CreateExamplesCsv(), writer.ToString());
+        }
+
+        [TestMethod()]
+        public async Task SerializeWriterAsyncTest()
+        {
+            var examples = CreateExamples();
+
+            var cs = new CsvSerializer<Example>
+            {
+                HasHeader = true
+            };
+
+            var writer = new StringWriter();
+            await cs.SerializeAsync(writer, examples);
 
             Assert.AreEqual(CreateExamplesCsv(), writer.ToString());
         }
@@ -53,6 +84,18 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
+        public async Task DeserializeAsncTest()
+        {
+            var cs = new CsvSerializer<Example>
+            {
+                HasHeader = true
+            };
+
+            var examples = await cs.DeserializeAsync(CreateExamplesCsv());
+            CollectionAssert.AreEqual(CreateExamples(), examples);
+        }
+
+        [TestMethod()]
         public void DeserializeReaderTest()
         {
             var cs = new CsvSerializer<Example>
@@ -62,6 +105,19 @@ namespace NCsv.Tests
 
             var reader = new StringReader(CreateExamplesCsv());
             var examples = cs.Deserialize(reader);
+            CollectionAssert.AreEqual(CreateExamples(), examples);
+        }
+
+        [TestMethod()]
+        public async Task DeserializeReaderAsyncTest()
+        {
+            var cs = new CsvSerializer<Example>
+            {
+                HasHeader = true
+            };
+
+            var reader = new StringReader(CreateExamplesCsv());
+            var examples = await cs.DeserializeAsync(reader);
             CollectionAssert.AreEqual(CreateExamples(), examples);
         }
 

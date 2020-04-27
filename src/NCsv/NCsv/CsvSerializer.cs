@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace NCsv
 {
@@ -20,6 +22,16 @@ namespace NCsv
         public bool HasHeader { get; set; } = false;
 
         /// <summary>
+        /// 非同期的に指定した<paramref name="objects"/>をCSVシリアル化します。
+        /// </summary>
+        /// <param name="objects">オブジェクト。</param>
+        /// <returns>CSV文字列。</returns>
+        public async Task<string> SerializeAsync(params T[] objects)
+        {
+            return await Task.Run(() => Serialize(objects));
+        }
+
+        /// <summary>
         /// 指定した<paramref name="objects"/>をCSVシリアル化します。
         /// </summary>
         /// <param name="objects">オブジェクト。</param>
@@ -30,6 +42,16 @@ namespace NCsv
             Serialize(writer, objects);
 
             return writer.ToString();
+        }
+
+        /// <summary>
+        /// 非同期的に指定した<paramref name="objects"/>をCSVシリアル化します。
+        /// </summary>
+        /// <param name="writer">CSVを書き込む<see cref="TextWriter"/>。</param>
+        /// <param name="objects">オブジェクト。</param>
+        public async Task SerializeAsync(TextWriter writer, params T[] objects)
+        {
+            await Task.Run(() => Serialize(writer, objects));
         }
 
         /// <summary>
@@ -51,6 +73,17 @@ namespace NCsv
         }
 
         /// <summary>
+        /// 非同期的に指定した<paramref name="csv"/>を逆シリアル化します。
+        /// </summary>
+        /// <param name="csv">CSV文字列。</param>
+        /// <returns>オブジェクト。</returns>
+        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        public async Task<List<T>> DeserializeAsync(string csv)
+        {
+            return await Task.Run(() => Deserialize(csv));
+        }
+
+        /// <summary>
         /// 指定した<paramref name="csv"/>を逆シリアル化します。
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
@@ -59,6 +92,17 @@ namespace NCsv
         public List<T> Deserialize(string csv)
         {
             return Deserialize(new StringReader(csv));
+        }
+
+        /// <summary>
+        /// 非同期的に指定した<paramref name="reader"/>からCSVを読み取り逆シリアル化します。
+        /// </summary>
+        /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
+        /// <returns>オブジェクト。</returns>
+        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        public async Task<List<T>> DeserializeAsync(TextReader reader)
+        {
+            return await Task.Run(() => Deserialize(reader));
         }
 
         /// <summary>
