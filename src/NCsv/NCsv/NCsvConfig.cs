@@ -11,9 +11,9 @@
         public static NCsvConfig Current { get; } = new NCsvConfig();
 
         /// <summary>
-        /// <see cref="IMessage"/>を取得または設定します。
+        /// <see cref="ICsvMessage"/>を取得または設定します。
         /// </summary>
-        public IMessage Message { get; set; }
+        public ICsvMessage Message { get; set; }
 
         /// <summary>
         /// <see cref="NCsvConfig"/>クラスの新しいインスタンスを初期化します。

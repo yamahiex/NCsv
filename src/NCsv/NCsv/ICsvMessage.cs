@@ -6,7 +6,7 @@ namespace NCsv
     /// メッセージを定義します。
     /// 独自のメッセージを定義したい場合は、このinterfaceを実装してください。
     /// </summary>
-    public interface IMessage
+    public interface ICsvMessage
     {
         /// <summary>
         /// 数値変換エラー時のメッセージを返します。
