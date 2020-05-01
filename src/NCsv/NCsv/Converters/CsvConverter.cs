@@ -1,4 +1,4 @@
-﻿namespace NCsv
+﻿namespace NCsv.Converters
 {
     /// <summary>
     /// CSV項目を変換します。

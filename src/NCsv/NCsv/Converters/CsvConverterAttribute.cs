@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NCsv
+namespace NCsv.Converters
 {
     /// <summary>
     /// <see cref="CsvConverter"/>を付与するための属性です。

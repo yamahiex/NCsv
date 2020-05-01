@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace NCsv
+namespace NCsv.Converters
 {
     /// <summary>
     /// CSV変換のコンテキストです。
