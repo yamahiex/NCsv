@@ -141,7 +141,9 @@ namespace NCsv.Tests
                     NullableDoubleValue = 111.111,
                     ShortValue = 100,
                     NullableShortValue = 200,
-               },
+                    LongValue = 10000,
+                    NullableLongValue = 20000,
+                },
                 new Example()
                 {
                     StringValue = "foo",
@@ -158,16 +160,18 @@ namespace NCsv.Tests
                     NullableDoubleValue = 111.111,
                     ShortValue = 100,
                     NullableShortValue = 200,
-             },
+                    LongValue = 10000,
+                    NullableLongValue = 20000,
+                },
             };
         }
 
         private string CreateExamplesCsv()
         {
             return
-@"""CustomName"",""DecimalValue"",""DateTimeValue"",""BooleanValue"",""IntValue"",""NullableDecimalValue"",""NullableDateTimeValue"",""NullableIntValue"","""",""SeparateIndex"",""ValueObject"",""DoubleValue"",""NullableDoubleValue"",""ShortValue"",""NullableShortValue""
-""foo"",""123,456"",""2020/01/01"",""True"",100,1000,""2020/01/02"",111,,""bar"",""abc"",10.123,111.111,100,200
-""foo"",""123,456"",""2020/01/01"",""True"",100,,"""",,,""bar"",""xyz"",10.123,111.111,100,200
+@"""CustomName"",""DecimalValue"",""DateTimeValue"",""BooleanValue"",""IntValue"",""NullableDecimalValue"",""NullableDateTimeValue"",""NullableIntValue"","""",""SeparateIndex"",""ValueObject"",""DoubleValue"",""NullableDoubleValue"",""ShortValue"",""NullableShortValue"",""LongValue"",""NullableLongValue""
+""foo"",""123,456"",""2020/01/01"",""True"",100,1000,""2020/01/02"",111,,""bar"",""abc"",10.123,111.111,100,200,10000,20000
+""foo"",""123,456"",""2020/01/01"",""True"",100,,"""",,,""bar"",""xyz"",10.123,111.111,100,200,10000,20000
 ";
         }
     }

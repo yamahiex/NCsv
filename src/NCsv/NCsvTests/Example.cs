@@ -58,6 +58,12 @@ namespace NCsv.Tests
         [CsvColumn(14)]
         public short? NullableShortValue { get; set; }
 
+        [CsvColumn(15)]
+        public long LongValue { get; set; }
+
+        [CsvColumn(16)]
+        public long? NullableLongValue { get; set; }
+
         public override bool Equals(object? obj)
         {
             return obj is Example example &&
@@ -74,7 +80,9 @@ namespace NCsv.Tests
                    DoubleValue == example.DoubleValue &&
                    NullableDoubleValue == example.NullableDoubleValue &&
                    ShortValue == example.ShortValue &&
-                   NullableShortValue == example.NullableShortValue;
+                   NullableShortValue == example.NullableShortValue &&
+                   LongValue == example.LongValue &&
+                   NullableLongValue == example.NullableLongValue;
         }
 
         public override int GetHashCode()
@@ -94,6 +102,8 @@ namespace NCsv.Tests
             hash.Add(NullableDoubleValue);
             hash.Add(ShortValue);
             hash.Add(NullableShortValue);
+            hash.Add(LongValue);
+            hash.Add(NullableLongValue);
             return hash.ToHashCode();
         }
     }
