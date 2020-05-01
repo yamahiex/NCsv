@@ -12,7 +12,7 @@ namespace NCsv.Tests
             var c = new CsvColumns<Example>();
             var actual = c.CreateHeader();
 
-            var expected = @"""CustomName"",""DecimalValue"",""DateTimeValue"",""BooleanValue"",""IntValue"",""NullableDecimalValue"",""NullableDateTimeValue"",""NullableIntValue"","""",""SeparateIndex"",""ValueObject"",""DoubleValue"",""NullableDoubleValue""";
+            var expected = @"""CustomName"",""DecimalValue"",""DateTimeValue"",""BooleanValue"",""IntValue"",""NullableDecimalValue"",""NullableDateTimeValue"",""NullableIntValue"","""",""SeparateIndex"",""ValueObject"",""DoubleValue"",""NullableDoubleValue"",""ShortValue"",""NullableShortValue""";
 
             Assert.AreEqual(expected, actual);
         }
@@ -34,12 +34,14 @@ namespace NCsv.Tests
                 ValueObject = new ValueObject("abc"),
                 DoubleValue = 10.123,
                 NullableDoubleValue = 111.111,
+                ShortValue = 100,
+                NullableShortValue = 200,
             };
 
             var c = new CsvColumns<Example>();
             var actual = c.CreateCsvRow(example);
 
-            var expected =@"""foo"",""123,456"",""2020/01/01"",""False"",100,1000,""2020/01/01"",123,,""bar"",""abc"",10.123,111.111";
+            var expected =@"""foo"",""123,456"",""2020/01/01"",""False"",100,1000,""2020/01/01"",123,,""bar"",""abc"",10.123,111.111,100,200";
 
             Assert.AreEqual(expected, actual.ToString());
         }
