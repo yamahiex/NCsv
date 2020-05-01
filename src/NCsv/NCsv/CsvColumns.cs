@@ -1,5 +1,7 @@
-﻿using System;
+using NotVisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace NCsv
@@ -79,8 +81,18 @@ namespace NCsv
         /// <returns>オブジェクト。</returns>
         public T CreateObject(string csvRow)
         {
-            var cr = new CsvRow(csvRow);
-            return CreateObject(cr.ToCsvItems());
+            using var parser = new CsvTextFieldParser(new StringReader(csvRow));
+            return CreateObject(new CsvItems(parser.ReadFields()));
+        }
+
+        /// <summary>
+        /// オブジェクトを作成します。
+        /// </summary>
+        /// <param name="items">CSV項目のリスト。</param>
+        /// <returns>オブジェクト。</returns>
+        public T CreateObject(IReadOnlyList<string> items)
+        {
+            return CreateObject(new CsvItems(items));
         }
 
         /// <summary>

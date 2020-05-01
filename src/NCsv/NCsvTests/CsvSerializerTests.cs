@@ -121,6 +121,13 @@ namespace NCsv.Tests
             CollectionAssert.AreEqual(CreateExamples(), examples);
         }
 
+        [TestMethod()]
+        public void InvalidLineTest()
+        {
+            var cs = new CsvSerializer<Example>();
+            Assert.ThrowsException<CsvDeserializeException>(() => cs.Deserialize("\"foo\",\"ba\"r\""));
+        }
+
         private Example[] CreateExamples()
         {
             return new Example[]

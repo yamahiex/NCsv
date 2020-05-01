@@ -1,4 +1,4 @@
-﻿using System;
+﻿using NotVisualBasic.FileIO;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -115,17 +115,28 @@ namespace NCsv
         {
             var result = new List<T>();
 
-            string row;
-            bool first = true;
-            while ((row = reader.ReadLine()) != null)
-            {
-                if (this.HasHeader && first)
-                {
-                    first = false;
-                    continue;
-                }
+            var parser = new CsvTextFieldParser(reader);
+            var lineNumber = 0;
 
-                result.Add(this.columns.CreateObject(row));
+            while (!parser.EndOfData)
+            {
+                lineNumber++;
+
+                try
+                {
+                    var items = parser.ReadFields();
+
+                    if (this.HasHeader && lineNumber == 1)
+                    {
+                        continue;
+                    }
+
+                    result.Add(this.columns.CreateObject(items));
+                }
+                catch (CsvMalformedLineException ex)
+                {
+                    throw new CsvDeserializeException(NCsvConfig.Current.Message.GetInvalidLineError(lineNumber), ex);
+                }
             }
 
             return result;

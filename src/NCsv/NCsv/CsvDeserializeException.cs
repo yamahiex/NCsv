@@ -16,5 +16,16 @@ namespace NCsv
         {
 
         }
+
+        /// <summary>
+        /// <see cref="CsvDeserializeException"/>クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="message">メッセージ。</param>
+        /// <param name="innerException">例外のもととなった例外。</param>
+        public CsvDeserializeException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+
+        }
     }
 }

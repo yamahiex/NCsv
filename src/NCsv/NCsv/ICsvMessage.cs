@@ -144,5 +144,15 @@ namespace NCsv
         {
             return "The item does not exist in the CSV.";
         }
+
+        /// <summary>
+        /// CSV行が不正な場合のメッセージを返します。
+        /// </summary>
+        /// <param name="lineNumber">行番号。</param>
+        /// <returns>メッセージ。</returns>
+        string GetInvalidLineError(int lineNumber)
+        {
+            return $"The line {lineNumber} is an invalid line.";
+        }
     }
 }
