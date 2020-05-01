@@ -47,6 +47,8 @@ namespace NCsv.Converters
                 { typeof(int?), new NullableIntConverter() },
                 { typeof(double), new DoubleConverter() },
                 { typeof(double?), new NullableDoubleConverter() },
+                { typeof(float), new FloatConverter() },
+                { typeof(float?), new NullableFloatConverter() },
                 { typeof(short), new ShortConverter() },
                 { typeof(short?), new NullableShortConverter() },
                 { typeof(long), new LongConverter() },
