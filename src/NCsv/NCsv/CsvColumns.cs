@@ -128,7 +128,7 @@ namespace NCsv
         {
             if (!column.Validate(items, out string errorMessage))
             {
-                throw new CsvDeserializeException(errorMessage);
+                throw new CsvParseException(errorMessage);
             }
         }
 
@@ -142,7 +142,7 @@ namespace NCsv
         {
             if (!column.TryConvertToObjectItem(items, out object? value, out string errorMessage))
             {
-                throw new CsvDeserializeException(errorMessage);
+                throw new CsvParseException(errorMessage);
             }
 
             return value;

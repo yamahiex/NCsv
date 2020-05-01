@@ -1,4 +1,5 @@
 ﻿using NotVisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -133,9 +134,9 @@ namespace NCsv
 
                     result.Add(this.columns.CreateObject(items));
                 }
-                catch (CsvMalformedLineException ex)
+                catch (Exception ex) when (ex is CsvMalformedLineException || ex is CsvParseException)
                 {
-                    throw new CsvDeserializeException(NCsvConfig.Current.Message.GetInvalidLineError(lineNumber), ex);
+                    throw new CsvDeserializeException(NCsvConfig.Current.Message.GetInvalidLineError(lineNumber), lineNumber, ex);
                 }
             }
 

@@ -81,7 +81,7 @@ namespace NCsv.Tests
             };
 
             var c = new CsvColumns<Example>();
-            Assert.ThrowsException<CsvDeserializeException>(() => c.CreateObject(ToCsv(x)));
+            Assert.ThrowsException<CsvParseException>(() => c.CreateObject(ToCsv(x)));
         }
 
         [TestMethod()]
@@ -101,7 +101,7 @@ namespace NCsv.Tests
         public void CreateObjectFailureTest()
         {
             var c = new CsvColumns<Foo>();
-            Assert.ThrowsException<CsvDeserializeException>(() => c.CreateObject("x"));
+            Assert.ThrowsException<CsvParseException>(() => c.CreateObject("x"));
         }
 
         private string ToCsv<T>(T obj)
