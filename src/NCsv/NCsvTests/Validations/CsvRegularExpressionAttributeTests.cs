@@ -23,7 +23,7 @@ namespace NCsv.Validations.Tests
             var a = new CsvRegularExpressionAttribute("^[0-9]+$");
 
             Assert.IsFalse(a.Validate("halfAlphanumericOnly", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetInvalidFormatError("foo"), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetInvalidFormatError("foo"), message);
         }
     }
 }

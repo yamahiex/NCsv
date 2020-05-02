@@ -31,7 +31,7 @@ namespace CsvSerializerTests.Converters
         {
             var c = new BoolConverter();
             Assert.IsFalse(c.TryConvertToObjectItem(CreateContext(), "x", out object? _, out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetBooleanConvertError(nameof(Foo.Value)), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetBooleanConvertError(nameof(Foo.Value)), message);
         }
 
         private bool? ConvertToObjectItem(string csvItem)

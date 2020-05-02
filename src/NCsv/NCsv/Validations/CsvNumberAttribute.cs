@@ -56,7 +56,7 @@ namespace NCsv.Validations
 
             if (!decimal.TryParse(value, out decimal x))
             {
-                errorMessage = NCsvConfig.Current.Message.GetNumericConvertError(name);
+                errorMessage = CsvConfig.Current.Message.GetNumericConvertError(name);
                 return false;
             }
 
@@ -68,19 +68,19 @@ namespace NCsv.Validations
 
             if (HasOutOfRangeError(x))
             {
-                errorMessage = NCsvConfig.Current.Message.GetNumberOutOfRangeError(name, this.MinValueDecimal ?? 0, this.MaxValueDecimal ?? 0);
+                errorMessage = CsvConfig.Current.Message.GetNumberOutOfRangeError(name, this.MinValueDecimal ?? 0, this.MaxValueDecimal ?? 0);
                 return false;
             }
 
             if (HasMinValueError(x))
             {
-                errorMessage = NCsvConfig.Current.Message.GetNumberMinValueError(name, this.MinValueDecimal ?? 0);
+                errorMessage = CsvConfig.Current.Message.GetNumberMinValueError(name, this.MinValueDecimal ?? 0);
                 return false;
             }
 
             if (HasMaxValueError(x))
             {
-                errorMessage = NCsvConfig.Current.Message.GetNumberMaxValueError(name, this.MaxValueDecimal ?? 0);
+                errorMessage = CsvConfig.Current.Message.GetNumberMaxValueError(name, this.MaxValueDecimal ?? 0);
                 return false;
             }
 
@@ -141,11 +141,11 @@ namespace NCsv.Validations
         {
             if (this.scale == 0)
             {
-                return NCsvConfig.Current.Message.GetPrecisionError(columnName, this.precision);
+                return CsvConfig.Current.Message.GetPrecisionError(columnName, this.precision);
             }
             else
             {
-                return NCsvConfig.Current.Message.GetPrecisionAndScaleError(columnName, this.precision, this.scale);
+                return CsvConfig.Current.Message.GetPrecisionAndScaleError(columnName, this.precision, this.scale);
             }
         }
 

@@ -31,7 +31,7 @@ namespace NCsv.Validations.Tests
             };
 
             Assert.IsFalse(a.Validate("1000", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetNumberOutOfRangeError("foo", 0, 999), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumberOutOfRangeError("foo", 0, 999), message);
         }
 
         [TestMethod()]
@@ -43,7 +43,7 @@ namespace NCsv.Validations.Tests
             };
 
             Assert.IsFalse(a.Validate("-1", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetNumberMinValueError("foo", 0), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMinValueError("foo", 0), message);
         }
 
         [TestMethod()]
@@ -55,7 +55,7 @@ namespace NCsv.Validations.Tests
             };
 
             Assert.IsFalse(a.Validate("1000", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetNumberMaxValueError("foo", 999), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMaxValueError("foo", 999), message);
         }
 
         [TestMethod()]
@@ -64,7 +64,7 @@ namespace NCsv.Validations.Tests
             var a = new CsvNumberAttribute(10, 0);
 
             Assert.IsFalse(a.Validate("12345678901", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetPrecisionError("foo", 10), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionError("foo", 10), message);
         }
 
         [TestMethod()]
@@ -73,7 +73,7 @@ namespace NCsv.Validations.Tests
             var a = new CsvNumberAttribute(10, 3);
 
             Assert.IsFalse(a.Validate("1.1234", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetPrecisionAndScaleError("foo", 10, 3), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionAndScaleError("foo", 10, 3), message);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace NCsv.Converters
 
             if (HasRequiredError(csvItem))
             {
-                errorMessage = NCsvConfig.Current.Message.GetRequiredError(context.Name);
+                errorMessage = CsvConfig.Current.Message.GetRequiredError(context.Name);
                 return false;
             }
 
@@ -50,7 +50,7 @@ namespace NCsv.Converters
                 return true;
             }
 
-            errorMessage = NCsvConfig.Current.Message.GetDateTimeConvertError(context.Name);
+            errorMessage = CsvConfig.Current.Message.GetDateTimeConvertError(context.Name);
             return false;
         }
 

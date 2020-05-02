@@ -29,7 +29,7 @@
                 return true;
             }
 
-            errorMessage = NCsvConfig.Current.Message.GetBooleanConvertError(context.Name);
+            errorMessage = CsvConfig.Current.Message.GetBooleanConvertError(context.Name);
             return false;
         }
     }

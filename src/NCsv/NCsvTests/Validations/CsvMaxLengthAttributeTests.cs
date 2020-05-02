@@ -16,7 +16,7 @@ namespace NCsv.Validations.Tests
         {
             var x = new CsvMaxLengthAttribute(3);
             Assert.IsFalse(x.Validate("1234", "foo", out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetMaxLengthError("foo", 3), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetMaxLengthError("foo", 3), message);
         }
     }
 }

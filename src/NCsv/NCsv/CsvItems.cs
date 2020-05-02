@@ -30,7 +30,7 @@ namespace NCsv
         {
             if (items.Count <= index)
             {
-                throw new CsvParseException(NCsvConfig.Current.Message.GetItemNotExistError());
+                throw new CsvParseException(CsvConfig.Current.Message.GetItemNotExistError());
             }
 
             return items[index];

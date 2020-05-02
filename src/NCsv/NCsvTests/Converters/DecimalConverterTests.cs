@@ -30,7 +30,7 @@ namespace CsvSerializerTests.Converters
         {
             var c = new DecimalConverter();
             Assert.IsFalse(c.TryConvertToObjectItem(CreateContext(), "x", out object? _, out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetNumericConvertError(nameof(Foo.Value)), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumericConvertError(nameof(Foo.Value)), message);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace CsvSerializerTests.Converters
         {
             var c = new DecimalConverter();
             Assert.IsFalse(c.TryConvertToObjectItem(CreateContext(), string.Empty, out object? _, out string message));
-            Assert.AreEqual(NCsvConfig.Current.Message.GetRequiredError(nameof(Foo.Value)), message);
+            Assert.AreEqual(CsvConfig.Current.Message.GetRequiredError(nameof(Foo.Value)), message);
         }
 
         private decimal? ConvertToObjectItem(string csvItem)

@@ -48,7 +48,7 @@ namespace NCsv.Validations
                 }
             }
 
-            errorMessage = NCsvConfig.Current.Message.GetMaxLengthError(name, this.maxLength);
+            errorMessage = CsvConfig.Current.Message.GetMaxLengthError(name, this.maxLength);
 
             return false;
         }

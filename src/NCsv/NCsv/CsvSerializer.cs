@@ -136,7 +136,7 @@ namespace NCsv
                 }
                 catch (Exception ex) when (ex is CsvMalformedLineException || ex is CsvParseException)
                 {
-                    throw new CsvDeserializeException(NCsvConfig.Current.Message.GetInvalidLineError(lineNumber), lineNumber, ex);
+                    throw new CsvDeserializeException(CsvConfig.Current.Message.GetInvalidLineError(lineNumber), lineNumber, ex);
                 }
             }
 

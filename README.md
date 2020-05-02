@@ -86,7 +86,7 @@ class CustomMessage : CsvMessage
 ```
 
 ```c#
-NCsvConfig.Current.Message = new CustomMessage();
+CsvConfig.Current.Message = new CustomMessage();
 ```
 
 ### Custom validation attributes

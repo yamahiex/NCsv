@@ -4,7 +4,7 @@ namespace NCsv
 {
     /// <summary>
     /// 当ライブラリで使用するメッセージです。
-    /// 独自のメッセージを使用したい場合はサブクラスでオーバーライドして<see cref="NCsvConfig"/>に設定してください。
+    /// 独自のメッセージを使用したい場合はサブクラスでオーバーライドして<see cref="CsvConfig"/>に設定してください。
     /// </summary>
     public class CsvMessage
     {

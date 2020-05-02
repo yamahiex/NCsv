@@ -3,12 +3,12 @@
     /// <summary>
     /// コンフィグです。
     /// </summary>
-    public class NCsvConfig
+    public class CsvConfig
     {
         /// <summary>
-        /// <see cref="NCsvConfig"/>のインスタンスを取得します。
+        /// <see cref="CsvConfig"/>のインスタンスを取得します。
         /// </summary>
-        public static NCsvConfig Current { get; } = new NCsvConfig();
+        public static CsvConfig Current { get; } = new CsvConfig();
 
         /// <summary>
         /// <see cref="CsvMessage"/>を取得または設定します。
@@ -16,9 +16,9 @@
         public CsvMessage Message { get; set; } = new CsvMessage();
 
         /// <summary>
-        /// <see cref="NCsvConfig"/>クラスの新しいインスタンスを初期化します。
+        /// <see cref="CsvConfig"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
-        private NCsvConfig()
+        private CsvConfig()
         {
         }
     }

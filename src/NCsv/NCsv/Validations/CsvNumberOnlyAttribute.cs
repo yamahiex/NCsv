@@ -19,7 +19,7 @@ namespace NCsv.Validations
         /// <inheritdoc/>
         protected override string GetErrorMessage(string name)
         {
-            return NCsvConfig.Current.Message.GetNumberOnlyError(name);
+            return CsvConfig.Current.Message.GetNumberOnlyError(name);
         }
     }
 }
