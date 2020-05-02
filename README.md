@@ -76,9 +76,9 @@ var fileUsers = cs.Deserialize(reader);
 ### Customize message
 
 ```c#
-class CustomMessage : ICsvMessage
+class CustomMessage : CsvMessage
 {
-    public string GetNumericConvertError(string columnName)
+    public override string GetNumericConvertError(string columnName)
     {
         return $"{columnName} must be set to a numeric value.";
     }

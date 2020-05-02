@@ -11,16 +11,15 @@
         public static NCsvConfig Current { get; } = new NCsvConfig();
 
         /// <summary>
-        /// <see cref="ICsvMessage"/>を取得または設定します。
+        /// <see cref="CsvMessage"/>を取得または設定します。
         /// </summary>
-        public ICsvMessage Message { get; set; }
+        public CsvMessage Message { get; set; } = new CsvMessage();
 
         /// <summary>
         /// <see cref="NCsvConfig"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         private NCsvConfig()
         {
-            this.Message = new DefaultMessage();
         }
     }
 }
