@@ -8,9 +8,16 @@
      <Description>Serialize the object to CSV.</Description>
      <AssemblyName>NCsv</AssemblyName>
      <RootNamespace>NCsv</RootNamespace>
+     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+     <PackageProjectUrl>https://github.com/yamahix/NCsv</PackageProjectUrl>
+     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\hiroyasu\Documents\Projects\NCsv\src\NCsv\NCsv\NCsv.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>C:\Users\hiroyasu\Documents\Projects\NCsv\src\NCsv\NCsv\NCsv.xml</DocumentationFile>
   </PropertyGroup>
 

@@ -8,6 +8,7 @@
 
 It is a class to be serialized.  
 Serializes the property with CsvColumnAttribute.
+You can also use the Attribute to validate the value.
 
 ``` c#
 class User
@@ -75,6 +76,8 @@ var fileUsers = cs.Deserialize(reader);
 
 ### Customize message
 
+Implement ICsvMessage or inherit CsvDefaultMessage.
+
 ```c#
 class CustomMessage : ICsvMessage
 {
@@ -84,6 +87,8 @@ class CustomMessage : ICsvMessage
     }
 }
 ```
+
+Use it.
 
 ```c#
 CsvConfig.Current.Message = new CustomMessage();
@@ -110,6 +115,14 @@ public class ExampleValidationAttribute : CsvValidationAttribute
         return true;
     }
 }
+```
+
+Use it.
+
+```c#
+[CsvColumn(0)]
+[ExampleValidation]
+public string PropertyA { get; set; }
 ```
 
 You can also inherit the CsvRegularExpressionAttribute.
