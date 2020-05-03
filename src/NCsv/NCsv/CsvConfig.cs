@@ -11,9 +11,9 @@
         public static CsvConfig Current { get; } = new CsvConfig();
 
         /// <summary>
-        /// <see cref="CsvMessage"/>を取得または設定します。
+        /// <see cref="CsvDefaultMessage"/>を取得または設定します。
         /// </summary>
-        public CsvMessage Message { get; set; } = new CsvMessage();
+        public CsvDefaultMessage Message { get; set; } = new CsvDefaultMessage();
 
         /// <summary>
         /// <see cref="CsvConfig"/>クラスの新しいインスタンスを初期化します。
