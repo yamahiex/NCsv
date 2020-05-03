@@ -3,6 +3,7 @@ using NCsv;
 using NCsv.Converters;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace NCsvTests.Converters
@@ -14,18 +15,30 @@ namespace NCsvTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new NullableDecimalConverter();
-            Assert.AreEqual(string.Empty, c.ConvertToCsvItem(CreateContext(), null));
+            Assert.AreEqual(string.Empty, c.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
         }
 
         [TestMethod]
         public void TryConvertToObjectItemTest()
         {
             var c = new NullableDecimalConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateContext(), string.Empty, out object? result, out string _));
+            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(string.Empty), out object? result, out string _));
             Assert.IsNull(result);
         }
 
-        private CsvConvertContext CreateContext(string name = nameof(Foo.Value))
+        private ConvertToCsvItemContext CreateConvertToCsvItemContext(object? objectItem, string name = nameof(Foo.Value))
+        {
+            var p = GetPropertyInfo(name);
+            return new ConvertToCsvItemContext(p, p.Name, objectItem);
+        }
+
+        private ConvertToObjectItemContext CreateConvertToObjectItemContext(string csvItem, string name = nameof(Foo.Value))
+        {
+            var p = GetPropertyInfo(name);
+            return new ConvertToObjectItemContext(p, p.Name, 1, csvItem);
+        }
+
+        private PropertyInfo GetPropertyInfo(string name)
         {
             var p = typeof(Foo).GetProperty(name);
 
@@ -34,7 +47,7 @@ namespace NCsvTests.Converters
                 throw new AssertFailedException();
             }
 
-            return new CsvConvertContext(p, p.Name);
+            return p;
         }
 
         private class Foo

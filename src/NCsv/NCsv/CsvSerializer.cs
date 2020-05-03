@@ -69,7 +69,7 @@ namespace NCsv
 
             foreach (var row in objects)
             {
-                writer.WriteLine(this.columns.CreateCsvRow(row));
+                writer.WriteLine(this.columns.CreateCsvLine(row));
             }
         }
 
@@ -125,14 +125,14 @@ namespace NCsv
 
                 try
                 {
-                    var items = parser.ReadFields();
+                    var csvItems = new CsvItems(parser.ReadFields(), lineNumber);
 
                     if (this.HasHeader && lineNumber == 1)
                     {
                         continue;
                     }
 
-                    result.Add(this.columns.CreateObject(items));
+                    result.Add(this.columns.CreateObject(csvItems));
                 }
                 catch (Exception ex) when (ex is CsvMalformedLineException || ex is CsvParseException)
                 {

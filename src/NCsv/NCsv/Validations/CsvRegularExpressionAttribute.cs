@@ -32,18 +32,18 @@ namespace NCsv.Validations
         }
 
         /// <inheritdoc/>
-        public override bool Validate(string value, string name, out string errorMessage)
+        public override bool Validate(CsvValidationContext context, out string errorMessage)
         {
             errorMessage = string.Empty;
 
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(context.Value))
             {
                 return true;
             }
 
-            if (!Regex.IsMatch(value, this.Pattern))
+            if (!Regex.IsMatch(context.Value, this.Pattern))
             {
-                errorMessage = GetErrorMessage(name);
+                errorMessage = GetErrorMessage(context);
                 return false;
             }
 
@@ -53,11 +53,11 @@ namespace NCsv.Validations
         /// <summary>
         /// エラーメッセージを返します。
         /// </summary>
-        /// <param name="name">列名。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <returns>エラーメッセージ。</returns>
-        protected virtual string GetErrorMessage(string name)
+        protected virtual string GetErrorMessage(ICsvItemContext context)
         {
-            return CsvConfig.Current.Message.GetInvalidFormatError(name);
+            return CsvConfig.Current.Message.GetInvalidFormatError(context);
         }
     }
 }

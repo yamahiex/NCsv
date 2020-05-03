@@ -6,13 +6,13 @@
     internal class NullConverter : CsvConverter
     {
         /// <inheritdoc/>
-        public override string ConvertToCsvItem(CsvConvertContext context, object? objectItem)
+        public override string ConvertToCsvItem(ConvertToCsvItemContext context)
         {
             return string.Empty;
         }
 
         /// <inheritdoc/>
-        public override bool TryConvertToObjectItem(CsvConvertContext context, string csvItem, out object? result, out string message)
+        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string message)
         {
             result = null;
             message = string.Empty;

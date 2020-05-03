@@ -3,7 +3,7 @@ using System.Reflection;
 namespace NCsv.Converters
 {
     /// <summary>
-    /// CSV変換のコンテキストです。
+    /// CSV変換に関する情報です。
     /// </summary>
     public class CsvConvertContext
     {

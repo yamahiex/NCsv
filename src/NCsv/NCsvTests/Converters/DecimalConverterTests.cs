@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 
 namespace CsvSerializerTests.Converters
 {
@@ -14,8 +15,8 @@ namespace CsvSerializerTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new DecimalConverter();
-            Assert.AreEqual("1000", c.ConvertToCsvItem(CreateContext(), 1000m));
-            Assert.AreEqual("\"1,000\"", c.ConvertToCsvItem(CreateContext("FormattedValue"), 1000m));
+            Assert.AreEqual("1000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m)));
+            Assert.AreEqual("\"1,000\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m, "FormattedValue")));
         }
 
         [TestMethod]
@@ -29,26 +30,40 @@ namespace CsvSerializerTests.Converters
         public void TryConvertToObjectItemFailureTest()
         {
             var c = new DecimalConverter();
-            Assert.IsFalse(c.TryConvertToObjectItem(CreateContext(), "x", out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumericConvertError(nameof(Foo.Value)), message);
+            var context = CreateConvertToObjectItemContext("x");
+            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumericConvertError(context), message);
         }
 
         [TestMethod]
         public void TryConvertToObjectItemRequireTest()
         {
             var c = new DecimalConverter();
-            Assert.IsFalse(c.TryConvertToObjectItem(CreateContext(), string.Empty, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetRequiredError(nameof(Foo.Value)), message);
+            var context = CreateConvertToObjectItemContext(string.Empty);
+            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetRequiredError(context), message);
         }
 
         private decimal? ConvertToObjectItem(string csvItem)
         {
             var c = new DecimalConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateContext(), csvItem, out object? result, out string _));
+            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
             return (decimal?)result;
         }
 
-        private CsvConvertContext CreateContext(string name = nameof(Foo.Value))
+        private ConvertToCsvItemContext CreateConvertToCsvItemContext(object? objectItem, string name = nameof(Foo.Value))
+        {
+            var p = GetPropertyInfo(name);
+            return new ConvertToCsvItemContext(p, p.Name, objectItem);
+        }
+
+        private ConvertToObjectItemContext CreateConvertToObjectItemContext(string csvItem, string name = nameof(Foo.Value))
+        {
+            var p = GetPropertyInfo(name);
+            return new ConvertToObjectItemContext(p, p.Name, 1, csvItem);
+        }
+
+        private PropertyInfo GetPropertyInfo(string name)
         {
             var p = typeof(Foo).GetProperty(name);
 
@@ -57,7 +72,7 @@ namespace CsvSerializerTests.Converters
                 throw new AssertFailedException();
             }
 
-            return new CsvConvertContext(p, p.Name);
+            return p;
         }
 
         private class Foo

@@ -21,13 +21,13 @@ namespace NCsv.Validations
         }
 
         /// <inheritdoc/>
-        public override bool Validate(string value, string name, out string errorMessage)
+        public override bool Validate(CsvValidationContext context, out string errorMessage)
         {
             errorMessage = string.Empty;
 
-            if (IsEmpty(value))
+            if (IsEmpty(context.Value))
             {
-                errorMessage = CsvConfig.Current.Message.GetRequiredError(name);
+                errorMessage = CsvConfig.Current.Message.GetRequiredError(context);
                 return false;
             }
 

@@ -96,10 +96,12 @@ namespace NCsv
         public bool Validate(CsvItems items, out string errorMessage)
         {
             errorMessage = string.Empty;
+            var csvItem = items.GetItem(this.attribute.Index, this.Name);
+            var context = new CsvValidationContext(items.LineNumber, csvItem, this.Name);
 
             foreach (var v in this.Property.GetCustomAttributes<CsvValidationAttribute>())
             {
-                if (!v.Validate(items.GetItem(this.attribute.Index), this.Name, out errorMessage))
+                if (!v.Validate(context, out errorMessage))
                 {
                     return false;
                 }
@@ -117,8 +119,9 @@ namespace NCsv
         /// <returns>変換に成功した場合にtrue。</returns>
         public bool TryConvertToObjectItem(CsvItems items, out object? result, out string errorMessage)
         {
-            var context = new CsvConvertContext(this.Property, this.Name);
-            return this.converter.TryConvertToObjectItem(context, items.GetItem(this.attribute.Index), out result, out errorMessage);
+            var csvItem = items.GetItem(this.attribute.Index, this.Name);
+            var context = new ConvertToObjectItemContext(this.Property, this.Name, items.LineNumber, csvItem);
+            return this.converter.TryConvertToObjectItem(context, out result, out errorMessage);
         }
 
         /// <summary>
@@ -128,8 +131,8 @@ namespace NCsv
         /// <returns>CSV項目。</returns>
         public string ConvertToCsvItem(object objectItem)
         {
-            var context = new CsvConvertContext(this.Property, this.Name);
-            return this.converter.ConvertToCsvItem(context, objectItem);
+            var context = new ConvertToCsvItemContext(this.Property, this.Name, objectItem);
+            return this.converter.ConvertToCsvItem(context);
         }
 
         /// <summary>

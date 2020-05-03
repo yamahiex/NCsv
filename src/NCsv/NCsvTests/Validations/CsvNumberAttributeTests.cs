@@ -18,7 +18,8 @@ namespace NCsv.Validations.Tests
                 MaxValue = "9999999.999",
             };
 
-            Assert.IsTrue(a.Validate("1234567.123", "foo", out string _));
+            var context = new CsvValidationContext(1, "1234567.123", "foo");
+            Assert.IsTrue(a.Validate(context, out string _));
         }
 
         [TestMethod()]
@@ -30,8 +31,9 @@ namespace NCsv.Validations.Tests
                 MaxValue = "999",
             };
 
-            Assert.IsFalse(a.Validate("1000", "foo", out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberOutOfRangeError("foo", 0, 999), message);
+            var context = new CsvValidationContext(1, "1000", "foo");
+            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumberOutOfRangeError(context, 0, 999), message);
         }
 
         [TestMethod()]
@@ -42,8 +44,9 @@ namespace NCsv.Validations.Tests
                 MinValue = "0",
             };
 
-            Assert.IsFalse(a.Validate("-1", "foo", out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMinValueError("foo", 0), message);
+            var context = new CsvValidationContext(1, "-1", "foo");
+            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMinValueError(context, 0), message);
         }
 
         [TestMethod()]
@@ -54,8 +57,9 @@ namespace NCsv.Validations.Tests
                 MaxValue = "999",
             };
 
-            Assert.IsFalse(a.Validate("1000", "foo", out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMaxValueError("foo", 999), message);
+            var context = new CsvValidationContext(1, "1000", "foo");
+            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMaxValueError(context, 999), message);
         }
 
         [TestMethod()]
@@ -63,8 +67,9 @@ namespace NCsv.Validations.Tests
         {
             var a = new CsvNumberAttribute(10, 0);
 
-            Assert.IsFalse(a.Validate("12345678901", "foo", out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionError("foo", 10), message);
+            var context = new CsvValidationContext(1, "12345678901", "foo");
+            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionError(context, 10), message);
         }
 
         [TestMethod()]
@@ -72,8 +77,9 @@ namespace NCsv.Validations.Tests
         {
             var a = new CsvNumberAttribute(10, 3);
 
-            Assert.IsFalse(a.Validate("1.1234", "foo", out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionAndScaleError("foo", 10, 3), message);
+            var context = new CsvValidationContext(1, "1.1234", "foo");
+            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionAndScaleError(context, 10, 3), message);
         }
     }
 }

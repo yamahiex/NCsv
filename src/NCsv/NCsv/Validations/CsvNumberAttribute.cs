@@ -50,37 +50,37 @@ namespace NCsv.Validations
         }
 
         /// <inheritdoc/>
-        public override bool Validate(string value, string name, out string errorMessage)
+        public override bool Validate(CsvValidationContext context, out string errorMessage)
         {
             errorMessage = string.Empty;
 
-            if (!decimal.TryParse(value, out decimal x))
+            if (!decimal.TryParse(context.Value, out decimal x))
             {
-                errorMessage = CsvConfig.Current.Message.GetNumericConvertError(name);
+                errorMessage = CsvConfig.Current.Message.GetNumericConvertError(context);
                 return false;
             }
 
             if (HasPrecisionError(x, this.precision, this.scale))
             {
-                errorMessage = GetPrecisionErrorMessage(name);
+                errorMessage = GetPrecisionErrorMessage(context);
                 return false;
             }
 
             if (HasOutOfRangeError(x))
             {
-                errorMessage = CsvConfig.Current.Message.GetNumberOutOfRangeError(name, this.MinValueDecimal ?? 0, this.MaxValueDecimal ?? 0);
+                errorMessage = CsvConfig.Current.Message.GetNumberOutOfRangeError(context, this.MinValueDecimal ?? 0, this.MaxValueDecimal ?? 0);
                 return false;
             }
 
             if (HasMinValueError(x))
             {
-                errorMessage = CsvConfig.Current.Message.GetNumberMinValueError(name, this.MinValueDecimal ?? 0);
+                errorMessage = CsvConfig.Current.Message.GetNumberMinValueError(context, this.MinValueDecimal ?? 0);
                 return false;
             }
 
             if (HasMaxValueError(x))
             {
-                errorMessage = CsvConfig.Current.Message.GetNumberMaxValueError(name, this.MaxValueDecimal ?? 0);
+                errorMessage = CsvConfig.Current.Message.GetNumberMaxValueError(context, this.MaxValueDecimal ?? 0);
                 return false;
             }
 
@@ -135,17 +135,17 @@ namespace NCsv.Validations
         /// <summary>
         /// 精度エラーの場合のメッセージを返します。
         /// </summary>
-        /// <param name="columnName">列名。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <returns>精度エラーの場合のメッセージ。</returns>
-        private string GetPrecisionErrorMessage(string columnName)
+        private string GetPrecisionErrorMessage(ICsvItemContext context)
         {
             if (this.scale == 0)
             {
-                return CsvConfig.Current.Message.GetPrecisionError(columnName, this.precision);
+                return CsvConfig.Current.Message.GetPrecisionError(context, this.precision);
             }
             else
             {
-                return CsvConfig.Current.Message.GetPrecisionAndScaleError(columnName, this.precision, this.scale);
+                return CsvConfig.Current.Message.GetPrecisionAndScaleError(context, this.precision, this.scale);
             }
         }
 

@@ -14,7 +14,8 @@ namespace NCsv.Validations.Tests
         {
             var a = new CsvRegularExpressionAttribute("^[a-zA-Z0-9]+$");
 
-            Assert.IsTrue(a.Validate("halfAlphanumericOnly", "foo", out string _));
+            var context = new CsvValidationContext(1, "halfAlphanumericOnly", "foo");
+            Assert.IsTrue(a.Validate(context, out string _));
         }
 
         [TestMethod()]
@@ -22,8 +23,9 @@ namespace NCsv.Validations.Tests
         {
             var a = new CsvRegularExpressionAttribute("^[0-9]+$");
 
-            Assert.IsFalse(a.Validate("halfAlphanumericOnly", "foo", out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetInvalidFormatError("foo"), message);
+            var context = new CsvValidationContext(1, "halfAlphanumericOnly", "foo");
+            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.AreEqual(CsvConfig.Current.Message.GetInvalidFormatError(context), message);
         }
     }
 }

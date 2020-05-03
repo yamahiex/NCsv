@@ -17,9 +17,9 @@ namespace NCsv.Validations
         }
 
         /// <inheritdoc/>
-        protected override string GetErrorMessage(string name)
+        protected override string GetErrorMessage(ICsvItemContext context)
         {
-            return CsvConfig.Current.Message.GetNumberOnlyError(name);
+            return CsvConfig.Current.Message.GetNumberOnlyError(context);
         }
     }
 }

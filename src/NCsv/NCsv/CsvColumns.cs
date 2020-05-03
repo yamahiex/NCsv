@@ -50,11 +50,11 @@ namespace NCsv
         }
 
         /// <summary>
-        /// <see cref="CsvRow"/>を作成します。
+        /// Csv行を作成します。
         /// </summary>
         /// <param name="object"></param>
         /// <returns>CSV行。</returns>
-        public CsvRow CreateCsvRow(T @object)
+        public string CreateCsvLine(T @object)
         {
             var sb = new StringBuilder();
             var first = true;
@@ -72,27 +72,18 @@ namespace NCsv
                 sb.Append(c.ConvertToCsvItem(value));
             }
 
-            return new CsvRow(sb.ToString());
-        }
-        /// <summary>
-        /// オブジェクトを作成します。
-        /// </summary>
-        /// <param name="csvRow">CSV行。</param>
-        /// <returns>オブジェクト。</returns>
-        public T CreateObject(string csvRow)
-        {
-            using var parser = new CsvTextFieldParser(new StringReader(csvRow));
-            return CreateObject(new CsvItems(parser.ReadFields()));
+            return sb.ToString();
         }
 
         /// <summary>
         /// オブジェクトを作成します。
         /// </summary>
-        /// <param name="items">CSV項目のリスト。</param>
+        /// <param name="csvRow">CSV行。</param>
         /// <returns>オブジェクト。</returns>
-        public T CreateObject(IReadOnlyList<string> items)
+        internal T CreateObject(string csvRow)
         {
-            return CreateObject(new CsvItems(items));
+            using var parser = new CsvTextFieldParser(new StringReader(csvRow));
+            return CreateObject(new CsvItems(parser.ReadFields(), -1));
         }
 
         /// <summary>

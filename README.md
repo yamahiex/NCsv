@@ -78,9 +78,9 @@ var fileUsers = cs.Deserialize(reader);
 ```c#
 class CustomMessage : CsvMessage
 {
-    public override string GetNumericConvertError(string columnName)
+    public override string GetNumericConvertError(ICsvItemContext context)
     {
-        return $"{columnName} must be set to a numeric value.";
+        return $"The {context.Name} on line {context.LineNumber} must be set to a numeric value.";
     }
 }
 ```
@@ -97,13 +97,13 @@ Inherit the CsvValidationAttribute to create your own validation attribute.
 [AttributeUsage(AttributeTargets.Property)]
 public class ExampleValidationAttribute : CsvValidationAttribute
 {
-    public override bool Validate(string value, string name, out string errorMessage)
+    public override bool Validate(CsvValidationContext context, out string errorMessage)
     {
         errorMessage = string.Empty;
 
-        if (string.IsNullOrEmpty(value))
+        if (string.IsNullOrEmpty(context.Value))
         {
-            errorMessage = $"{name} is error.";
+            errorMessage = $"{context.Name} is error.";
             return false;
         }
 
@@ -123,9 +123,9 @@ public class AlphanumericOnlyAttribute : CsvRegularExpressionAttribute
         this.Pattern = "^[a-zA-Z0-9]+$";
     }
 
-    protected override string GetErrorMessage(string name)
+    protected override string GetErrorMessage(ICsvItemContext context)
     {
-        return $"{name} must be set to a alphanumeric only.";
+        return $"{context.Name} must be set to a alphanumeric only.";
     }
 }
 ```
@@ -159,14 +159,14 @@ Create a converter by inheriting CsvConverter.
 class ValueObjectConverter : CsvConverter
 {
     // It's optional, but it's implemented for the sake of explanation.
-    public string ConvertToCsvItem(CsvConvertContext context, object? objectItem)
+    public string ConvertToCsvItem(ConvertToCsvItemContext context)
     {
-        return $"\"{objectItem}\"";
+        return $"\"{context.ObjectItem}\"";
     }
 
-    public bool TryConvertToObjectItem(CsvConvertContext context, string csvItem, out object? result, out string errorMessage)
+    public bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage)
     {
-        result = new ValueObject(csvItem);
+        result = new ValueObject(context.CsvItem);
         errorMessage = string.Empty;
         return true;
     }

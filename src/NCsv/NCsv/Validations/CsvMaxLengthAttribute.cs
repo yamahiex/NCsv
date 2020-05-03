@@ -29,26 +29,26 @@ namespace NCsv.Validations
         }
 
         /// <inheritdoc/>
-        public override bool Validate(string value, string name, out string errorMessage)
+        public override bool Validate(CsvValidationContext context, out string errorMessage)
         {
             errorMessage = string.Empty;
 
             if (this.LengthAsByte)
             {
-                if (Encoding.GetEncoding("Shift_JIS").GetByteCount(value) <= this.maxLength)
+                if (Encoding.GetEncoding("Shift_JIS").GetByteCount(context.Value) <= this.maxLength)
                 {
                     return true;
                 }
             }
             else
             {
-                if (value.Length <= this.maxLength)
+                if (context.Value.Length <= this.maxLength)
                 {
                     return true;
                 }
             }
 
-            errorMessage = CsvConfig.Current.Message.GetMaxLengthError(name, this.maxLength);
+            errorMessage = CsvConfig.Current.Message.GetMaxLengthError(context, this.maxLength);
 
             return false;
         }

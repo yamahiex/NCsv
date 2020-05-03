@@ -14,10 +14,9 @@ namespace NCsv.Validations
         /// <summary>
         /// 検証します。
         /// </summary>
-        /// <param name="value">検証する値。</param>
-        /// <param name="name">エラーメッセージに含める名前。</param>
+        /// <param name="context"><see cref="CsvValidationContext"/>。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>検証成功の場合にtrue。</returns>
-        public abstract bool Validate(string value, string name, out string errorMessage);
+        public abstract bool Validate(CsvValidationContext context, out string errorMessage);
     }
 }

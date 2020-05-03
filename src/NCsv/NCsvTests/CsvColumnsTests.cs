@@ -43,7 +43,7 @@ namespace NCsv.Tests
             };
 
             var c = new CsvColumns<Example>();
-            var actual = c.CreateCsvRow(example);
+            var actual = c.CreateCsvLine(example);
 
             var expected = @"""foo"",""123,456"",""2020/01/01"",""False"",100,1000,""2020/01/01"",123,,""bar"",""abc"",10.123,111.111,100,200,10000,20000,1.1,1.2";
 

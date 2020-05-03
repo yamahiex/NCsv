@@ -9,47 +9,47 @@ namespace NCsv.Converters
     internal class ShortConverter : CsvConverter
     {
         /// <inheritdoc/>
-        public override string ConvertToCsvItem(CsvConvertContext context, object? objectItem)
+        public override string ConvertToCsvItem(ConvertToCsvItemContext context)
         {
             var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
 
             if (format == null)
             {
-                return objectItem?.ToString() ?? string.Empty;
+                return context.ObjectItem?.ToString() ?? string.Empty;
             }
 
-            if (objectItem == null)
+            if (context.ObjectItem == null)
             {
                 return "\"\"";
             }
 
-            return $"\"{((short)objectItem).ToString(format.Format)}\"";
+            return $"\"{((short)context.ObjectItem).ToString(format.Format)}\"";
         }
 
         /// <inheritdoc/>
-        public override bool TryConvertToObjectItem(CsvConvertContext context, string csvItem, out object? result, out string errorMessage)
+        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage)
         {
             result = null;
             errorMessage = string.Empty;
 
-            if (HasRequiredError(csvItem))
+            if (HasRequiredError(context.CsvItem))
             {
-                errorMessage = CsvConfig.Current.Message.GetRequiredError(context.Name);
+                errorMessage = CsvConfig.Current.Message.GetRequiredError(context);
                 return false;
             }
 
-            if (string.IsNullOrEmpty(csvItem))
+            if (string.IsNullOrEmpty(context.CsvItem))
             {
                 return true;
             }
 
-            if (short.TryParse(csvItem, NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out short x))
+            if (short.TryParse(context.CsvItem, NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out short x))
             {
                 result = x;
                 return true;
             }
 
-            errorMessage = CsvConfig.Current.Message.GetNumericConvertError(context.Name);
+            errorMessage = CsvConfig.Current.Message.GetNumericConvertError(context);
             return false;
         }
 

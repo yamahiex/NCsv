@@ -6,30 +6,30 @@
     internal class BoolConverter : CsvConverter
     {
         /// <inheritdoc/>
-        public override bool TryConvertToObjectItem(CsvConvertContext context, string csvItem, out object? result, out string errorMessage)
+        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage)
         {
             result = null;
             errorMessage = string.Empty;
 
-            if (bool.TryParse(csvItem, out bool x))
+            if (bool.TryParse(context.CsvItem, out bool x))
             {
                 result = x;
                 return true;
             }
 
-            if (string.IsNullOrEmpty(csvItem) || csvItem == "0")
+            if (string.IsNullOrEmpty(context.CsvItem) || context.CsvItem == "0")
             {
                 result = false;
                 return true;
             }
 
-            if (csvItem == "1")
+            if (context.CsvItem == "1")
             {
                 result = true;
                 return true;
             }
 
-            errorMessage = CsvConfig.Current.Message.GetBooleanConvertError(context.Name);
+            errorMessage = CsvConfig.Current.Message.GetBooleanConvertError(context);
             return false;
         }
     }

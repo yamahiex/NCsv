@@ -146,14 +146,14 @@ namespace NCsv.Tests
     public class ValueObjectConverter : CsvConverter
     {
         // It's optional, but it's implemented for the sake of explanation.
-        public override string ConvertToCsvItem(CsvConvertContext context, object? objectItem)
+        public override string ConvertToCsvItem(ConvertToCsvItemContext context)
         {
-            return $"\"{objectItem}\"";
+            return $"\"{context.ObjectItem}\"";
         }
 
-        public override bool TryConvertToObjectItem(CsvConvertContext context, string csvValue, out object? result, out string message)
+        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string message)
         {
-            result = new ValueObject(csvValue);
+            result = new ValueObject(context.CsvItem);
             message = string.Empty;
             return true;
         }

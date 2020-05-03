@@ -4,6 +4,7 @@ using System.Text;
 using NCsv;
 using NCsv.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
 
 namespace CsvSerializerTests.Converters
 {
@@ -14,7 +15,7 @@ namespace CsvSerializerTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new StringConverter();
-            Assert.AreEqual("\"abc\"", c.ConvertToCsvItem(CreateContext(), "abc"));
+            Assert.AreEqual("\"abc\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext("abc")));
         }
 
         [TestMethod]
@@ -26,20 +27,32 @@ namespace CsvSerializerTests.Converters
         private string? ConvertToObjectItem(string csvItem)
         {
             var c = new StringConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateContext(), csvItem, out object? result, out string _));
+            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
             return (string?)result;
         }
 
-        private CsvConvertContext CreateContext()
+        private ConvertToCsvItemContext CreateConvertToCsvItemContext(object? objectItem, string name = nameof(Foo.Value))
         {
-            var p = typeof(Foo).GetProperty(nameof(Foo.Value));
+            var p = GetPropertyInfo(name);
+            return new ConvertToCsvItemContext(p, p.Name, objectItem);
+        }
+
+        private ConvertToObjectItemContext CreateConvertToObjectItemContext(string csvItem, string name = nameof(Foo.Value))
+        {
+            var p = GetPropertyInfo(name);
+            return new ConvertToObjectItemContext(p, p.Name, 1, csvItem);
+        }
+
+        private PropertyInfo GetPropertyInfo(string name)
+        {
+            var p = typeof(Foo).GetProperty(name);
 
             if (p == null)
             {
                 throw new AssertFailedException();
             }
 
-            return new CsvConvertContext(p, p.Name);
+            return p;
         }
 
         private class Foo
