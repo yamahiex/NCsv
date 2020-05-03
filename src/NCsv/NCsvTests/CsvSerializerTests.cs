@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using NotVisualBasic.FileIO;
 
 namespace NCsv.Tests
 {
@@ -118,6 +119,32 @@ namespace NCsv.Tests
 
             var reader = new StringReader(CreateExamplesCsv());
             var examples = await cs.DeserializeAsync(reader);
+            CollectionAssert.AreEqual(CreateExamples(), examples);
+        }
+
+        [TestMethod()]
+        public void DeserializeParserTest()
+        {
+            var cs = new CsvSerializer<Example>
+            {
+                HasHeader = true
+            };
+
+            var reader = new StringReader(CreateExamplesCsv());
+            var examples = cs.Deserialize(new CsvTextFieldParser(reader));
+            CollectionAssert.AreEqual(CreateExamples(), examples);
+        }
+
+        [TestMethod()]
+        public async Task DeserializeParserAsyncTest()
+        {
+            var cs = new CsvSerializer<Example>
+            {
+                HasHeader = true
+            };
+
+            var reader = new StringReader(CreateExamplesCsv());
+            var examples = await cs.DeserializeAsync(new CsvTextFieldParser(reader));
             CollectionAssert.AreEqual(CreateExamples(), examples);
         }
 

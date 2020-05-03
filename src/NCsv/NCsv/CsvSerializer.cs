@@ -23,7 +23,7 @@ namespace NCsv
         public bool HasHeader { get; set; } = false;
 
         /// <summary>
-        /// 非同期的に指定した<paramref name="objects"/>をCSVシリアル化します。
+        /// 非同期的に指定した<paramref name="objects"/>をシリアル化します。
         /// </summary>
         /// <param name="objects">オブジェクト。</param>
         /// <returns>CSV文字列。</returns>
@@ -33,7 +33,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 指定した<paramref name="objects"/>をCSVシリアル化します。
+        /// 指定した<paramref name="objects"/>をシリアル化します。
         /// </summary>
         /// <param name="objects">オブジェクト。</param>
         /// <returns>CSV文字列。</returns>
@@ -46,7 +46,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 非同期的に指定した<paramref name="objects"/>をCSVシリアル化します。
+        /// 非同期的に指定した<paramref name="objects"/>をシリアル化し、生成されたCSVを<paramref name="writer"/>に書き込みます。
         /// </summary>
         /// <param name="writer">CSVを書き込む<see cref="TextWriter"/>。</param>
         /// <param name="objects">オブジェクト。</param>
@@ -56,7 +56,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 指定した<paramref name="objects"/>をCSVシリアル化します。
+        /// 指定した<paramref name="objects"/>をシリアル化し、生成されたCSVを<paramref name="writer"/>に書き込みます。
         /// </summary>
         /// <param name="writer">CSVを書き込む<see cref="TextWriter"/>。</param>
         /// <param name="objects">オブジェクト。</param>
@@ -74,7 +74,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 非同期的に指定した<paramref name="csv"/>を逆シリアル化します。
+        /// 非同期的に<paramref name="csv"/>を逆シリアル化します。
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
         /// <returns>オブジェクト。</returns>
@@ -85,7 +85,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 指定した<paramref name="csv"/>を逆シリアル化します。
+        /// <paramref name="csv"/>を逆シリアル化します。
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
         /// <returns>オブジェクト。</returns>
@@ -96,7 +96,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 非同期的に指定した<paramref name="reader"/>からCSVを読み取り逆シリアル化します。
+        /// 非同期的に指定した<paramref name="reader"/>に格納されているCSVを逆シリアル化します。
         /// </summary>
         /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
         /// <returns>オブジェクト。</returns>
@@ -107,16 +107,36 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 指定した<paramref name="reader"/>からCSVを読み取り逆シリアル化します。
+        /// 指定した<paramref name="reader"/>に格納されているCSVを逆シリアル化します。
         /// </summary>
         /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
         /// <returns>オブジェクト。</returns>
         /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
         public List<T> Deserialize(TextReader reader)
         {
-            var result = new List<T>();
+            return Deserialize(new CsvTextFieldParser(reader));
+        }
 
-            var parser = new CsvTextFieldParser(reader);
+        /// <summary>
+        /// 非同期的に指定した<paramref name="parser"/>で解析したCSVを逆シリアル化します。
+        /// </summary>
+        /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
+        /// <returns>オブジェクト。</returns>
+        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        public async Task<List<T>> DeserializeAsync(CsvTextFieldParser parser)
+        {
+            return await Task.Run(() => Deserialize(parser));
+        }
+
+        /// <summary>
+        /// 指定した<paramref name="parser"/>で解析したCSVを逆シリアル化します。
+        /// </summary>
+        /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
+        /// <returns>オブジェクト。</returns>
+        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        public List<T> Deserialize(CsvTextFieldParser parser)
+        {
+            var result = new List<T>();
             var lineNumber = 0;
 
             while (!parser.EndOfData)
