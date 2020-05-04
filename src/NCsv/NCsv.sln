@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCsvTests", "NCsvTests\NCsv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCsv", "NCsv\NCsv.csproj", "{D238ECE7-F700-4C42-9A30-5BE144E94AD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance", "Performance\Performance.csproj", "{22FD5D7F-39D9-46B9-B81E-AD7B23DDD178}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D238ECE7-F700-4C42-9A30-5BE144E94AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D238ECE7-F700-4C42-9A30-5BE144E94AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D238ECE7-F700-4C42-9A30-5BE144E94AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22FD5D7F-39D9-46B9-B81E-AD7B23DDD178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22FD5D7F-39D9-46B9-B81E-AD7B23DDD178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22FD5D7F-39D9-46B9-B81E-AD7B23DDD178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22FD5D7F-39D9-46B9-B81E-AD7B23DDD178}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
