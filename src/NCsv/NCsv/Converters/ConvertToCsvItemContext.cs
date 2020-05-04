@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace NCsv.Converters
+﻿namespace NCsv.Converters
 {
     /// <summary>
     /// <see cref="CsvConverter.ConvertToCsvItem(ConvertToCsvItemContext)"/>に関する情報です。
@@ -15,11 +13,11 @@ namespace NCsv.Converters
         /// <summary>
         /// <see cref="ConvertToCsvItemContext"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
-        /// <param name="propertyInfo"><see cref="PropertyInfo"/>。</param>
+        /// <param name="property"><see cref="CsvProperty"/>。</param>
         /// <param name="name">エラーメッセージに含める名前。</param>
         /// <param name="value">オブジェクト項目。</param>
-        public ConvertToCsvItemContext(PropertyInfo propertyInfo, string name, object? value)
-            : base(propertyInfo, name)
+        public ConvertToCsvItemContext(CsvProperty property, string name, object? value)
+            : base(property, name)
         {
             this.ObjectItem = value;
         }

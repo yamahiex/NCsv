@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace NCsv.Converters
+﻿namespace NCsv.Converters
 {
     /// <summary>
     /// <see cref="decimal"/>のコンバーターです。

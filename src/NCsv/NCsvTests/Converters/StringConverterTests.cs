@@ -33,17 +33,17 @@ namespace CsvSerializerTests.Converters
 
         private ConvertToCsvItemContext CreateConvertToCsvItemContext(object? objectItem, string name = nameof(Foo.Value))
         {
-            var p = GetPropertyInfo(name);
+            var p = GetProperty(name);
             return new ConvertToCsvItemContext(p, p.Name, objectItem);
         }
 
         private ConvertToObjectItemContext CreateConvertToObjectItemContext(string csvItem, string name = nameof(Foo.Value))
         {
-            var p = GetPropertyInfo(name);
+            var p = GetProperty(name);
             return new ConvertToObjectItemContext(p, p.Name, 1, csvItem);
         }
 
-        private PropertyInfo GetPropertyInfo(string name)
+        private CsvProperty GetProperty(string name)
         {
             var p = typeof(Foo).GetProperty(name);
 
@@ -52,7 +52,7 @@ namespace CsvSerializerTests.Converters
                 throw new AssertFailedException();
             }
 
-            return p;
+            return new CsvProperty(p);
         }
 
         private class Foo

@@ -56,6 +56,11 @@ namespace NCsv
         /// <returns>CSV行。</returns>
         public string CreateCsvLine(T @object)
         {
+            if (@object == null)
+            {
+                throw new ArgumentNullException("The object is null.");
+            }
+
             var sb = new StringBuilder();
             var first = true;
 
@@ -94,6 +99,11 @@ namespace NCsv
         public T CreateObject(CsvItems items)
         {
             var result = Activator.CreateInstance<T>();
+
+            if (result == null)
+            {
+                throw new InvalidOperationException("Unable to instantiate.");
+            }
 
             foreach (var column in this.columns)
             {

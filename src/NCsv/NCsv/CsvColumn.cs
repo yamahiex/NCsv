@@ -1,4 +1,4 @@
-﻿using NCsv.Converters;
+using NCsv.Converters;
 using NCsv.Validations;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace NCsv
         /// <summary>
         /// <see cref="PropertyInfo"/>を取得します。
         /// </summary>
-        protected PropertyInfo Property { get; private set; }
+        protected CsvProperty Property { get; private set; }
 
         /// <summary>
         /// 名称を取得します。
@@ -52,7 +52,7 @@ namespace NCsv
         public CsvColumn(CsvColumnAttribute attribute, PropertyInfo property, CsvConverter converter)
         {
             this.attribute = attribute;
-            this.Property = property;
+            this.Property = new CsvProperty(property);
             this.converter = converter;
         }
 
@@ -95,19 +95,9 @@ namespace NCsv
         /// <returns>検証に成功した場合にtrue。</returns>
         public bool Validate(CsvItems items, out string errorMessage)
         {
-            errorMessage = string.Empty;
             var csvItem = items.GetItem(this.attribute.Index, this.Name);
             var context = new CsvValidationContext(items.LineNumber, csvItem, this.Name);
-
-            foreach (var v in this.Property.GetCustomAttributes<CsvValidationAttribute>())
-            {
-                if (!v.Validate(context, out errorMessage))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return this.Property.Validate(context, out errorMessage);
         }
 
         /// <summary>
@@ -141,7 +131,7 @@ namespace NCsv
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="value"></param>
-        public virtual void SetValue(object? obj, object? value)
+        public virtual void SetValue(object obj, object? value)
         {
             this.Property.SetValue(obj, value);
         }
@@ -151,7 +141,7 @@ namespace NCsv
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public virtual object GetValue(object? obj)
+        public virtual object GetValue(object obj)
         {
             return this.Property.GetValue(obj);
         }
