@@ -31,33 +31,33 @@ namespace NCsv
         {
             result = DateTime.MinValue;
 
-            if (DateTime.TryParseExact(value, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out DateTime dt1))
+            if (DateTime.TryParse(value, out result))
             {
-                result = dt1;
                 return true;
             }
 
-            if (DateTime.TryParseExact(value, "yyyy/MM/dd", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out DateTime dt2))
+            if (DateTime.TryParseExact(value, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
             {
-                result = dt2;
                 return true;
             }
 
-            if (DateTime.TryParseExact(value, "yyyyMMdd", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out DateTime dt3))
+            if (DateTime.TryParseExact(value, "yyyy/MM/dd", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
             {
-                result = dt3;
                 return true;
             }
 
-            if (DateTime.TryParseExact(value, "yyyy/MM", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out DateTime dt4))
+            if (DateTime.TryParseExact(value, "yyyyMMdd", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
             {
-                result = dt4;
                 return true;
             }
 
-            if (DateTime.TryParseExact(value, "yyyyMM", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out DateTime dt5))
+            if (DateTime.TryParseExact(value, "yyyy/MM", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
             {
-                result = dt5;
+                return true;
+            }
+
+            if (DateTime.TryParseExact(value, "yyyyMM", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
+            {
                 return true;
             }
 
