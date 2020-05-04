@@ -15,8 +15,8 @@ namespace CsvSerializerTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new BoolConverter();
-            Assert.AreEqual("\"True\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(true)));
-            Assert.AreEqual("\"False\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(false)));
+            Assert.AreEqual("True", c.ConvertToCsvItem(CreateConvertToCsvItemContext(true)));
+            Assert.AreEqual("False", c.ConvertToCsvItem(CreateConvertToCsvItemContext(false)));
         }
 
         [TestMethod]

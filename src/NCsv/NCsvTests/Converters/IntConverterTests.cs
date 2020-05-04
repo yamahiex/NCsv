@@ -16,7 +16,7 @@ namespace CsvSerializerTests.Converters
         {
             var c = new IntConverter();
             Assert.AreEqual("1000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000)));
-            Assert.AreEqual("\"1,000\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000, "FormattedValue")));
+            Assert.AreEqual("1,000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000, "FormattedValue")));
         }
 
         [TestMethod]

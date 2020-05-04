@@ -10,19 +10,19 @@ namespace NCsv.Converters
         /// <inheritdoc/>
         public override string ConvertToCsvItem(ConvertToCsvItemContext context)
         {
-            var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
-
-            if (format == null)
-            {
-                return context.ObjectItem?.ToString() ?? string.Empty;
-            }
-
             if (context.ObjectItem == null)
             {
-                return "\"\"";
+                return string.Empty;
             }
 
-            return $"\"{((double)context.ObjectItem).ToString(format.Format)}\"";
+            var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
+
+            if (format != null)
+            {
+                return ((double)context.ObjectItem).ToString(format.Format);
+            }
+
+            return context.ObjectItem.ToString();
         }
 
         /// <inheritdoc/>

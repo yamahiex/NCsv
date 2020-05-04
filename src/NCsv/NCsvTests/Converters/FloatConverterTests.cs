@@ -16,7 +16,7 @@ namespace NCsvTests.Converters
         {
             var c = new FloatConverter();
             Assert.AreEqual("1000.1", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000.1f)));
-            Assert.AreEqual("\"1,000.1\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000.1f, "FormattedValue")));
+            Assert.AreEqual("1,000.1", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000.1f, "FormattedValue")));
         }
 
         [TestMethod]

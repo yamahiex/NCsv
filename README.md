@@ -41,7 +41,7 @@ var users = new User[]
     },
     new User()
     {
-        Name = "Sophia",
+        Name = "Foo,Bar",
         Birthday = new DateTime(2001, 1, 1),
         Age = 19,
     },
@@ -55,9 +55,9 @@ var cs = new CsvSerializer<User>()
 // Serialize.
 var csv = cs.Serialize(users);
 
-// "CustomName","Birthday","Age"
-// "Taro","2000/01/01",20
-// "Jiro","2001/01/01",19
+// CustomName,Birthday,Age
+// Jackson,2000/01/01,20
+// "Foo,Bar",2001/01/01,19
 Debug.WriteLine(csv);
 
 // Deserialize.
@@ -171,12 +171,6 @@ Create a converter by inheriting CsvConverter.
 ```c#
 class ValueObjectConverter : CsvConverter
 {
-    // It's optional, but it's implemented for the sake of explanation.
-    public string ConvertToCsvItem(ConvertToCsvItemContext context)
-    {
-        return $"\"{context.ObjectItem}\"";
-    }
-
     public bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage)
     {
         result = new ValueObject(context.CsvItem);

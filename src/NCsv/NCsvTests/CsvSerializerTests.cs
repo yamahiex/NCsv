@@ -161,7 +161,7 @@ namespace NCsv.Tests
             {
                 new Example()
                 {
-                    StringValue = "foo",
+                    StringValue = "\"\"foo",
                     DecimalValue = 123456,
                     DateTimeValue = new DateTime(2020, 1, 1),
                     BooleanValue = true,
@@ -207,9 +207,9 @@ namespace NCsv.Tests
         private string CreateExamplesCsv()
         {
             return
-@"""CustomName"",""DecimalValue"",""DateTimeValue"",""BooleanValue"",""IntValue"",""NullableDecimalValue"",""NullableDateTimeValue"",""NullableIntValue"","""",""SeparateIndex"",""ValueObject"",""DoubleValue"",""NullableDoubleValue"",""ShortValue"",""NullableShortValue"",""LongValue"",""NullableLongValue"",""FloatValue"",""NullableFloatValue""
-""foo"",""123,456"",""2020/01/01"",""True"",100,1000,""2020/01/02"",111,,""bar"",""abc"",10.123,111.111,100,200,10000,20000,1.1,1.2
-""foo"",""123,456"",""2020/01/01"",""True"",100,,"""",,,""bar"",""xyz"",10.123,111.111,100,200,10000,20000,1.1,1.2
+@"CustomName,DecimalValue,DateTimeValue,BooleanValue,IntValue,NullableDecimalValue,NullableDateTimeValue,NullableIntValue,,SeparateIndex,ValueObject,DoubleValue,NullableDoubleValue,ShortValue,NullableShortValue,LongValue,NullableLongValue,FloatValue,NullableFloatValue
+""""""""""foo"",""123,456"",2020/01/01,True,100,1000,2020/01/02,111,,bar,abc,10.123,111.111,100,200,10000,20000,1.1,1.2
+foo,""123,456"",2020/01/01,True,100,,,,,bar,xyz,10.123,111.111,100,200,10000,20000,1.1,1.2
 ";
         }
     }

@@ -16,7 +16,7 @@ namespace CsvSerializerTests.Converters
         {
             var c = new DecimalConverter();
             Assert.AreEqual("1000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m)));
-            Assert.AreEqual("\"1,000\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m, "FormattedValue")));
+            Assert.AreEqual("1,000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m, "FormattedValue")));
         }
 
         [TestMethod]

@@ -15,7 +15,7 @@ namespace CsvSerializerTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new StringConverter();
-            Assert.AreEqual("\"abc\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext("abc")));
+            Assert.AreEqual("abc", c.ConvertToCsvItem(CreateConvertToCsvItemContext("abc")));
         }
 
         [TestMethod]

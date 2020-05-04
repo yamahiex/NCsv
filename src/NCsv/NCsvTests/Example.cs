@@ -11,7 +11,7 @@ namespace NCsv.Tests
     {
         [CsvColumn(0, Name = "CustomName")]
         [CsvMaxLength(10)]
-        [CsvRegularExpression("^[a-zA-Z0-9,]+$")]
+        [CsvRegularExpression("^[\"a-zA-Z0-9,]+$")]
         public string StringValue { get; set; } = string.Empty;
 
         [CsvColumn(1)]
@@ -145,12 +145,6 @@ namespace NCsv.Tests
     }
     public class ValueObjectConverter : CsvConverter
     {
-        // It's optional, but it's implemented for the sake of explanation.
-        public override string ConvertToCsvItem(ConvertToCsvItemContext context)
-        {
-            return $"\"{context.ObjectItem}\"";
-        }
-
         public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string message)
         {
             result = new ValueObject(context.CsvItem);

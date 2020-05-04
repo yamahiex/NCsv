@@ -111,6 +111,18 @@ namespace NCsv
         }
 
         /// <summary>
+        /// オブジェクト項目をCSV項目に変換します。
+        /// </summary>
+        /// <param name="objectItem">オブジェクト項目。</param>
+        /// <returns>CSV項目。</returns>
+        public string ConvertToCsvItem(object objectItem)
+        {
+            var context = new ConvertToCsvItemContext(this.Property, this.Name, objectItem);
+            var csvItem = this.converter.ConvertToCsvItem(context);
+            return this.converter.CsvItemEscape(csvItem);
+        }
+
+        /// <summary>
         /// CSV項目からオブジェクト項目への変換を試みます。
         /// </summary>
         /// <param name="items"><see cref="CsvItems"/>。</param>
@@ -122,17 +134,6 @@ namespace NCsv
             var csvItem = items.GetItem(this.attribute.Index, this.Name);
             var context = new ConvertToObjectItemContext(this.Property, this.Name, items.LineNumber, csvItem);
             return this.converter.TryConvertToObjectItem(context, out result, out errorMessage);
-        }
-
-        /// <summary>
-        /// オブジェクト項目をCSV項目に変換します。
-        /// </summary>
-        /// <param name="objectItem">オブジェクト項目。</param>
-        /// <returns>CSV項目。</returns>
-        public string ConvertToCsvItem(object objectItem)
-        {
-            var context = new ConvertToCsvItemContext(this.Property, this.Name, objectItem);
-            return this.converter.ConvertToCsvItem(context);
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace NCsv
         /// <param name="sb"><see cref="StringBuilder"/>。</param>
         public void AppendName(StringBuilder sb)
         {
-            sb.Append($"\"{this.Name}\"");
+            sb.Append(this.converter.CsvItemEscape(this.Name));
         }
 
         /// <summary>

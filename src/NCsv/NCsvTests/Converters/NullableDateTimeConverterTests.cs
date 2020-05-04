@@ -15,7 +15,7 @@ namespace CsvSerializerTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new NullableDateTimeConverter();
-            Assert.AreEqual("\"\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
+            Assert.AreEqual(string.Empty, c.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
         }
 
         [TestMethod]

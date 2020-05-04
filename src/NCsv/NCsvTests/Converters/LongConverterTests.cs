@@ -16,7 +16,7 @@ namespace NCsvTests.Converters
         {
             var c = new LongConverter();
             Assert.AreEqual("1000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000L)));
-            Assert.AreEqual("\"1,000\"", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000L, "FormattedValue")));
+            Assert.AreEqual("1,000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000L, "FormattedValue")));
         }
 
         [TestMethod]

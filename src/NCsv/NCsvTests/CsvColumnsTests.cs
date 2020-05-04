@@ -12,13 +12,13 @@ namespace NCsv.Tests
             var c = new CsvColumns<Example>();
             var actual = c.CreateHeader();
 
-            var expected = @"""CustomName"",""DecimalValue"",""DateTimeValue"",""BooleanValue"",""IntValue"",""NullableDecimalValue"",""NullableDateTimeValue"",""NullableIntValue"","""",""SeparateIndex"",""ValueObject"",""DoubleValue"",""NullableDoubleValue"",""ShortValue"",""NullableShortValue"",""LongValue"",""NullableLongValue"",""FloatValue"",""NullableFloatValue""";
+            var expected = @"CustomName,DecimalValue,DateTimeValue,BooleanValue,IntValue,NullableDecimalValue,NullableDateTimeValue,NullableIntValue,,SeparateIndex,ValueObject,DoubleValue,NullableDoubleValue,ShortValue,NullableShortValue,LongValue,NullableLongValue,FloatValue,NullableFloatValue";
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]
-        public void CreateCsvRowTest()
+        public void CreateCsvLineTest()
         {
             var example = new Example()
             {
@@ -45,10 +45,22 @@ namespace NCsv.Tests
             var c = new CsvColumns<Example>();
             var actual = c.CreateCsvLine(example);
 
-            var expected = @"""foo"",""123,456"",""2020/01/01"",""False"",100,1000,""2020/01/01"",123,,""bar"",""abc"",10.123,111.111,100,200,10000,20000,1.1,1.2";
+            var expected = "foo,\"123,456\",2020/01/01,False,100,1000,2020/01/01,123,,bar,abc,10.123,111.111,100,200,10000,20000,1.1,1.2";
 
-            Assert.AreEqual(expected, actual.ToString());
+            Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod()]
+        public void CreateCsvLineSpecialValueTest()
+        {
+            var c = new CsvColumns<SpecialValue>();
+            var actual = c.CreateCsvLine(new SpecialValue());
+
+            var expected = "\"fo\"\"o\",\"fo\"\"\"\"o\",\"fo\ro\",\"fo\no\",\"fo\r\no\"";
+
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestMethod()]
         public void CreateObjectTest()
         {
@@ -67,7 +79,18 @@ namespace NCsv.Tests
             };
 
             var c = new CsvColumns<Example>();
-            var actual = c.CreateObject(ToCsv(expected));
+            var actual = c.CreateObject(c.CreateCsvLine(expected));
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void CreateObjectSpecialValueTest()
+        {
+            var expected = new SpecialValue();
+
+            var c = new CsvColumns<SpecialValue>();
+            var actual = c.CreateObject(c.CreateCsvLine(expected));
 
             Assert.AreEqual(expected, actual);
         }
@@ -75,13 +98,8 @@ namespace NCsv.Tests
         [TestMethod()]
         public void CreateObjectIndexNotFoundTest()
         {
-            var x = new Foo()
-            {
-                Value = 0m,
-            };
-
             var c = new CsvColumns<Example>();
-            Assert.ThrowsException<CsvParseException>(() => c.CreateObject(ToCsv(x)));
+            Assert.ThrowsException<CsvParseException>(() => c.CreateObject("foo,123"));
         }
 
         [TestMethod()]
@@ -93,8 +111,7 @@ namespace NCsv.Tests
                 Value2 = "bar",
             };
 
-            var c = new CsvColumns<Example>();
-            Assert.ThrowsException<InvalidOperationException>(() => c.CreateObject(ToCsv(x)));
+            Assert.ThrowsException<InvalidOperationException>(() => new CsvColumns<IndexDuplicate>());
         }
 
         [TestMethod()]
@@ -102,12 +119,6 @@ namespace NCsv.Tests
         {
             var c = new CsvColumns<Foo>();
             Assert.ThrowsException<CsvParseException>(() => c.CreateObject("x"));
-        }
-
-        private string ToCsv<T>(T obj)
-        {
-            var cs = new CsvSerializer<T>();
-            return cs.Serialize(obj);
         }
 
         private class Foo
@@ -123,6 +134,39 @@ namespace NCsv.Tests
 
             [CsvColumn(0)]
             public string Value2 { get; set; } = string.Empty;
+        }
+
+        private class SpecialValue
+        {
+            [CsvColumn(0)]
+            public string Value1 { get; set; } = "fo\"o";
+
+            [CsvColumn(1)]
+            public string Value2 { get; set; } = "fo\"\"o";
+
+            [CsvColumn(2)]
+            public string Value3 { get; set; } = "fo\ro";
+
+            [CsvColumn(3)]
+            public string Value4 { get; set; } = "fo\no";
+
+            [CsvColumn(4)]
+            public string Value5 { get; set; } = "fo\r\no";
+
+            public override bool Equals(object? obj)
+            {
+                return obj is SpecialValue value &&
+                       Value1 == value.Value1 &&
+                       Value2 == value.Value2 &&
+                       Value3 == value.Value3 &&
+                       Value4 == value.Value4 &&
+                       Value5 == value.Value5;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Value1, Value2, Value3, Value4, Value5);
+            }
         }
     }
 }
