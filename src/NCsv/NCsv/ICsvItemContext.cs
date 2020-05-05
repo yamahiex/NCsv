@@ -8,7 +8,7 @@
         /// <summary>
         /// 行番号を取得します。
         /// </summary>
-        int LineNumber { get; }
+        long LineNumber { get; }
 
         /// <summary>
         /// 値を取得します。

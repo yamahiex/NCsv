@@ -57,7 +57,7 @@ namespace NCsv.Validations
         /// <returns>エラーメッセージ。</returns>
         protected virtual string GetErrorMessage(ICsvItemContext context)
         {
-            return CsvConfig.Current.Message.GetInvalidFormatError(context);
+            return CsvConfig.Current.ValidationMessage.GetInvalidFormatError(context);
         }
     }
 }

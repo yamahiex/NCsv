@@ -35,7 +35,7 @@ namespace CsvSerializerTests.Converters
             var c = new DateTimeConverter();
             var context = CreateConvertToObjectItemContext("x");
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetDateTimeConvertError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetDateTimeConvertError(context), message);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace CsvSerializerTests.Converters
             var c = new DateTimeConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetRequiredError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
         }
 
         private DateTime? ConvertToObjectItem(string csvItem)

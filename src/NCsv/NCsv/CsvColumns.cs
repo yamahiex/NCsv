@@ -129,7 +129,7 @@ namespace NCsv
         {
             if (!column.Validate(items, out string errorMessage))
             {
-                throw new CsvParseException(errorMessage);
+                throw new CsvValidationException(errorMessage, items.LineNumber);
             }
         }
 
@@ -143,7 +143,7 @@ namespace NCsv
         {
             if (!column.TryConvertToObjectItem(items, out object? value, out string errorMessage))
             {
-                throw new CsvParseException(errorMessage);
+                throw new CsvValidationException(errorMessage, items.LineNumber);
             }
 
             return value;

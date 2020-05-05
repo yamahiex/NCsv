@@ -32,7 +32,7 @@ namespace NCsvTests.Converters
             var c = new ShortConverter();
             var context = CreateConvertToObjectItemContext("x");
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumericConvertError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(context), message);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace NCsvTests.Converters
             var c = new ShortConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetRequiredError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
         }
 
         private  short? ConvertToObjectItem(string csvItem)

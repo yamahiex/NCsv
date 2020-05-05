@@ -32,7 +32,7 @@ namespace CsvSerializerTests.Converters
             var c = new IntConverter();
             var context = CreateConvertToObjectItemContext("x");
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumericConvertError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(context), message);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace CsvSerializerTests.Converters
             var c = new IntConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetRequiredError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
         }
 
         private int? ConvertToObjectItem(string csvItem)

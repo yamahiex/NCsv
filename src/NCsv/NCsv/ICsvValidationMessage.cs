@@ -3,10 +3,10 @@
 namespace NCsv
 {
     /// <summary>
-    /// 当ライブラリで使用するメッセージです。
+    /// 検証に失敗した場合のメッセージです。
     /// 独自のメッセージを使用したい場合は当interfaceを実装して<see cref="CsvConfig"/>に設定してください。
     /// </summary>
-    public interface ICsvMessage
+    public interface ICsvValidationMessage
     {
         /// <summary>
         /// 真理値変換エラー時のメッセージを返します。
@@ -30,19 +30,12 @@ namespace NCsv
         string GetInvalidFormatError(ICsvItemContext context);
 
         /// <summary>
-        /// CSV行が不正な場合のメッセージを返します。
-        /// </summary>
-        /// <param name="lineNumber">行番号。</param>
-        /// <returns>メッセージ。</returns>
-        string GetInvalidLineError(int lineNumber);
-
-        /// <summary>
         /// CSVに項目が存在しない場合のメッセージを返します。
         /// </summary>
         /// <param name="lineNumber">行番号。</param>
         /// <param name="name">エラーメッセージに含める名前。</param>
         /// <returns>メッセージ。</returns>
-        string GetItemNotExistError(int lineNumber, string name);
+        string GetItemNotExistError(long lineNumber, string name);
 
         /// <summary>
         /// 最大桁数エラー時のメッセージを返します。

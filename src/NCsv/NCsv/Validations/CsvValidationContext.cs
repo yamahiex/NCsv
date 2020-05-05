@@ -8,7 +8,7 @@
         /// <summary>
         /// 行番号を取得します。
         /// </summary>
-        public int LineNumber { get; private set; }
+        public long LineNumber { get; private set; }
 
         /// <summary>
         /// 検証する値を取得します。
@@ -26,7 +26,7 @@
         /// <param name="lineNumber">行番号。</param>
         /// <param name="value">検証する値。</param>
         /// <param name="name">エラーメッセージに含める名前。</param>
-        public CsvValidationContext(int lineNumber, string value, string name)
+        public CsvValidationContext(long lineNumber, string value, string name)
         {
             this.LineNumber = lineNumber;
             this.Value = value;

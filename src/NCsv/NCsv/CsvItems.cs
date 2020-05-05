@@ -15,14 +15,14 @@ namespace NCsv
         /// <summary>
         /// 行番号を取得します。
         /// </summary>
-        public int LineNumber { get; private set; }
+        public long LineNumber { get; private set; }
 
         /// <summary>
         /// <see cref="CsvItems"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="items">CSV項目のリスト。</param>
         /// <param name="lineNumber">行番号。</param>
-        public CsvItems(IReadOnlyList<string> items, int lineNumber)
+        public CsvItems(IReadOnlyList<string> items, long lineNumber)
         {
             this.items = items;
             this.LineNumber = lineNumber;
@@ -38,7 +38,7 @@ namespace NCsv
         {
             if (items.Count <= index)
             {
-                throw new CsvParseException(CsvConfig.Current.Message.GetItemNotExistError(this.LineNumber, name));
+                throw new CsvValidationException(CsvConfig.Current.ValidationMessage.GetItemNotExistError(this.LineNumber, name), this.LineNumber);
             }
 
             return items[index];

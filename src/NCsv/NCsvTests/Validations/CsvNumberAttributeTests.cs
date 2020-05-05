@@ -33,7 +33,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext(1, "1000", "foo");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberOutOfRangeError(context, 0, 999), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumberOutOfRangeError(context, 0, 999), message);
         }
 
         [TestMethod()]
@@ -46,7 +46,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext(1, "-1", "foo");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMinValueError(context, 0), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumberMinValueError(context, 0), message);
         }
 
         [TestMethod()]
@@ -59,7 +59,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext(1, "1000", "foo");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberMaxValueError(context, 999), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumberMaxValueError(context, 999), message);
         }
 
         [TestMethod()]
@@ -69,7 +69,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext(1, "12345678901", "foo");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionError(context, 10), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetPrecisionError(context, 10), message);
         }
 
         [TestMethod()]
@@ -79,7 +79,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext(1, "1.1234", "foo");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetPrecisionAndScaleError(context, 10, 3), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetPrecisionAndScaleError(context, 10, 3), message);
         }
     }
 }

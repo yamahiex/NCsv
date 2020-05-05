@@ -11,9 +11,9 @@
         public static CsvConfig Current { get; } = new CsvConfig();
 
         /// <summary>
-        /// <see cref="CsvDefaultMessage"/>を取得または設定します。
+        /// <see cref="ICsvValidationMessage"/>を取得または設定します。
         /// </summary>
-        public CsvDefaultMessage Message { get; set; } = new CsvDefaultMessage();
+        public ICsvValidationMessage ValidationMessage { get; set; } = new CsvValidationDefaultMessage();
 
         /// <summary>
         /// <see cref="CsvConfig"/>クラスの新しいインスタンスを初期化します。

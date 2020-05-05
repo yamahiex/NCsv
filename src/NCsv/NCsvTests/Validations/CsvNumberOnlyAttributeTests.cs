@@ -23,7 +23,7 @@ namespace NCsv.Validations.Tests
             var a = new CsvNumberOnlyAttribute();
             var context = new CsvValidationContext(1, "x", "foo");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.Message.GetNumberOnlyError(context), message);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumberOnlyError(context), message);
         }
     }
 }

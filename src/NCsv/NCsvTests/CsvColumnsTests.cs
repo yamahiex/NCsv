@@ -99,7 +99,7 @@ namespace NCsv.Tests
         public void CreateObjectIndexNotFoundTest()
         {
             var c = new CsvColumns<Example>();
-            Assert.ThrowsException<CsvParseException>(() => c.CreateObject("foo,123"));
+            Assert.ThrowsException<CsvValidationException>(() => c.CreateObject("foo,123"));
         }
 
         [TestMethod()]
@@ -118,7 +118,7 @@ namespace NCsv.Tests
         public void CreateObjectFailureTest()
         {
             var c = new CsvColumns<Foo>();
-            Assert.ThrowsException<CsvParseException>(() => c.CreateObject("x"));
+            Assert.ThrowsException<CsvValidationException>(() => c.CreateObject("x"));
         }
 
         private class Foo

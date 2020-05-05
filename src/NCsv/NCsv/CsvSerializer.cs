@@ -1,5 +1,4 @@
 ﻿using NotVisualBasic.FileIO;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -78,7 +77,8 @@ namespace NCsv
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
         /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public Task<List<T>> DeserializeAsync(string csv)
         {
             return Task.Run(() => Deserialize(csv));
@@ -89,7 +89,8 @@ namespace NCsv
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
         /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public List<T> Deserialize(string csv)
         {
             return Deserialize(new StringReader(csv));
@@ -100,7 +101,8 @@ namespace NCsv
         /// </summary>
         /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
         /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public Task<List<T>> DeserializeAsync(TextReader reader)
         {
             return Task.Run(() => Deserialize(reader));
@@ -111,7 +113,8 @@ namespace NCsv
         /// </summary>
         /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
         /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public List<T> Deserialize(TextReader reader)
         {
             return Deserialize(new CsvTextFieldParser(reader));
@@ -122,7 +125,8 @@ namespace NCsv
         /// </summary>
         /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
         /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public Task<List<T>> DeserializeAsync(CsvTextFieldParser parser)
         {
             return Task.Run(() => Deserialize(parser));
@@ -133,11 +137,12 @@ namespace NCsv
         /// </summary>
         /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
         /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvDeserializeException">逆シリアル化時にエラーが発生した場合にスローされます。</exception>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public List<T> Deserialize(CsvTextFieldParser parser)
         {
             var result = new List<T>();
-            var lineNumber = 0;
+            var lineNumber = 0L;
 
             while (!parser.EndOfData)
             {
@@ -154,9 +159,9 @@ namespace NCsv
 
                     result.Add(this.columns.CreateObject(csvItems));
                 }
-                catch (Exception ex) when (ex is CsvMalformedLineException || ex is CsvParseException)
+                catch (CsvMalformedLineException ex)
                 {
-                    throw new CsvDeserializeException(CsvConfig.Current.Message.GetInvalidLineError(lineNumber), lineNumber, ex);
+                    throw new CsvParseException(ex.Message, ex.LineNumber, parser.ErrorLine, ex);
                 }
             }
 

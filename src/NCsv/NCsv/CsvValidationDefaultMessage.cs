@@ -1,9 +1,9 @@
 ﻿namespace NCsv
 {
     /// <summary>
-    /// 既定のメッセージです。
+    /// 検証に失敗した場合の既定メッセージです。
     /// </summary>
-    public class CsvDefaultMessage : ICsvMessage
+    public class CsvValidationDefaultMessage : ICsvValidationMessage
     {
         /// <inheritdoc/> 
         public virtual string GetNumericConvertError(ICsvItemContext context)
@@ -78,15 +78,9 @@
         }
 
         /// <inheritdoc/> 
-        public virtual string GetItemNotExistError(int lineNumber, string name)
+        public virtual string GetItemNotExistError(long lineNumber, string name)
         {
             return "The item does not exist in the CSV.";
-        }
-
-        /// <inheritdoc/> 
-        public virtual string GetInvalidLineError(int lineNumber)
-        {
-            return $"The line {lineNumber} is an invalid line.";
         }
     }
 }

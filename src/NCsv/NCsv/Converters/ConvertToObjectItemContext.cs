@@ -8,7 +8,7 @@
         /// <summary>
         /// 行番号を取得します。
         /// </summary>
-        public int LineNumber { get; private set; }
+        public long LineNumber { get; private set; }
 
         /// <summary>
         /// CSV項目を取得します。
@@ -24,7 +24,7 @@
         /// <param name="name">エラーメッセージに含める名前。</param>
         /// <param name="lineNumber">行番号</param>
         /// <param name="value">CSV項目の値。</param>
-        public ConvertToObjectItemContext(CsvProperty property, string name, int lineNumber, string value)
+        public ConvertToObjectItemContext(CsvProperty property, string name, long lineNumber, string value)
             : base(property, name)
         {
             this.LineNumber = lineNumber;

@@ -29,7 +29,7 @@
                 return true;
             }
 
-            errorMessage = CsvConfig.Current.Message.GetBooleanConvertError(context);
+            errorMessage = CsvConfig.Current.ValidationMessage.GetBooleanConvertError(context);
             return false;
         }
     }

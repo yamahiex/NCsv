@@ -76,10 +76,10 @@ var fileUsers = cs.Deserialize(reader);
 
 ### Customize message
 
-Implement ICsvMessage or inherit CsvDefaultMessage.
+Implement ICsvValidationMessage or inherit CsvValidationDefaultMessage.
 
 ```c#
-class CustomMessage : ICsvMessage
+class CustomMessage : ICsvValidationMessage
 {
     public string GetNumericConvertError(ICsvItemContext context)
     {

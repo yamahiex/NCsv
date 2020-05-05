@@ -149,10 +149,17 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
-        public void InvalidLineTest()
+        public void DeserializeErrorTest()
+        {
+            var cs = new CsvSerializer<ForDesirializeError>();
+            Assert.ThrowsException<CsvValidationException>(() => cs.Deserialize("x"));
+        }
+
+        [TestMethod()]
+        public void ParseErrorTest()
         {
             var cs = new CsvSerializer<Example>();
-            Assert.ThrowsException<CsvDeserializeException>(() => cs.Deserialize("\"foo\",\"ba\"r\""));
+            Assert.ThrowsException<CsvParseException>(() => cs.Deserialize("\"foo\",\"ba\"r\""));
         }
 
         private Example[] CreateExamples()
@@ -212,5 +219,12 @@ namespace NCsv.Tests
 foo,""123,456"",2020/01/01,True,100,,,,,bar,xyz,10.123,111.111,100,200,10000,20000,1.1,1.2
 ";
         }
+
+        private class ForDesirializeError
+        {
+            [CsvColumn(0)]
+            public int Value { get; set; }
+        }
+
     }
 }
