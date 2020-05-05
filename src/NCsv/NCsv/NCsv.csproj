@@ -5,7 +5,7 @@
      <Nullable>enable</Nullable>
      <Authors>YAMAMOTO Hiroyasu</Authors>
      <Company />
-     <Description>Serialize the object to CSV.</Description>
+     <Description>Object to CSV serialization and CSV to object deserialization.</Description>
      <AssemblyName>NCsv</AssemblyName>
      <RootNamespace>NCsv</RootNamespace>
      <PackageLicenseExpression>MIT</PackageLicenseExpression>

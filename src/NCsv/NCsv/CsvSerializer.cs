@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace NCsv
 {
     /// <summary>
-    /// オブジェクトをCSVシリアル化します。
+    /// オブジェクトからCSVへのシリアル化およびCSVからオブジェクトへの逆シリアル化を行います。 
     /// </summary>
     /// <typeparam name="T">CSVシリアル化する型です。</typeparam>
     public class CsvSerializer<T>
@@ -22,7 +22,7 @@ namespace NCsv
         public bool HasHeader { get; set; } = false;
 
         /// <summary>
-        /// 非同期的に指定した<paramref name="objects"/>をシリアル化します。
+        /// 非同期的に指定した<paramref name="objects"/>をシリアル化し、生成されたCSVを返します。
         /// </summary>
         /// <param name="objects">オブジェクト。</param>
         /// <returns>CSV文字列。</returns>
@@ -32,7 +32,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 指定した<paramref name="objects"/>をシリアル化します。
+        /// 指定した<paramref name="objects"/>をシリアル化し、生成されたCSVを返します。
         /// </summary>
         /// <param name="objects">オブジェクト。</param>
         /// <returns>CSV文字列。</returns>
