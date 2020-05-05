@@ -73,7 +73,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 非同期的に<paramref name="csv"/>を逆シリアル化します。
+        /// 非同期的にCSVを逆シリアル化します。
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
         /// <returns>オブジェクト。</returns>
@@ -85,7 +85,7 @@ namespace NCsv
         }
 
         /// <summary>
-        /// <paramref name="csv"/>を逆シリアル化します。
+        /// CSVを逆シリアル化します。
         /// </summary>
         /// <param name="csv">CSV文字列。</param>
         /// <returns>オブジェクト。</returns>
@@ -158,6 +158,96 @@ namespace NCsv
                     }
 
                     result.Add(this.columns.CreateObject(csvItems));
+                }
+                catch (CsvMalformedLineException ex)
+                {
+                    throw new CsvParseException(ex.Message, ex.LineNumber, parser.ErrorLine, ex);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 非同期的にCSVを検証して全てのエラーを返します。
+        /// </summary>
+        /// <param name="csv">CSV文字列。</param>
+        /// <returns>検証で発生したエラー。</returns>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        public Task<List<CsvErrorItem>> GetErrorsAsync(string csv)
+        {
+            return Task.Run(() => GetErrors(csv));
+        }
+
+        /// <summary>
+        /// CSVを検証して全てのエラーを返します。
+        /// </summary>
+        /// <param name="csv">CSV文字列。</param>
+        /// <returns>検証で発生したエラー。</returns>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        public List<CsvErrorItem> GetErrors(string csv)
+        {
+            return GetErrors(new StringReader(csv));
+        }
+
+        /// <summary>
+        /// 非同期的に指定した<paramref name="reader"/>に格納されているCSVを検証して全てのエラーを返します。
+        /// </summary>
+        /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
+        /// <returns>検証で発生したエラー。</returns>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        public Task<List<CsvErrorItem>> GetErrorsAsync(TextReader reader)
+        {
+            return Task.Run(() => GetErrors(reader));
+        }
+
+        /// <summary>
+        /// 指定した<paramref name="reader"/>に格納されているCSVを検証して全てのエラーを返します。
+        /// </summary>
+        /// <param name="reader">CSVを読み取る<see cref="TextReader"/>。</param>
+        /// <returns>検証で発生したエラー。</returns>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        public List<CsvErrorItem> GetErrors(TextReader reader)
+        {
+            return GetErrors(new CsvTextFieldParser(reader));
+        }
+
+        /// <summary>
+        /// 非同期的に指定した<paramref name="parser"/>で解析したCSVを検証して全てのエラーを返します。
+        /// </summary>
+        /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
+        /// <returns>検証で発生したエラー。</returns>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        public Task<List<CsvErrorItem>> GetErrorsAsync(CsvTextFieldParser parser)
+        {
+            return Task.Run(() => GetErrors(parser));
+        }
+
+        /// <summary>
+        /// 指定した<paramref name="parser"/>で解析したCSVを検証して全てのエラーを返します。
+        /// </summary>
+        /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
+        /// <returns>検証で発生したエラー。</returns>
+        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
+        public List<CsvErrorItem> GetErrors(CsvTextFieldParser parser)
+        {
+            var result = new List<CsvErrorItem>();
+            var lineNumber = 0;
+
+            while (!parser.EndOfData)
+            {
+                lineNumber++;
+
+                try
+                {
+                    var csvItems = new CsvItems(parser.ReadFields(), lineNumber);
+
+                    if (this.HasHeader && lineNumber == 1)
+                    {
+                        continue;
+                    }
+
+                    result.AddRange(this.columns.GetErrors(csvItems));
                 }
                 catch (CsvMalformedLineException ex)
                 {

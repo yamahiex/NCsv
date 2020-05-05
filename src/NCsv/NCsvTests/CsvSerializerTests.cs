@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using NotVisualBasic.FileIO;
+using NCsv.Validations;
 
 namespace NCsv.Tests
 {
@@ -162,6 +163,41 @@ namespace NCsv.Tests
             Assert.ThrowsException<CsvParseException>(() => cs.Deserialize("\"foo\",\"ba\"r\""));
         }
 
+
+        [TestMethod()]
+        public void GetErrorsTest()
+        {
+            var cs = new CsvSerializer<ForDesirializeError>();
+            var errors = cs.GetErrors("1000,2000\r\nx,y");
+
+            Assert.AreEqual(4, errors.Count);
+
+            var errorLine1 = errors[0];
+            Assert.AreEqual(1, errorLine1.Context.LineNumber);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetPrecisionError(errorLine1.Context, 3), errorLine1.ErrorMessage);
+
+            var errorLine2 = errors[3];
+            Assert.AreEqual(2, errorLine2.Context.LineNumber);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(errorLine2.Context), errorLine2.ErrorMessage);
+        }
+
+        [TestMethod()]
+        public async Task GetErrorsAsyncTest()
+        {
+            var cs = new CsvSerializer<ForDesirializeError>();
+            var errors = await cs.GetErrorsAsync("1000,2000\r\nx,y");
+
+            Assert.AreEqual(4, errors.Count);
+
+            var errorLine1 = errors[0];
+            Assert.AreEqual(1, errorLine1.Context.LineNumber);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetPrecisionError(errorLine1.Context, 3), errorLine1.ErrorMessage);
+
+            var errorLine2 = errors[3];
+            Assert.AreEqual(2, errorLine2.Context.LineNumber);
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(errorLine2.Context), errorLine2.ErrorMessage);
+        }
+
         private Example[] CreateExamples()
         {
             return new Example[]
@@ -223,8 +259,12 @@ foo,""123,456"",2020/01/01,True,100,,,,,bar,xyz,10.123,111.111,100,200,10000,200
         private class ForDesirializeError
         {
             [CsvColumn(0)]
-            public int Value { get; set; }
-        }
+            [CsvNumber(3, 0)]
+            public int Value1 { get; set; }
 
+            [CsvColumn(1)]
+            [CsvNumber(3, 0)]
+            public int Value2 { get; set; }
+        }
     }
 }

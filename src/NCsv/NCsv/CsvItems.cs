@@ -29,19 +29,22 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 指定した<paramref name="index"/>に一致するCSV項目を返します。存在しない場合は例外をスローします。
+        /// 指定した<paramref name="index"/>に一致するCSV項目の取得を試みます。
         /// </summary>
         /// <param name="index">インデックス。</param>
-        /// <param name="name">エラーメッセージに含める名前。</param>
-        /// <returns>CSV項目。</returns>
-        public string GetItem(int index, string name)
+        /// <param name="csvItem">CSV項目。</param>
+        /// <returns>取得できた場合にtrue。</returns>
+        public bool TryGetItem(int index, out string csvItem)
         {
+            csvItem = string.Empty;
+
             if (items.Count <= index)
             {
-                throw new CsvValidationException(CsvConfig.Current.ValidationMessage.GetItemNotExistError(this.LineNumber, name), this.LineNumber);
+                return false;
             }
 
-            return items[index];
+            csvItem = items[index];
+            return true;
         }
     }
 }

@@ -1,3 +1,5 @@
+using NCsv.Converters;
+using NCsv.Validations;
 using NotVisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -88,7 +90,7 @@ namespace NCsv
         internal T CreateObject(string csvRow)
         {
             using var parser = new CsvTextFieldParser(new StringReader(csvRow));
-            return CreateObject(new CsvItems(parser.ReadFields(), -1));
+            return CreateObject(new CsvItems(parser.ReadFields(), 1));
         }
 
         /// <summary>
@@ -118,6 +120,33 @@ namespace NCsv
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// エラーが存在する場合はエラーを返します。
+        /// </summary>
+        /// <param name="items"><see cref="CsvItems"/>。</param>
+        /// <returns><see cref="CsvErrorItem"/>のリスト。</returns>
+        public IEnumerable<CsvErrorItem> GetErrors(CsvItems items)
+        {
+            foreach (var column in this.columns)
+            {
+                if (column.IsNull)
+                {
+                    continue;
+                }
+
+                if (!column.Validate(items, out string validateMessage, out CsvValidationContext csvValidationContext))
+                {
+                    yield return new CsvErrorItem(validateMessage, csvValidationContext);
+                    continue;
+                }
+
+                if (!column.TryConvertToObjectItem(items, out _, out string convertMessage, out ConvertToObjectItemContext convertToObjectItemContext))
+                {
+                    yield return new CsvErrorItem(convertMessage, convertToObjectItemContext);
+                }
+            }
         }
 
         /// <summary>

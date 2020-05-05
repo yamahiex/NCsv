@@ -91,7 +91,7 @@ class CustomMessage : ICsvValidationMessage
 Use it.
 
 ```c#
-CsvConfig.Current.Message = new CustomMessage();
+CsvConfig.Current.ValidationMessage = new CustomMessage();
 ```
 
 ### Custom validation attributes
