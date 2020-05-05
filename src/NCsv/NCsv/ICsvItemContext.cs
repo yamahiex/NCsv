@@ -6,6 +6,11 @@
     public interface ICsvItemContext
     {
         /// <summary>
+        /// エラーメッセージに含める名前を取得します。
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// 行番号を取得します。
         /// </summary>
         long LineNumber { get; }
@@ -14,10 +19,5 @@
         /// 値を取得します。
         /// </summary>
         string Value { get; }
-
-        /// <summary>
-        /// エラーメッセージに含める名前を取得します。
-        /// </summary>
-        string Name { get; }
     }
 }

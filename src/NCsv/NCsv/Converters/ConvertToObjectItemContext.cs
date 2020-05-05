@@ -30,5 +30,17 @@
             this.LineNumber = lineNumber;
             this.CsvItem = value;
         }
+
+        /// <summary>
+        /// <see cref="ConvertToObjectItemContext"/>クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="property"><see cref="CsvProperty"/>。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
+        public ConvertToObjectItemContext(CsvProperty property, ICsvItemContext context)
+            : base(property, context.Name)
+        {
+            this.LineNumber = context.LineNumber;
+            this.CsvItem = context.Value;
+        }
     }
 }

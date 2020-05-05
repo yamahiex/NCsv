@@ -15,11 +15,11 @@
         /// </summary>
         /// <param name="property"><see cref="CsvProperty"/>。</param>
         /// <param name="name">エラーメッセージに含める名前。</param>
-        /// <param name="value">オブジェクト項目。</param>
-        public ConvertToCsvItemContext(CsvProperty property, string name, object? value)
+        /// <param name="objectItem">オブジェクト項目。</param>
+        public ConvertToCsvItemContext(CsvProperty property, string name, object? objectItem)
             : base(property, name)
         {
-            this.ObjectItem = value;
+            this.ObjectItem = objectItem;
         }
     }
 }

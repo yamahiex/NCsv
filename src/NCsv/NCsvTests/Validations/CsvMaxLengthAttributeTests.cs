@@ -9,14 +9,14 @@ namespace NCsv.Validations.Tests
         public void ValidateTest()
         {
             var x = new CsvMaxLengthAttribute(3);
-            var c = new CsvValidationContext(1, "123", "foo");
+            var c = new CsvValidationContext("foo", 1, "123");
             Assert.IsTrue(x.Validate(c, out _));
         }
 
         public void ValidateFailureTest()
         {
             var x = new CsvMaxLengthAttribute(3);
-            var context = new CsvValidationContext(1, "1234", "foo");
+            var context = new CsvValidationContext("foo", 1, "1234");
             Assert.IsFalse(x.Validate(context, out string message));
             Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetMaxLengthError(context, 3), message);
         }

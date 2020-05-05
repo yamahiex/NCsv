@@ -88,34 +88,32 @@ namespace NCsv
         }
 
         /// <summary>
-        /// CSV項目を検証します。
+        /// <see cref="ICsvItemContext"/>の作成を試みます。
         /// </summary>
         /// <param name="items"><see cref="CsvItems"/>。</param>
-        /// <param name="errorMessage">エラーメッセージ。</param>
-        /// <returns>検証に成功した場合にtrue。</returns>
-        public bool Validate(CsvItems items, out string errorMessage)
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
+        /// <returns>作成できた場合にtrue。</returns>
+        public bool TryCreateCsvItemContext(CsvItems items, out ICsvItemContext context)
         {
-            return Validate(items, out errorMessage, out _);
+            if (!items.TryGetItem(this.attribute.Index, out string csvItem))
+            {
+                context = new CsvItemContext(this.Name, items.LineNumber, string.Empty);
+                return false;
+            }
+
+            context = new CsvItemContext(this.Name, items.LineNumber, csvItem);
+            return true;
         }
 
         /// <summary>
         /// CSV項目を検証します。
         /// </summary>
-        /// <param name="items"><see cref="CsvItems"/>。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
-        /// <param name="context"><see cref="CsvValidationContext"/>。</param>
         /// <returns>検証に成功した場合にtrue。</returns>
-        public bool Validate(CsvItems items, out string errorMessage, out CsvValidationContext context)
+        public bool Validate(ICsvItemContext context, out string errorMessage)
         {
-            if (!items.TryGetItem(this.attribute.Index, out string csvItem))
-            {
-                context = new CsvValidationContext(items.LineNumber, csvItem, this.Name);
-                errorMessage = CsvConfig.Current.ValidationMessage.GetItemNotExistError(items.LineNumber, this.Name);
-                return false;
-            }
-
-            context = new CsvValidationContext(items.LineNumber, csvItem, this.Name);
-            return this.Property.Validate(context, out errorMessage);
+            return this.Property.Validate(new CsvValidationContext(context), out errorMessage);
         }
 
         /// <summary>
@@ -133,35 +131,13 @@ namespace NCsv
         /// <summary>
         /// CSV項目からオブジェクト項目への変換を試みます。
         /// </summary>
-        /// <param name="items"><see cref="CsvItems"/>。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <param name="result">変換結果。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>変換に成功した場合にtrue。</returns>
-        public bool TryConvertToObjectItem(CsvItems items, out object? result, out string errorMessage)
+        public bool TryConvertToObjectItem(ICsvItemContext context, out object? result, out string errorMessage)
         {
-            return TryConvertToObjectItem(items, out result, out errorMessage, out _);
-        }
-
-        /// <summary>
-        /// CSV項目からオブジェクト項目への変換を試みます。
-        /// </summary>
-        /// <param name="items"><see cref="CsvItems"/>。</param>
-        /// <param name="result">変換結果。</param>
-        /// <param name="errorMessage">エラーメッセージ。</param>
-        /// <param name="context"><see cref="ConvertToObjectItemContext"/>。</param>
-        /// <returns>変換に成功した場合にtrue。</returns>
-        public bool TryConvertToObjectItem(CsvItems items, out object? result, out string errorMessage, out ConvertToObjectItemContext context)
-        {
-            if (!items.TryGetItem(this.attribute.Index, out string csvItem))
-            {
-                result = null;
-                errorMessage = CsvConfig.Current.ValidationMessage.GetItemNotExistError(items.LineNumber, this.Name);
-                context = new ConvertToObjectItemContext(this.Property, this.Name, items.LineNumber, csvItem);
-                return false;
-            }
-
-            context = new ConvertToObjectItemContext(this.Property, this.Name, items.LineNumber, csvItem);
-            return this.converter.TryConvertToObjectItem(context, out result, out errorMessage);
+            return this.converter.TryConvertToObjectItem(new ConvertToObjectItemContext(this.Property, context), out result, out errorMessage);
         }
 
         /// <summary>

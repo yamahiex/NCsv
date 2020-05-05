@@ -114,9 +114,11 @@ namespace NCsv
                     continue;
                 }
 
-                Validate(column, items);
+                var context = CreateCsvItemContext(column, items);
 
-                column.SetValue(result, ConvertToObjectItem(column, items));
+                Validate(column, context);
+
+                column.SetValue(result, ConvertToObjectItem(column, context));
             }
 
             return result;
@@ -136,29 +138,52 @@ namespace NCsv
                     continue;
                 }
 
-                if (!column.Validate(items, out string validateMessage, out CsvValidationContext csvValidationContext))
+                if (!column.TryCreateCsvItemContext(items, out ICsvItemContext context))
                 {
-                    yield return new CsvErrorItem(validateMessage, csvValidationContext);
+                    yield return new CsvErrorItem(CsvConfig.Current.ValidationMessage.GetItemNotExistError(context.LineNumber, context.Name), context);
                     continue;
                 }
 
-                if (!column.TryConvertToObjectItem(items, out _, out string convertMessage, out ConvertToObjectItemContext convertToObjectItemContext))
+                if (!column.Validate(context, out string validateMessage))
                 {
-                    yield return new CsvErrorItem(convertMessage, convertToObjectItemContext);
+                    yield return new CsvErrorItem(validateMessage, context);
+                    continue;
+                }
+
+                if (!column.TryConvertToObjectItem(context, out _, out string convertMessage))
+                {
+                    yield return new CsvErrorItem(convertMessage, context);
+                    continue;
                 }
             }
+        }
+
+        /// <summary>
+        /// <see cref="CreateCsvItemContext"/>を作成します。作成できない場合は例外をスローします。
+        /// </summary>
+        /// <param name="column"><see cref="CsvColumn"/>。</param>
+        /// <param name="items"><see cref="CsvItems"/>。</param>
+        /// <returns></returns>
+        private static ICsvItemContext CreateCsvItemContext(CsvColumn column, CsvItems items)
+        {
+            if (!column.TryCreateCsvItemContext(items, out ICsvItemContext context))
+            {
+                throw new CsvValidationException(CsvConfig.Current.ValidationMessage.GetItemNotExistError(context.LineNumber, context.Name), context.LineNumber);
+            }
+
+            return context;
         }
 
         /// <summary>
         /// CSV項目を検証します。検証に失敗した場合は例外をスローします。
         /// </summary>
         /// <param name="column"><see cref="CsvColumn"/>。</param>
-        /// <param name="items"><see cref="CsvItems"/>。</param>
-        private static void Validate(CsvColumn column, CsvItems items)
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
+        private static void Validate(CsvColumn column, ICsvItemContext context)
         {
-            if (!column.Validate(items, out string errorMessage))
+            if (!column.Validate(context, out string errorMessage))
             {
-                throw new CsvValidationException(errorMessage, items.LineNumber);
+                throw new CsvValidationException(errorMessage, context.LineNumber);
             }
         }
 
@@ -166,13 +191,13 @@ namespace NCsv
         /// オブジェクト項目に変換します。変更に失敗した場合は例外をスローします。
         /// </summary>
         /// <param name="column"><see cref="CsvColumn"/>。</param>
-        /// <param name="items"><see cref="CsvItems"/>。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <returns>変換結果。</returns>
-        private static object? ConvertToObjectItem(CsvColumn column, CsvItems items)
+        private static object? ConvertToObjectItem(CsvColumn column, ICsvItemContext context)
         {
-            if (!column.TryConvertToObjectItem(items, out object? value, out string errorMessage))
+            if (!column.TryConvertToObjectItem(context, out object? value, out string errorMessage))
             {
-                throw new CsvValidationException(errorMessage, items.LineNumber);
+                throw new CsvValidationException(errorMessage, context.LineNumber);
             }
 
             return value;
