@@ -1,5 +1,3 @@
-using NCsv.Converters;
-using NCsv.Validations;
 using NotVisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -168,7 +166,7 @@ namespace NCsv
         {
             if (!column.TryCreateCsvItemContext(items, out ICsvItemContext context))
             {
-                throw new CsvValidationException(CsvConfig.Current.ValidationMessage.GetItemNotExistError(context.LineNumber, context.Name), context.LineNumber);
+                throw new CsvValidationException(CsvConfig.Current.ValidationMessage.GetItemNotExistError(context.LineNumber, context.Name), context);
             }
 
             return context;
@@ -183,7 +181,7 @@ namespace NCsv
         {
             if (!column.Validate(context, out string errorMessage))
             {
-                throw new CsvValidationException(errorMessage, context.LineNumber);
+                throw new CsvValidationException(errorMessage, context);
             }
         }
 
@@ -197,7 +195,7 @@ namespace NCsv
         {
             if (!column.TryConvertToObjectItem(context, out object? value, out string errorMessage))
             {
-                throw new CsvValidationException(errorMessage, context.LineNumber);
+                throw new CsvValidationException(errorMessage, context);
             }
 
             return value;

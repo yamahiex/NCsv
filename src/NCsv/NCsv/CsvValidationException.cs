@@ -8,31 +8,31 @@ namespace NCsv
     public class CsvValidationException : Exception
     {
         /// <summary>
-        /// 行番号を取得します。
+        /// 検証項目の名前を取得します。
         /// </summary>
-        public long LineNumber { get; private set; }
+        public ICsvItemContext Context { get; private set; }
 
         /// <summary>
         /// <see cref="CsvValidationException"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="message">メッセージ。</param>
-        /// <param name="lineNumber">行番号。</param>
-        public CsvValidationException(string message, long lineNumber)
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
+        public CsvValidationException(string message, ICsvItemContext context)
             : base(message)
         {
-            this.LineNumber = lineNumber;
+            this.Context = context;
         }
 
         /// <summary>
         /// <see cref="CsvValidationException"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="message">メッセージ。</param>
-        /// <param name="lineNumber">行番号。</param>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <param name="innerException">例外のもととなった例外。</param>
-        public CsvValidationException(string message, long lineNumber, Exception innerException)
+        public CsvValidationException(string message, ICsvItemContext context, Exception innerException)
             : base(message, innerException)
         {
-            this.LineNumber = lineNumber;
+            this.Context = context;
         }
     }
 }

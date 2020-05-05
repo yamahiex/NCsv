@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NCsv
+﻿namespace NCsv
 {
     /// <summary>
     /// CSV項目に関する情報です。
     /// </summary>
-    class CsvItemContext : ICsvItemContext
+    internal class CsvItemContext : ICsvItemContext
     {
         /// <inheritdoc/>
         public string Name { get; private set; }
