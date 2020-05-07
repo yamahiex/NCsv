@@ -29,34 +29,23 @@ namespace NCsv
         /// <returns>変換できた場合にtrue。</returns>
         public bool TryParse(out DateTime result)
         {
-            result = DateTime.MinValue;
-
             if (DateTime.TryParse(value, out result))
             {
                 return true;
             }
 
-            if (DateTime.TryParseExact(value, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
-            {
-                return true;
-            }
+            return false;
+        }
 
-            if (DateTime.TryParseExact(value, "yyyy/MM/dd", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
-            {
-                return true;
-            }
-
-            if (DateTime.TryParseExact(value, "yyyyMMdd", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
-            {
-                return true;
-            }
-
-            if (DateTime.TryParseExact(value, "yyyy/MM", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
-            {
-                return true;
-            }
-
-            if (DateTime.TryParseExact(value, "yyyyMM", CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
+        /// <summary>
+        /// <see cref="DateTime"/>への変換を試みます。
+        /// </summary>
+        /// <param name="format">書式。</param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool TryParse(string format, out DateTime result)
+        {
+            if (DateTime.TryParseExact(this.value, format, CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
             {
                 return true;
             }

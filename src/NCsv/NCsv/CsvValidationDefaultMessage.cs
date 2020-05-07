@@ -18,6 +18,12 @@
         }
 
         /// <inheritdoc/> 
+        public virtual string GetDateTimeFormatError(ICsvItemContext context, string format)
+        {
+            return $"The format of {context.Name} is incorrect. Please set it in {format} format.";
+        }
+
+        /// <inheritdoc/> 
         public virtual string GetBooleanConvertError(ICsvItemContext context)
         {
             return $"Set {context.Name} to a value that can be converted to a truth value.";

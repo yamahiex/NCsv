@@ -42,15 +42,14 @@ namespace NCsv.Converters
                 return true;
             }
 
-            var dts = new DateTimeString(context.CsvItem);
-            if (dts.TryParse(out DateTime x))
+            var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
+
+            if (format != null)
             {
-                result = x;
-                return true;
+                return TryParseByFormat(context, format, out result, out errorMessage);
             }
 
-            errorMessage = CsvConfig.Current.ValidationMessage.GetDateTimeConvertError(context);
-            return false;
+            return TryParse(context, out result, out errorMessage);
         }
 
         /// <summary>
@@ -61,6 +60,53 @@ namespace NCsv.Converters
         protected virtual bool HasRequiredError(string value)
         {
             return string.IsNullOrEmpty(value);
+        }
+
+        /// <summary>
+        /// 書式を指定して<see cref="DateTime"/>への変換を試みます。
+        /// </summary>
+        /// <param name="context"><see cref="ConvertToObjectItemContext"/>。</param>
+        /// <param name="format"><see cref="CsvFormatAttribute"/>。</param>
+        /// <param name="result">変換結果。</param>
+        /// <param name="errorMessage">エラーメッセージ。</param>
+        /// <returns>変換に成功した場合にtrue。</returns>
+        private static bool TryParseByFormat(ConvertToObjectItemContext context, CsvFormatAttribute format, out object? result, out string errorMessage)
+        {
+            result = null;
+            errorMessage = string.Empty;
+            var dts = new DateTimeString(context.CsvItem);
+
+            if (dts.TryParse(format.Format, out DateTime dt))
+            {
+                result = dt;
+                return true;
+            }
+
+            errorMessage = CsvConfig.Current.ValidationMessage.GetDateTimeFormatError(context, format.Format);
+            return false;
+        }
+
+        /// <summary>
+        /// <see cref="DateTime"/>への変換を試みます。
+        /// </summary>
+        /// <param name="context"><see cref="ConvertToObjectItemContext"/>。</param>
+        /// <param name="result">変換結果。</param>
+        /// <param name="errorMessage">エラーメッセージ。</param>
+        /// <returns>変換に成功した場合にtrue。</returns>
+        private static bool TryParse(ConvertToObjectItemContext context, out object? result, out string errorMessage)
+        {
+            result = null;
+            errorMessage = string.Empty;
+            var dts = new DateTimeString(context.CsvItem);
+
+            if (dts.TryParse(out DateTime dt))
+            {
+                result = dt;
+                return true;
+            }
+
+            errorMessage = CsvConfig.Current.ValidationMessage.GetDateTimeConvertError(context);
+            return false;
         }
     }
 }

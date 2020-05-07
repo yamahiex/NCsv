@@ -23,10 +23,7 @@ namespace CsvSerializerTests.Converters
         public void TryConvertToObjectItemTest()
         {
             Assert.AreEqual(new DateTime(2020, 1, 1, 10, 20, 1), ConvertToObjectItem("2020/01/01 10:20:01"));
-            Assert.AreEqual(new DateTime(2020, 1, 1), ConvertToObjectItem("2020/01/01"));
-            Assert.AreEqual(new DateTime(2020, 1, 1), ConvertToObjectItem("20200101"));
-            Assert.AreEqual(new DateTime(2020, 1, 1), ConvertToObjectItem("2020/01"));
-            Assert.AreEqual(new DateTime(2020, 1, 1), ConvertToObjectItem("202001"));
+            Assert.AreEqual(new DateTime(2020, 1, 1), ConvertToObjectItem("2020/01/01", "FormattedValue"));
         }
 
         [TestMethod]
@@ -39,6 +36,15 @@ namespace CsvSerializerTests.Converters
         }
 
         [TestMethod]
+        public void TryConvertToObjectItemFormatFailureTest()
+        {
+            var c = new DateTimeConverter();
+            var context = CreateConvertToObjectItemContext("2020/01/01 10:00:00", "FormattedValue");
+            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetDateTimeFormatError(context, "yyyy/MM/dd"), message);
+        }
+
+        [TestMethod]
         public void TryConvertToObjectItemRequireTest()
         {
             var c = new DateTimeConverter();
@@ -47,10 +53,10 @@ namespace CsvSerializerTests.Converters
             Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
         }
 
-        private DateTime? ConvertToObjectItem(string csvItem)
+        private DateTime? ConvertToObjectItem(string csvItem, string name = nameof(Foo.Value))
         {
             var c = new DateTimeConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
+            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem, name), out object? result, out string _));
             return (DateTime?)result;
         }
 

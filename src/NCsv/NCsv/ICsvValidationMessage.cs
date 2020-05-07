@@ -23,6 +23,14 @@ namespace NCsv
         string GetDateTimeConvertError(ICsvItemContext context);
 
         /// <summary>
+        /// <see cref="DateTime"/>書式エラー時のメッセージを返します。
+        /// </summary>
+        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
+        /// <param name="format">書式。</param>
+        /// <returns>メッセージ。</returns>
+        string GetDateTimeFormatError(ICsvItemContext context, string format);
+
+        /// <summary>
         /// 不正な形式エラー時のメッセージを返します。
         /// </summary>
         /// <param name="context"><see cref="ICsvItemContext"/>。</param>
