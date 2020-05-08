@@ -26,7 +26,7 @@ namespace NCsv.Converters
         }
 
         /// <inheritdoc/>
-        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage)
+        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object result, out string errorMessage)
         {
             result = null;
             errorMessage = string.Empty;
@@ -70,7 +70,7 @@ namespace NCsv.Converters
         /// <param name="result">変換結果。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>変換に成功した場合にtrue。</returns>
-        private static bool TryParseByFormat(ConvertToObjectItemContext context, CsvFormatAttribute format, out object? result, out string errorMessage)
+        private static bool TryParseByFormat(ConvertToObjectItemContext context, CsvFormatAttribute format, out object result, out string errorMessage)
         {
             result = null;
             errorMessage = string.Empty;
@@ -93,7 +93,7 @@ namespace NCsv.Converters
         /// <param name="result">変換結果。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>変換に成功した場合にtrue。</returns>
-        private static bool TryParse(ConvertToObjectItemContext context, out object? result, out string errorMessage)
+        private static bool TryParse(ConvertToObjectItemContext context, out object result, out string errorMessage)
         {
             result = null;
             errorMessage = string.Empty;

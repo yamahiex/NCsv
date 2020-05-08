@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-     <Nullable>enable</Nullable>
+    <TargetFramework>netstandard2.0</TargetFramework>
      <Authors>YAMAMOTO Hiroyasu</Authors>
      <Company />
      <Description>Object to CSV serialization and CSV to object deserialization.</Description>
@@ -12,7 +11,7 @@
      <PackageProjectUrl>https://github.com/yamahix/NCsv</PackageProjectUrl>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageTags>csv serialization validation</PackageTags>
-     <Version>1.1.1</Version>
+     <Version>1.2.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

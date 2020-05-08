@@ -135,7 +135,7 @@ namespace NCsv
         /// <param name="result">変換結果。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>変換に成功した場合にtrue。</returns>
-        public bool TryConvertToObjectItem(ICsvItemContext context, out object? result, out string errorMessage)
+        public bool TryConvertToObjectItem(ICsvItemContext context, out object result, out string errorMessage)
         {
             return this.converter.TryConvertToObjectItem(new ConvertToObjectItemContext(this.Property, context), out result, out errorMessage);
         }
@@ -145,7 +145,7 @@ namespace NCsv
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="value"></param>
-        public virtual void SetValue(object obj, object? value)
+        public virtual void SetValue(object obj, object value)
         {
             this.Property.SetValue(obj, value);
         }

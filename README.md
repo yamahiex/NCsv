@@ -70,8 +70,10 @@ using (var writer = new StreamWriter(@"C:\users.csv"))
 }
 
 // Deserialize from a file
-using var reader = new StreamReader(@"C:\users.csv");
-var fileUsers = cs.Deserialize(reader);
+using (var reader = new StreamReader(@"C:\users.csv"))
+{
+    var fileUsers = cs.Deserialize(reader);
+}
 ```
 
 ### Customize message
@@ -171,7 +173,7 @@ Create a converter by inheriting CsvConverter.
 ```c#
 class ValueObjectConverter : CsvConverter
 {
-    public bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage)
+    public bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object result, out string errorMessage)
     {
         result = new ValueObject(context.CsvItem);
         errorMessage = string.Empty;

@@ -40,7 +40,7 @@ namespace NCsv
         /// </summary>
         /// <typeparam name="T">検索対象とするカスタム属性の型。</typeparam>
         /// <returns>指定した型のカスタム属性。</returns>
-        public T? GetCustomAttribute<T>() where T : Attribute
+        public T GetCustomAttribute<T>() where T : Attribute
         {
             List<Attribute> attributes;
 
@@ -93,7 +93,7 @@ namespace NCsv
         /// </summary>
         /// <param name="obj">プロパティ値を設定するオブジェクト。</param>
         /// <param name="value">プロパティ値。</param>
-        internal void SetValue(object obj, object? value)
+        internal void SetValue(object obj, object value)
         {
             this.property.SetValue(obj, value);
         }

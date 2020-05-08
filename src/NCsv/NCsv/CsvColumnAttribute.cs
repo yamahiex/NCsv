@@ -17,7 +17,7 @@ namespace NCsv
         /// <summary>
         /// 名称を取得または設定します。
         /// </summary>
-        public string? Name { get; set; } = null;
+        public string Name { get; set; } = null;
 
         /// <summary>
         /// <see cref="CsvColumnAttribute"/>クラスの新しいインスタンスを初期化します。

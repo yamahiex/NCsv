@@ -87,8 +87,10 @@ namespace NCsv
         /// <returns>オブジェクト。</returns>
         internal T CreateObject(string csvRow)
         {
-            using var parser = new CsvTextFieldParser(new StringReader(csvRow));
-            return CreateObject(new CsvItems(parser.ReadFields(), 1));
+            using (var parser = new CsvTextFieldParser(new StringReader(csvRow)))
+            {
+                return CreateObject(new CsvItems(parser.ReadFields(), 1));
+            }
         }
 
         /// <summary>
@@ -191,9 +193,9 @@ namespace NCsv
         /// <param name="column"><see cref="CsvColumn"/>。</param>
         /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <returns>変換結果。</returns>
-        private static object? ConvertToObjectItem(CsvColumn column, ICsvItemContext context)
+        private static object ConvertToObjectItem(CsvColumn column, ICsvItemContext context)
         {
-            if (!column.TryConvertToObjectItem(context, out object? value, out string errorMessage))
+            if (!column.TryConvertToObjectItem(context, out object value, out string errorMessage))
             {
                 throw new CsvValidationException(errorMessage, context);
             }

@@ -24,13 +24,13 @@ namespace NCsv
         }
 
         /// <inheritdoc/>
-        public override object GetValue(object? obj)
+        public override object GetValue(object obj)
         {
             return string.Empty;
         }
 
         /// <inheritdoc/>
-        public override void SetValue(object? obj, object? value)
+        public override void SetValue(object obj, object value)
         {
         }
 

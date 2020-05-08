@@ -29,7 +29,7 @@ namespace NCsv.Converters
         /// <param name="result">変換結果。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>変換に成功した場合にtrue。</returns>
-        public abstract bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string errorMessage);
+        public abstract bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object result, out string errorMessage);
 
         /// <summary>
         /// CSV項目をエスケープします。

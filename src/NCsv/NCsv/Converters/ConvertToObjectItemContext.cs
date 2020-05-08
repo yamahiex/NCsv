@@ -1,7 +1,7 @@
 ﻿namespace NCsv.Converters
 {
     /// <summary>
-    /// <see cref="CsvConverter.TryConvertToObjectItem(ConvertToObjectItemContext, out object?, out string)"/>に関する情報です。
+    /// <see cref="CsvConverter.TryConvertToObjectItem(ConvertToObjectItemContext, out object, out string)"/>に関する情報です。
     /// </summary>
     public class ConvertToObjectItemContext : CsvConvertContext, ICsvItemContext
     {

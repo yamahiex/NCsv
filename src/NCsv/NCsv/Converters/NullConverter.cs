@@ -12,7 +12,7 @@
         }
 
         /// <inheritdoc/>
-        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object? result, out string message)
+        public override bool TryConvertToObjectItem(ConvertToObjectItemContext context, out object result, out string message)
         {
             result = null;
             message = string.Empty;

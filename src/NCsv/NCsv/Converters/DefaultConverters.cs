@@ -19,7 +19,7 @@ namespace NCsv.Converters
         /// </summary>
         /// <param name="type"><see cref="Type"/>。</param>
         /// <returns><see cref="CsvConverter"/></returns>
-        public static CsvConverter? GetOrNull(Type type)
+        public static CsvConverter GetOrNull(Type type)
         {
             if (converters.ContainsKey(type))
             {
