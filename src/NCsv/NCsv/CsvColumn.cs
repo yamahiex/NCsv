@@ -191,23 +191,43 @@ namespace NCsv
                 result.Add(new CsvColumn(attribute, property, GetConverter(property)));
             }
 
-            ValidateDuplicate(result);
+            Validate(result);
 
             return result.OrderBy(x => x.attribute.Index).ToList();
         }
 
         /// <summary>
-        /// 重複がある場合は例外をスローします。
+        /// <paramref name="columns"/>を検証します。
+        /// 検証に失敗した場合は例外をスローします。
         /// </summary>
-        /// <param name="columns"></param>
-        private static void ValidateDuplicate(IEnumerable<CsvColumn> columns)
+        /// <param name="columns"><see cref="CsvColumn"/>のリスト。</param>
+        private static void Validate(List<CsvColumn> columns)
+        {
+            if (columns.Count == 0)
+            {
+                throw new InvalidOperationException("Set the CsvColumnAttribute to the property to be serialized.");
+            }
+
+            if (HasIndexDuplicate(columns))
+            {
+                throw new InvalidOperationException("Duplicate indexes.");
+            }
+        }
+
+        /// <summary>
+        /// インデックスが重複しているかどうかを返します。
+        /// </summary>
+        /// <param name="columns"><see cref="CsvColumn"/>のリスト。</param>
+        private static bool HasIndexDuplicate(List<CsvColumn> columns)
         {
             var duplicates = columns.GroupBy(x => x.attribute.Index).Where(g => g.Count() > 1).Select(g => g.FirstOrDefault()).ToList();
 
             if (duplicates.Count > 0)
             {
-                throw new InvalidOperationException("Duplicate indexes.");
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

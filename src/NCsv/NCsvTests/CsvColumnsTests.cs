@@ -103,6 +103,17 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
+        public void CreateObjectColumnNotFoundTest()
+        {
+            var x = new ColumnNotFound()
+            {
+                Value = "foo",
+            };
+
+            Assert.ThrowsException<InvalidOperationException>(() => new CsvColumns<ColumnNotFound>());
+        }
+
+        [TestMethod()]
         public void CreateObjectIndexDuplicateTest()
         {
             var x = new IndexDuplicate()
@@ -125,6 +136,11 @@ namespace NCsv.Tests
         {
             [CsvColumn(0)]
             public decimal Value { get; set; }
+        }
+
+        private class ColumnNotFound
+        {
+            public string Value { get; set; } = string.Empty;
         }
 
         private class IndexDuplicate
