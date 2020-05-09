@@ -15,11 +15,6 @@ namespace NCsv.Validations
         private readonly int maxLength = 0;
 
         /// <summary>
-        /// バイト単位で検証するかどうかを取得または設定します。
-        /// </summary>
-        public bool LengthAsByte { get; set; } = false;
-
-        /// <summary>
         /// <see cref="CsvMaxLengthAttribute"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="maxLength">この桁数を超えている場合はエラーにします。</param>
@@ -33,19 +28,9 @@ namespace NCsv.Validations
         {
             errorMessage = string.Empty;
 
-            if (this.LengthAsByte)
+            if (context.Value.Length <= this.maxLength)
             {
-                if (Encoding.GetEncoding("Shift_JIS").GetByteCount(context.Value) <= this.maxLength)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if (context.Value.Length <= this.maxLength)
-                {
-                    return true;
-                }
+                return true;
             }
 
             errorMessage = CsvConfig.Current.ValidationMessage.GetMaxLengthError(context, this.maxLength);
