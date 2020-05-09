@@ -70,13 +70,6 @@ namespace NCsv
         string GetNumberMinValueError(ICsvItemContext context, decimal minValue);
 
         /// <summary>
-        /// 数字のみエラー時のメッセージを返します。
-        /// </summary>
-        /// <param name="context"><see cref="ICsvItemContext"/>。</param>
-        /// <returns>メッセージ。</returns>
-        string GetNumberOnlyError(ICsvItemContext context);
-
-        /// <summary>
         /// 数値範囲エラー時のメッセージを返します。
         /// </summary>
         /// <param name="context"><see cref="ICsvItemContext"/>。</param>

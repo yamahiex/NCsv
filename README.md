@@ -145,11 +145,11 @@ You can also inherit the `CsvRegularExpressionAttribute`.
 
 ```c#
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-public class AlphanumericOnlyAttribute : CsvRegularExpressionAttribute
+public class CsvNumberOnlyAttribute : CsvRegularExpressionAttribute
 {
-    public AlphanumericOnlyAttribute()
+    public CsvNumberOnlyAttribute()
     {
-        this.Pattern = "^[a-zA-Z0-9]+$";
+        this.Pattern = "^[0-9]+$";
     }
 
     protected override string GetErrorMessage(ICsvItemContext context)

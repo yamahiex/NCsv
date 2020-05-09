@@ -78,12 +78,6 @@
         }
 
         /// <inheritdoc/> 
-        public virtual string GetNumberOnlyError(ICsvItemContext context)
-        {
-            return $"{context.Name} must be set to a number only.";
-        }
-
-        /// <inheritdoc/> 
         public virtual string GetItemNotExistError(long lineNumber, string name)
         {
             return "The item does not exist in the CSV.";
