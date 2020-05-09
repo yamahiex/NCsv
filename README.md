@@ -2,6 +2,8 @@
 
 .NET Standard 2.0 class library for object to CSV serialization and CSV to object deserialization.
 
+[NuGet Package](https://www.nuget.org/packages/NCsv/)
+
 ## Usage
 
 ### Serialization and Deserialization
