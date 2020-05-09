@@ -11,7 +11,8 @@
      <PackageProjectUrl>https://github.com/yamahix/NCsv</PackageProjectUrl>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageTags>csv serialization validation</PackageTags>
-     <Version>1.2.0</Version>
+     <Version>1.2.1</Version>
+     <RepositoryUrl>https://github.com/yamahix/NCsv</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
