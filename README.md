@@ -154,7 +154,7 @@ public class CsvNumberOnlyAttribute : CsvRegularExpressionAttribute
 
     protected override string GetErrorMessage(ICsvItemContext context)
     {
-        return $"{context.Name} must be set to a alphanumeric only.";
+        return $"{context.Name} must be set to a number only."; 
     }
 }
 ```
