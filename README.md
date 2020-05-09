@@ -1,14 +1,13 @@
 # NCsv
 
-.NET Standard class library to serialize the object to CSV.
+.NET Standard 2.0 class library for object to CSV serialization and CSV to object deserialization.
 
 ## Usage
 
 ### Serialization and Deserialization
 
-It is a class to be serialized.  
-Serializes the property with CsvColumnAttribute.
-You can also use the Attribute to validate the value.
+Set the `CsvColumnAttribute` to the property of the class to be serialized.  
+You can also use the `Attribute` to validate the value.
 
 ``` c#
 class User
@@ -78,7 +77,7 @@ using (var reader = new StreamReader(@"C:\users.csv"))
 
 ### Customize message
 
-Implement ICsvValidationMessage or inherit CsvValidationDefaultMessage.
+Implement `ICsvValidationMessage` or inherit `CsvValidationDefaultMessage`.
 
 ```c#
 class CustomMessage : ICsvValidationMessage
@@ -98,7 +97,7 @@ CsvConfig.Current.ValidationMessage = new CustomMessage();
 
 ### Custom validation attributes
 
-Inherit the CsvValidationAttribute to create your own validation attribute.
+Inherit the `CsvValidationAttribute` to create your own validation attribute.
 
 ```c#
 [AttributeUsage(AttributeTargets.Property)]
@@ -127,7 +126,7 @@ Use it.
 public string PropertyA { get; set; }
 ```
 
-You can also inherit the CsvRegularExpressionAttribute.
+You can also inherit the `CsvRegularExpressionAttribute`.
 
 ```c#
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
@@ -168,7 +167,7 @@ class ValueObject
 }
 ```
 
-Create a converter by inheriting CsvConverter.
+Create a converter by inheriting `CsvConverter`.
 
 ```c#
 class ValueObjectConverter : CsvConverter

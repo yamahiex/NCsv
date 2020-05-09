@@ -7,6 +7,9 @@ namespace NCsv
 {
     /// <summary>
     /// オブジェクトからCSVへのシリアル化およびCSVからオブジェクトへの逆シリアル化を行います。 
+    /// <para>
+    /// Usage see https://github.com/yamahix/NCsv
+    /// </para>
     /// </summary>
     /// <typeparam name="T">CSVシリアル化する型です。</typeparam>
     public class CsvSerializer<T>
