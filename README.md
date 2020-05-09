@@ -61,8 +61,21 @@ var csv = cs.Serialize(users);
 // "Foo,Bar",2001/01/01,19
 Debug.WriteLine(csv);
 
-// Deserialize.
-var deserializedUsers = cs.Deserialize(csv);
+try
+{
+    // Deserialize.
+    var deserializedUsers = cs.Deserialize(csv);
+}
+catch (CsvValidationException ex)
+{
+    // Handle validation errors.
+    Debug.WriteLine(ex.Message);
+}
+
+// You can also retrieve all validation errors beforehand
+// with the CsvSerializer.GetErrors method.
+var errors = cs.GetErrors(csv);
+errors.ForEach(error => Debug.WriteLine(error));
 
 // Serialize to file.
 using (var writer = new StreamWriter(@"C:\users.csv"))
@@ -70,7 +83,7 @@ using (var writer = new StreamWriter(@"C:\users.csv"))
     cs.Serialize(writer, users);
 }
 
-// Deserialize from a file
+// Deserialize from a file.
 using (var reader = new StreamReader(@"C:\users.csv"))
 {
     var fileUsers = cs.Deserialize(reader);
