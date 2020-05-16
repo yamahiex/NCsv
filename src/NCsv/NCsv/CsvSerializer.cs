@@ -235,7 +235,7 @@ namespace NCsv
         public List<CsvErrorItem> GetErrors(CsvTextFieldParser parser)
         {
             var result = new List<CsvErrorItem>();
-            var lineNumber = 0;
+            var lineNumber = 0L;
 
             while (!parser.EndOfData)
             {
