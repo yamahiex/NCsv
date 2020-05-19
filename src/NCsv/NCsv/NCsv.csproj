@@ -11,7 +11,7 @@
      <PackageProjectUrl>https://github.com/yamahix/NCsv</PackageProjectUrl>
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <PackageTags>csv serialization deserialization validation</PackageTags>
-     <Version>1.2.4</Version>
+     <Version>1.3.0</Version>
      <RepositoryUrl>https://github.com/yamahix/NCsv</RepositoryUrl>
   </PropertyGroup>
 
