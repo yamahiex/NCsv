@@ -11,18 +11,36 @@ namespace NCsv
     /// Usage see https://github.com/yamahix/NCsv
     /// </para>
     /// </summary>
-    /// <typeparam name="T">CSVシリアル化する型です。</typeparam>
-    public class CsvSerializer<T>
+    /// <typeparam name="T">シリアル化する型です。</typeparam>
+    public class CsvSerializer<T> where T : new()
     {
         /// <summary>
-        /// <see cref="CsvColumns{T}"/>です。
+        /// <see cref="CsvParser{T}"/>です。
         /// </summary>
-        private readonly CsvColumns<T> columns = new CsvColumns<T>();
+        private readonly CsvParser<T> csvParser = null;
 
         /// <summary>
         /// ヘッダがあるかどうかを取得または設定します。
         /// </summary>
         public bool HasHeader { get; set; } = false;
+
+        /// <summary>
+        /// <see cref="CsvSerializer{T}"/>クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        public CsvSerializer()
+        {
+            var builder = CsvParserBuilder<T>.FromType();
+            this.csvParser = builder.ToCsvParser();
+        }
+
+        /// <summary>
+        /// <see cref="CsvSerializer{T}"/>クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="csvParser"><see cref="CsvParser{T}"/></param>
+        internal CsvSerializer(CsvParser<T> csvParser)
+        {
+            this.csvParser = csvParser;
+        }
 
         /// <summary>
         /// 非同期的に指定した<paramref name="objects"/>をシリアル化し、生成されたCSVを返します。
@@ -66,12 +84,12 @@ namespace NCsv
         {
             if (this.HasHeader)
             {
-                writer.WriteLine(this.columns.CreateHeader());
+                writer.WriteLine(this.csvParser.CreateHeader());
             }
 
             foreach (var row in objects)
             {
-                writer.WriteLine(this.columns.CreateCsvLine(row));
+                writer.WriteLine(this.csvParser.CreateCsvLine(row));
             }
         }
 
@@ -124,47 +142,47 @@ namespace NCsv
         }
 
         /// <summary>
-        /// 非同期的に指定した<paramref name="parser"/>で解析したCSVを逆シリアル化します。
+        /// 非同期的に指定した<paramref name="csvTextFieldParser"/>で解析したCSVを逆シリアル化します。
         /// </summary>
-        /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
+        /// <param name="csvTextFieldParser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
         /// <returns>オブジェクト。</returns>
         /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
         /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
-        public Task<List<T>> DeserializeAsync(CsvTextFieldParser parser)
+        public Task<List<T>> DeserializeAsync(CsvTextFieldParser csvTextFieldParser)
         {
-            return Task.Run(() => Deserialize(parser));
+            return Task.Run(() => Deserialize(csvTextFieldParser));
         }
 
         /// <summary>
-        /// 指定した<paramref name="parser"/>で解析したCSVを逆シリアル化します。
+        /// 指定した<paramref name="csvTextFieldParser"/>で解析したCSVを逆シリアル化します。
         /// </summary>
-        /// <param name="parser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
+        /// <param name="csvTextFieldParser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
         /// <returns>オブジェクト。</returns>
         /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
         /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
-        public List<T> Deserialize(CsvTextFieldParser parser)
+        public List<T> Deserialize(CsvTextFieldParser csvTextFieldParser)
         {
             var result = new List<T>();
             var lineNumber = 0L;
 
-            while (!parser.EndOfData)
+            while (!csvTextFieldParser.EndOfData)
             {
                 lineNumber++;
 
                 try
                 {
-                    var csvItems = new CsvItems(parser.ReadFields(), lineNumber);
+                    var csvItems = new CsvItems(csvTextFieldParser.ReadFields(), lineNumber);
 
                     if (this.HasHeader && lineNumber == 1)
                     {
                         continue;
                     }
 
-                    result.Add(this.columns.CreateObject(csvItems));
+                    result.Add(this.csvParser.CreateObject(csvItems));
                 }
                 catch (CsvMalformedLineException ex)
                 {
-                    throw new CsvParseException(ex.Message, ex.LineNumber, parser.ErrorLine, ex);
+                    throw new CsvParseException(ex.Message, ex.LineNumber, csvTextFieldParser.ErrorLine, ex);
                 }
             }
 
@@ -250,7 +268,7 @@ namespace NCsv
                         continue;
                     }
 
-                    result.AddRange(this.columns.GetErrors(csvItems));
+                    result.AddRange(this.csvParser.GetErrors(csvItems));
                 }
                 catch (CsvMalformedLineException ex)
                 {

@@ -7,22 +7,40 @@ using System.Text;
 namespace NCsv
 {
     /// <summary>
-    /// <see cref="CsvColumn"/>のファーストクラスコレクションです。
+    /// CSVを解析します。
     /// </summary>
-    /// <typeparam name="T">変換するするクラスの型。</typeparam>
-    internal class CsvColumns<T>
+    /// <typeparam name="T">解析する型です。</typeparam>
+    internal class CsvParser<T> where T : new()
     {
         /// <summary>
-        /// 変換対象のカラムです。
+        /// <see cref="CsvColumn"/>のリストです。
         /// </summary>
         private readonly IReadOnlyList<CsvColumn> columns;
 
         /// <summary>
-        /// <see cref="CsvColumns{T}"/>クラスの新しいインスタンスを初期化します。
+        /// <see cref="CsvParser{T}"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
-        public CsvColumns()
+        private CsvParser()
         {
-            this.columns = CsvColumn.CreateColumns<T>();
+        }
+
+        /// <summary>
+        /// <see cref="CsvParser{T}"/>クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="columns"><see cref="CsvColumn"/>のリスト。</param>
+        public CsvParser(IReadOnlyList<CsvColumn> columns)
+        {
+            this.columns = columns;
+        }
+
+        /// <summary>
+        /// <typeparamref name="T"/>をもとにして<see cref="CsvParser{T}"/>を作成します。
+        /// </summary>
+        /// <returns><see cref="CsvParser{T}"/>。</returns>
+        public static CsvParser<T> FromType()
+        {
+            var builder = CsvParserBuilder<T>.FromType();
+            return builder.ToCsvParser();
         }
 
         /// <summary>
@@ -100,12 +118,7 @@ namespace NCsv
         /// <returns>オブジェクト。</returns>
         public T CreateObject(CsvItems items)
         {
-            var result = Activator.CreateInstance<T>();
-
-            if (result == null)
-            {
-                throw new InvalidOperationException("Unable to instantiate.");
-            }
+            var result = new T();
 
             foreach (var column in this.columns)
             {
@@ -128,7 +141,7 @@ namespace NCsv
         /// エラーが存在する場合はエラーを返します。
         /// </summary>
         /// <param name="items"><see cref="CsvItems"/>。</param>
-        /// <returns><see cref="CsvErrorItem"/>のリスト。</returns>
+        /// <returns><see cref="CsvErrorItem"/>のコレクション。</returns>
         public IEnumerable<CsvErrorItem> GetErrors(CsvItems items)
         {
             foreach (var column in this.columns)

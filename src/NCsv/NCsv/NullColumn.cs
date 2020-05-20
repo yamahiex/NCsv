@@ -1,5 +1,4 @@
 ﻿using NCsv.Converters;
-using System.Reflection;
 
 namespace NCsv
 {
@@ -18,7 +17,7 @@ namespace NCsv
         /// <see cref="NullColumn"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         public NullColumn()
-            : base(new CsvColumnAttribute(-1), CreateDummyPropertyInfo(), new NullConverter())
+            : base(new CsvColumnAttribute(-1), CreateDummyProperty(), new NullConverter())
         {
 
         }
@@ -35,13 +34,13 @@ namespace NCsv
         }
 
         /// <summary>
-        /// ダミーの<see cref="PropertyInfo"/>を作成します。
+        /// ダミーの<see cref="CsvProperty"/>を作成します。
         /// </summary>
-        /// <returns><see cref="PropertyInfo"/>。</returns>
-        private static PropertyInfo CreateDummyPropertyInfo()
+        /// <returns><see cref="CsvProperty"/>。</returns>
+        private static CsvProperty CreateDummyProperty()
         {
             var x = new { Dummy = string.Empty };
-            return x.GetType().GetProperty(nameof(x.Dummy));
+            return new CsvProperty(x.GetType().GetProperty(nameof(x.Dummy)));
         }
     }
 }

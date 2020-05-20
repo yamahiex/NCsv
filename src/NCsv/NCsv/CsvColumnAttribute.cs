@@ -15,7 +15,7 @@ namespace NCsv
         internal int Index { get; private set; }
 
         /// <summary>
-        /// 名称を取得または設定します。
+        /// 名前を取得または設定します。
         /// </summary>
         public string Name { get; set; } = null;
 

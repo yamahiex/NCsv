@@ -6,17 +6,14 @@
 
 ## Usage
 
-### Serialization and Deserialization
+### Serialization and Deserialization (Use Attribute)
 
 Set the `CsvColumnAttribute` to the property of the class to be serialized.  
-You can also use the `Attribute` to validate the value.
 
 ``` c#
 class User
 {
     [CsvColumn(0, Name = "CustomName")]
-    [CsvMaxLength(100)]
-    [CsvRequired]
     public string Name { get; set; } = string.Empty;
 
     [CsvColumn(1)]
@@ -24,8 +21,7 @@ class User
     public DateTime Birthday { get; set; }
 
     [CsvColumn(2)]
-    [CsvNumber(3, 0, MinValue = "0")]
-    public int Age { get; set; }
+    public int Height { get; set; }
 }
 ```
 
@@ -38,13 +34,13 @@ var users = new User[]
     {
         Name = "Jackson",
         Birthday = new DateTime(2000, 1, 1),
-        Age = 20,
+        Height = 180,
     },
     new User()
     {
         Name = "Foo,Bar",
         Birthday = new DateTime(2001, 1, 1),
-        Age = 19,
+        Height = 170,
     },
 };
 
@@ -54,17 +50,17 @@ var cs = new CsvSerializer<User>()
 };
 
 // Serialize.
-var csv = cs.Serialize(users);
+string csv = cs.Serialize(users);
 
-// CustomName,Birthday,Age
-// Jackson,2000/01/01,20
-// "Foo,Bar",2001/01/01,19
+// CustomName,Birthday,Height
+// Jackson,2000/01/01,180
+// "Foo,Bar",2001/01/01,170
 Debug.WriteLine(csv);
 
 try
 {
     // Deserialize.
-    var deserializedUsers = cs.Deserialize(csv);
+    List<User> deserializedUsers = cs.Deserialize(csv);
 }
 catch (CsvValidationException ex)
 {
@@ -74,7 +70,7 @@ catch (CsvValidationException ex)
 
 // You can also retrieve all validation errors beforehand
 // with the CsvSerializer.GetErrors method.
-var errors = cs.GetErrors(csv);
+List<CsvErrorItem> errors = cs.GetErrors(csv);
 errors.ForEach(error => Debug.WriteLine(error));
 
 // Serialize to file.
@@ -86,7 +82,86 @@ using (var writer = new StreamWriter(@"C:\users.csv"))
 // Deserialize from a file.
 using (var reader = new StreamReader(@"C:\users.csv"))
 {
-    var fileUsers = cs.Deserialize(reader);
+    List<User> fileUsers = cs.Deserialize(reader);
+}
+```
+
+### Serialization and Deserialization (Use CsvSerializerBuilder)
+
+It is also possible to serialize using `CsvSerializerBuilder` without using `Attribute`.  
+What you can do with `Attribute` is also designed to do with `CsvSerializerBuilder`.
+
+``` c#
+class User
+{
+    public string Name { get; set; } = string.Empty;
+    public DateTime Birthday { get; set; }
+    public int Height { get; set; }
+}
+```
+
+How to use CsvSerializerBuilder
+
+```c#
+var users = new User[]
+{
+    new User()
+    {
+        Name = "Jackson",
+        Birthday = new DateTime(2000, 1, 1),
+        Height = 180,
+    },
+    new User()
+    {
+        Name = "Foo,Bar",
+        Birthday = new DateTime(2001, 1, 1),
+        Height = 170,
+    },
+};
+
+var cb = new CsvSerializerBuilder<User>();
+var index = 0;
+cb.AddColumn(index++, nameof(User.Name)).Name("CustomName")
+cb.AddColumn(index++, nameof(User.Birthday)).Format("yyyy/MM/dd");
+cb.AddColumn(index++, nameof(User.Height));
+
+// Convert to CsvSerializer.
+var cs = cb.ToCsvSerializer();
+
+// Serialize.
+string csv = cs.Serialize(users);
+
+try
+{
+    // Deserialize.
+    List<User> deserializedUsers = cs.Deserialize(csv);
+}
+catch (CsvValidationException ex)
+{
+    // Handle validation errors.
+    Debug.WriteLine(ex.Message);
+}
+
+// The rest is the same as using Attribute.
+...
+```
+
+### Validation
+
+You can use the `Attribute` to validate the value.  
+If there is a validation error, `CsvValidationException` will be thrown when `CsvSerializer.Deserialize` is called.
+
+``` c#
+class User
+{
+    [CsvColumn(0)]
+    [CsvMaxLength(100)]
+    [CsvRequired]
+    public string Name { get; set; } = string.Empty;
+
+    [CsvColumn(1)]
+    [CsvNumber(3, 0, MinValue = "0")]
+    public int Height { get; set; }
 }
 ```
 
@@ -144,7 +219,7 @@ public string PropertyA { get; set; }
 You can also inherit the `CsvRegularExpressionAttribute`.
 
 ```c#
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property)]
 public class CsvNumberOnlyAttribute : CsvRegularExpressionAttribute
 {
     public CsvNumberOnlyAttribute()
@@ -154,7 +229,7 @@ public class CsvNumberOnlyAttribute : CsvRegularExpressionAttribute
 
     protected override string GetErrorMessage(ICsvItemContext context)
     {
-        return $"{context.Name} must be set to a number only."; 
+        return $"{context.Name} must be set to a number only.";
     }
 }
 ```

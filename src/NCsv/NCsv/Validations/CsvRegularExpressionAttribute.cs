@@ -7,7 +7,7 @@ namespace NCsv.Validations
     /// 正規表現を使用した検証属性です。
     /// 指定した正規表現に一致していない場合はエラーにします。
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class CsvRegularExpressionAttribute : CsvValidationAttribute
     {
         /// <summary>

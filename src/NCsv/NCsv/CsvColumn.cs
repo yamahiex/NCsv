@@ -1,8 +1,5 @@
 using NCsv.Converters;
 using NCsv.Validations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -29,6 +26,11 @@ namespace NCsv
         public static readonly CsvColumn Null = new NullColumn();
 
         /// <summary>
+        /// インデックスを取得します。
+        /// </summary>
+        public int Index => this.attribute.Index;
+
+        /// <summary>
         /// Nullかどうかを取得します。
         /// </summary>
         public virtual bool IsNull => false;
@@ -47,44 +49,13 @@ namespace NCsv
         /// <see cref="CsvColumn"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="attribute"><see cref="CsvColumnAttribute"/>。</param>
-        /// <param name="property"><see cref="PropertyInfo"/>。</param>
+        /// <param name="property"><see cref="CsvProperty"/>。</param>
         /// <param name="converter"><see cref="CsvConverter"/>。</param>
-        public CsvColumn(CsvColumnAttribute attribute, PropertyInfo property, CsvConverter converter)
+        public CsvColumn(CsvColumnAttribute attribute, CsvProperty property, CsvConverter converter)
         {
             this.attribute = attribute;
-            this.Property = new CsvProperty(property);
+            this.Property = property;
             this.converter = converter;
-        }
-
-        /// <summary>
-        /// 指定した型に設定されている最大インデックス分の<see cref="CsvColumn"/>を作成します。
-        /// </summary>
-        /// <typeparam name="T">対象の型。</typeparam>
-        /// <returns><see cref="CsvColumn"/>のリスト。</returns>
-        /// <remarks>
-        /// <see cref="CsvColumnAttribute.Index"/>の値が連続していない場合を考慮して、
-        /// <see cref="CsvColumn"/>存在しない場合は<see cref="NullColumn"/>を設定しています。
-        /// </remarks>
-        public static List<CsvColumn> CreateColumns<T>()
-        {
-            var result = new List<CsvColumn>();
-
-            var columns = CsvColumn.Create<T>().ToDictionary(x => x.attribute.Index);
-            var max = columns.Max(x => x.Key) + 1;
-
-            for (var i = 0; i < max; i++)
-            {
-                if (columns.ContainsKey(i))
-                {
-                    result.Add(columns[i]);
-                }
-                else
-                {
-                    result.Add(CsvColumn.Null);
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -167,91 +138,6 @@ namespace NCsv
         public void AppendName(StringBuilder sb)
         {
             sb.Append(this.converter.CsvItemEscape(this.Name));
-        }
-
-        /// <summary>
-        /// <see cref="CsvColumn"/>を作成します。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private static List<CsvColumn> Create<T>()
-        {
-            var type = typeof(T);
-            var result = new List<CsvColumn>();
-
-            foreach (var property in type.GetProperties())
-            {
-                var attribute = property.GetCustomAttribute<CsvColumnAttribute>();
-
-                if (attribute == null)
-                {
-                    continue;
-                }
-
-                result.Add(new CsvColumn(attribute, property, GetConverter(property)));
-            }
-
-            Validate(result);
-
-            return result.OrderBy(x => x.attribute.Index).ToList();
-        }
-
-        /// <summary>
-        /// <paramref name="columns"/>を検証します。
-        /// 検証に失敗した場合は例外をスローします。
-        /// </summary>
-        /// <param name="columns"><see cref="CsvColumn"/>のリスト。</param>
-        private static void Validate(List<CsvColumn> columns)
-        {
-            if (columns.Count == 0)
-            {
-                throw new InvalidOperationException("Set the CsvColumnAttribute to the property to be serialized.");
-            }
-
-            if (HasIndexDuplicate(columns))
-            {
-                throw new InvalidOperationException("Duplicate indexes.");
-            }
-        }
-
-        /// <summary>
-        /// インデックスが重複しているかどうかを返します。
-        /// </summary>
-        /// <param name="columns"><see cref="CsvColumn"/>のリスト。</param>
-        private static bool HasIndexDuplicate(List<CsvColumn> columns)
-        {
-            var duplicates = columns.GroupBy(x => x.attribute.Index).Where(g => g.Count() > 1).Select(g => g.FirstOrDefault()).ToList();
-
-            if (duplicates.Count > 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// <see cref="CsvConverter"/>を返します。<see cref="CsvConverter"/>が存在しない場合は例外をスローします。
-        /// </summary>
-        /// <param name="property"><see cref="PropertyInfo"/>。</param>
-        /// <returns><see cref="CsvConverter"/>。</returns>
-        private static CsvConverter GetConverter(PropertyInfo property)
-        {
-            var a = property.GetCustomAttribute<CsvConverterAttribute>();
-
-            if (a != null)
-            {
-                return a.CreateConverter();
-            }
-
-            var converter = DefaultConverters.GetOrNull(property.PropertyType);
-
-            if (converter != null)
-            {
-                return converter;
-            }
-
-            throw new InvalidOperationException("I couldn't find a converter for the property type.");
         }
     }
 }

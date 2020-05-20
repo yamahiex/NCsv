@@ -4,12 +4,12 @@ using System;
 namespace NCsv.Tests
 {
     [TestClass()]
-    public class CsvColumnsTests
+    public class CsvParserTests
     {
         [TestMethod()]
         public void CreateHeaderTest()
         {
-            var c = new CsvColumns<Example>();
+            var c = CsvParser<Example>.FromType();
             var actual = c.CreateHeader();
 
             var expected = @"CustomName,DecimalValue,DateTimeValue,BooleanValue,IntValue,NullableDecimalValue,NullableDateTimeValue,NullableIntValue,,SeparateIndex,ValueObject,DoubleValue,NullableDoubleValue,ShortValue,NullableShortValue,LongValue,NullableLongValue,FloatValue,NullableFloatValue";
@@ -42,7 +42,7 @@ namespace NCsv.Tests
                 NullableFloatValue = 1.2f,
             };
 
-            var c = new CsvColumns<Example>();
+            var c = CsvParser<Example>.FromType();
             var actual = c.CreateCsvLine(example);
 
             var expected = "foo,\"123,456\",2020/01/01,False,100,1000,2020/01/01,123,,bar,abc,10.123,111.111,100,200,10000,20000,1.1,1.2";
@@ -53,7 +53,7 @@ namespace NCsv.Tests
         [TestMethod()]
         public void CreateCsvLineSpecialValueTest()
         {
-            var c = new CsvColumns<SpecialValue>();
+            var c = CsvParser<SpecialValue>.FromType();
             var actual = c.CreateCsvLine(new SpecialValue());
 
             var expected = "\"fo\"\"o\",\"fo\"\"\"\"o\",\"fo\ro\",\"fo\no\",\"fo\r\no\"";
@@ -78,7 +78,7 @@ namespace NCsv.Tests
                 NullableDoubleValue = 111.111,
             };
 
-            var c = new CsvColumns<Example>();
+            var c = CsvParser<Example>.FromType();
             var actual = c.CreateObject(c.CreateCsvLine(expected));
 
             Assert.AreEqual(expected, actual);
@@ -89,7 +89,7 @@ namespace NCsv.Tests
         {
             var expected = new SpecialValue();
 
-            var c = new CsvColumns<SpecialValue>();
+            var c = CsvParser<SpecialValue>.FromType();
             var actual = c.CreateObject(c.CreateCsvLine(expected));
 
             Assert.AreEqual(expected, actual);
@@ -98,7 +98,7 @@ namespace NCsv.Tests
         [TestMethod()]
         public void CreateObjectIndexNotFoundTest()
         {
-            var c = new CsvColumns<Example>();
+            var c = CsvParser<Example>.FromType();
             Assert.ThrowsException<CsvValidationException>(() => c.CreateObject("foo,123"));
         }
 
@@ -110,7 +110,7 @@ namespace NCsv.Tests
                 Value = "foo",
             };
 
-            Assert.ThrowsException<InvalidOperationException>(() => new CsvColumns<ColumnNotFound>());
+            Assert.ThrowsException<InvalidOperationException>(() => CsvParser<ColumnNotFound>.FromType());
         }
 
         [TestMethod()]
@@ -122,13 +122,13 @@ namespace NCsv.Tests
                 Value2 = "bar",
             };
 
-            Assert.ThrowsException<InvalidOperationException>(() => new CsvColumns<IndexDuplicate>());
+            Assert.ThrowsException<InvalidOperationException>(() => CsvParser<IndexDuplicate>.FromType());
         }
 
         [TestMethod()]
         public void CreateObjectFailureTest()
         {
-            var c = new CsvColumns<Foo>();
+            var c = CsvParser<Foo>.FromType();
             Assert.ThrowsException<CsvValidationException>(() => c.CreateObject("x"));
         }
 

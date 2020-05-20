@@ -19,7 +19,7 @@ namespace NCsv
         /// <summary>
         /// 属性をキャッシュします。
         /// </summary>
-        private readonly Dictionary<Type, List<Attribute>> attributeCache = new Dictionary<Type, List<Attribute>>();
+        private readonly Dictionary<Type, List<Attribute>> attributeCache = null;
 
         /// <summary>
         /// 名前を取得します。
@@ -33,6 +33,18 @@ namespace NCsv
         public CsvProperty(PropertyInfo property)
         {
             this.property = property;
+            this.attributeCache = new Dictionary<Type, List<Attribute>>();
+        }
+
+        /// <summary>
+        /// <see cref="CsvProperty"/>クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="property"><see cref="PropertyInfo"/>。</param>
+        /// <param name="attributeCache"><see cref="Attribute"/>のディクショナリ。</param>
+        public CsvProperty(PropertyInfo property, Dictionary<Type, List<Attribute>> attributeCache)
+        {
+            this.property = property;
+            this.attributeCache = attributeCache;
         }
 
         /// <summary>
