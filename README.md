@@ -167,7 +167,8 @@ class User
 
 ### Customize message
 
-Implement `ICsvValidationMessage` or inherit `CsvValidationDefaultMessage`.
+Implement `ICsvValidationMessage` or inherit `CsvValidationDefaultMessage`.  
+See [CsvValidationDefaultMessage.cs](https://github.com/yamahix/NCsv/blob/master/src/NCsv/NCsv/CsvValidationDefaultMessage.cs) for an example.
 
 ```c#
 class CustomMessage : ICsvValidationMessage
