@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace NCsv
 {
@@ -16,12 +18,13 @@ namespace NCsv
         /// <summary>
         /// CSV列を追加します。
         /// </summary>
+        /// <typeparam name="TProperty">プロパティの型。</typeparam>
         /// <param name="index">インデックス。</param>
-        /// <param name="propertyName">プロパティ名。</param>
+        /// <param name="property">プロパティ。</param>
         /// <returns><see cref="CsvColumnBuilder{T}"/>。</returns>
-        public CsvColumnBuilder<T> AddColumn(int index, string propertyName)
+        public CsvColumnBuilder<T> AddColumn<TProperty>(int index, Expression<Func<T, TProperty>> property)
         {
-            var builder = new CsvColumnBuilder<T>(index, propertyName);
+            var builder = new CsvColumnBuilder<T>(index, ((MemberExpression)property.Body).Member.Name);
             this.builders.Add(builder);
             return builder;
         }

@@ -120,10 +120,9 @@ var users = new User[]
 };
 
 var cb = new CsvSerializerBuilder<User>();
-var index = 0;
-cb.AddColumn(index++, nameof(User.Name)).Name("CustomName")
-cb.AddColumn(index++, nameof(User.Birthday)).Format("yyyy/MM/dd");
-cb.AddColumn(index++, nameof(User.Height));
+cb.AddColumn(0, x => x.Name).Name("CustomName")
+cb.AddColumn(1, x => x.Birthday).Format("yyyy/MM/dd");
+cb.AddColumn(2, x => x.Height);
 
 // Convert to CsvSerializer.
 var cs = cb.ToCsvSerializer();
