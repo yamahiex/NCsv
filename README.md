@@ -100,7 +100,8 @@ class User
 }
 ```
 
-How to use CsvSerializerBuilder
+How to use CsvSerializerBuilder  
+After you have instantiated CsvSerializer, see [here](#Serialization-and-Deserialization-(Use-Attribute)).
 
 ```c#
 var users = new User[]
@@ -125,24 +126,8 @@ cb.AddColumn(1, x => x.Birthday).Format("yyyy/MM/dd");
 cb.AddColumn(2, x => x.Height);
 
 // Convert to CsvSerializer.
-var cs = cb.ToCsvSerializer();
-
-// Serialize.
-string csv = cs.Serialize(users);
-
-try
-{
-    // Deserialize.
-    List<User> deserializedUsers = cs.Deserialize(csv);
-}
-catch (CsvValidationException ex)
-{
-    // Handle validation errors.
-    Debug.WriteLine(ex.Message);
-}
-
 // The rest is the same as using Attribute.
-...
+var cs = cb.ToCsvSerializer();
 ```
 
 ### Validation
