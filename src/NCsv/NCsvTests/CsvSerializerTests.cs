@@ -124,32 +124,6 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
-        public void DeserializeParserTest()
-        {
-            var cs = new CsvSerializer<Example>
-            {
-                HasHeader = true
-            };
-
-            var reader = new StringReader(CreateExamplesCsv());
-            var examples = cs.Deserialize(new CsvTextFieldParser(reader));
-            CollectionAssert.AreEqual(CreateExamples(), examples);
-        }
-
-        [TestMethod()]
-        public async Task DeserializeParserAsyncTest()
-        {
-            var cs = new CsvSerializer<Example>
-            {
-                HasHeader = true
-            };
-
-            var reader = new StringReader(CreateExamplesCsv());
-            var examples = await cs.DeserializeAsync(new CsvTextFieldParser(reader));
-            CollectionAssert.AreEqual(CreateExamples(), examples);
-        }
-
-        [TestMethod()]
         public void DeserializeErrorTest()
         {
             var cs = new CsvSerializer<ForDesirializeError>();

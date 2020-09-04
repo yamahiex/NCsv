@@ -25,6 +25,11 @@ namespace NCsv
         public bool HasHeader { get; set; } = false;
 
         /// <summary>
+        /// 区切り文字を取得または設定します。
+        /// </summary>
+        public string Delimiter { get; set; } = ",";
+
+        /// <summary>
         /// <see cref="CsvSerializer{T}"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         public CsvSerializer()
@@ -84,12 +89,12 @@ namespace NCsv
         {
             if (this.HasHeader)
             {
-                writer.WriteLine(this.csvParser.CreateHeader());
+                writer.WriteLine(this.csvParser.CreateHeader(this.Delimiter));
             }
 
             foreach (var row in objects)
             {
-                writer.WriteLine(this.csvParser.CreateCsvLine(row));
+                writer.WriteLine(this.csvParser.CreateCsvLine(row, this.Delimiter));
             }
         }
 
@@ -138,40 +143,17 @@ namespace NCsv
         /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
         public List<T> Deserialize(TextReader reader)
         {
-            return Deserialize(new CsvTextFieldParser(reader));
-        }
-
-        /// <summary>
-        /// 非同期的に指定した<paramref name="csvTextFieldParser"/>で解析したCSVを逆シリアル化します。
-        /// </summary>
-        /// <param name="csvTextFieldParser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
-        /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
-        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
-        public Task<List<T>> DeserializeAsync(CsvTextFieldParser csvTextFieldParser)
-        {
-            return Task.Run(() => Deserialize(csvTextFieldParser));
-        }
-
-        /// <summary>
-        /// 指定した<paramref name="csvTextFieldParser"/>で解析したCSVを逆シリアル化します。
-        /// </summary>
-        /// <param name="csvTextFieldParser">CSVを解析する<see cref="CsvTextFieldParser"/>。</param>
-        /// <returns>オブジェクト。</returns>
-        /// <exception cref="CsvParseException">CSVの解析に失敗しました。</exception>
-        /// <exception cref="CsvValidationException">CSVの検証に失敗しました。</exception>
-        public List<T> Deserialize(CsvTextFieldParser csvTextFieldParser)
-        {
             var result = new List<T>();
             var lineNumber = 0L;
+            var fieldParser = CreateCsvTextFieldParser(reader);
 
-            while (!csvTextFieldParser.EndOfData)
+            while (!fieldParser.EndOfData)
             {
                 lineNumber++;
 
                 try
                 {
-                    var csvItems = new CsvItems(csvTextFieldParser.ReadFields(), lineNumber);
+                    var csvItems = new CsvItems(fieldParser.ReadFields(), lineNumber);
 
                     if (this.HasHeader && lineNumber == 1)
                     {
@@ -182,7 +164,7 @@ namespace NCsv
                 }
                 catch (CsvMalformedLineException ex)
                 {
-                    throw new CsvParseException(ex.Message, ex.LineNumber, csvTextFieldParser.ErrorLine, ex);
+                    throw new CsvParseException(ex.Message, ex.LineNumber, fieldParser.ErrorLine, ex);
                 }
             }
 
@@ -277,6 +259,19 @@ namespace NCsv
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// <see cref="CsvTextFieldParser"/>を作成します。
+        /// </summary>
+        /// <param name="reader"><see cref="TextReader"/>。</param>
+        /// <returns><see cref="CsvTextFieldParser"/>。</returns>
+        private CsvTextFieldParser CreateCsvTextFieldParser(TextReader reader)
+        {
+            return new CsvTextFieldParser(reader)
+            {
+                Delimiters = new string[] { this.Delimiter },
+            };
         }
     }
 }

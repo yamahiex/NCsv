@@ -46,8 +46,9 @@ namespace NCsv
         /// <summary>
         /// ヘッダ行を作成します。
         /// </summary>
+        /// <param name="delimiter">区切り文字。</param>
         /// <returns>ヘッダ行。</returns>
-        public string CreateHeader()
+        public string CreateHeader(string delimiter = ",")
         {
             var sb = new StringBuilder();
             var first = true;
@@ -56,7 +57,7 @@ namespace NCsv
             {
                 if (!first)
                 {
-                    sb.Append(",");
+                    sb.Append(delimiter);
                 }
 
                 first = false;
@@ -71,8 +72,9 @@ namespace NCsv
         /// Csv行を作成します。
         /// </summary>
         /// <param name="object"></param>
+        /// <param name="delimiter">区切り文字。</param>
         /// <returns>CSV行。</returns>
-        public string CreateCsvLine(T @object)
+        public string CreateCsvLine(T @object, string delimiter = ",")
         {
             if (@object == null)
             {
@@ -86,7 +88,7 @@ namespace NCsv
             {
                 if (!first)
                 {
-                    sb.Append(",");
+                    sb.Append(delimiter);
                 }
 
                 first = false;
