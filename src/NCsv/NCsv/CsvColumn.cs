@@ -16,6 +16,11 @@ namespace NCsv
         private readonly CsvColumnAttribute attribute;
 
         /// <summary>
+        /// <see cref="PropertyInfo"/>です。
+        /// </summary>
+        private readonly CsvProperty property;
+
+        /// <summary>
         /// <see cref="CsvConverter"/>です。
         /// </summary>
         private readonly CsvConverter converter;
@@ -36,14 +41,9 @@ namespace NCsv
         public virtual bool IsNull => false;
 
         /// <summary>
-        /// <see cref="PropertyInfo"/>を取得します。
-        /// </summary>
-        protected CsvProperty Property { get; private set; }
-
-        /// <summary>
         /// 名称を取得します。
         /// </summary>
-        protected virtual string Name => this.attribute.Name ?? this.Property.Name;
+        protected virtual string Name => this.attribute.Name ?? this.property.Name;
 
         /// <summary>
         /// <see cref="CsvColumn"/>クラスの新しいインスタンスを初期化します。
@@ -54,7 +54,7 @@ namespace NCsv
         public CsvColumn(CsvColumnAttribute attribute, CsvProperty property, CsvConverter converter)
         {
             this.attribute = attribute;
-            this.Property = property;
+            this.property = property;
             this.converter = converter;
         }
 
@@ -82,9 +82,9 @@ namespace NCsv
         /// <param name="context"><see cref="ICsvItemContext"/>。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>検証に成功した場合にtrue。</returns>
-        public bool Validate(ICsvItemContext context, out string errorMessage)
+        public virtual bool Validate(ICsvItemContext context, out string errorMessage)
         {
-            return this.Property.Validate(new CsvValidationContext(context), out errorMessage);
+            return this.property.Validate(new CsvValidationContext(context), out errorMessage);
         }
 
         /// <summary>
@@ -92,9 +92,9 @@ namespace NCsv
         /// </summary>
         /// <param name="objectItem">オブジェクト項目。</param>
         /// <returns>CSV項目。</returns>
-        public string ConvertToCsvItem(object objectItem)
+        public virtual string ConvertToCsvItem(object objectItem)
         {
-            var context = new ConvertToCsvItemContext(this.Property, this.Name, objectItem);
+            var context = new ConvertToCsvItemContext(this.property, this.Name, objectItem);
             var csvItem = this.converter.ConvertToCsvItem(context);
             return this.converter.CsvItemEscape(csvItem);
         }
@@ -106,9 +106,9 @@ namespace NCsv
         /// <param name="result">変換結果。</param>
         /// <param name="errorMessage">エラーメッセージ。</param>
         /// <returns>変換に成功した場合にtrue。</returns>
-        public bool TryConvertToObjectItem(ICsvItemContext context, out object result, out string errorMessage)
+        public virtual bool TryConvertToObjectItem(ICsvItemContext context, out object result, out string errorMessage)
         {
-            return this.converter.TryConvertToObjectItem(new ConvertToObjectItemContext(this.Property, context), out result, out errorMessage);
+            return this.converter.TryConvertToObjectItem(new ConvertToObjectItemContext(this.property, context), out result, out errorMessage);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace NCsv
         /// <param name="value"></param>
         public virtual void SetValue(object obj, object value)
         {
-            this.Property.SetValue(obj, value);
+            this.property.SetValue(obj, value);
         }
 
         /// <summary>
@@ -128,14 +128,14 @@ namespace NCsv
         /// <returns></returns>
         public virtual object GetValue(object obj)
         {
-            return this.Property.GetValue(obj);
+            return this.property.GetValue(obj);
         }
 
         /// <summary>
         /// 列名を追加します。
         /// </summary>
         /// <param name="sb"><see cref="StringBuilder"/>。</param>
-        public void AppendName(StringBuilder sb)
+        public virtual void AppendName(StringBuilder sb)
         {
             sb.Append(this.converter.CsvItemEscape(this.Name));
         }

@@ -1,4 +1,4 @@
-﻿using NCsv.Converters;
+﻿using System.Text;
 
 namespace NCsv
 {
@@ -17,9 +17,30 @@ namespace NCsv
         /// <see cref="NullColumn"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
         public NullColumn()
-            : base(new CsvColumnAttribute(-1), CreateDummyProperty(), new NullConverter())
+            : base(new CsvColumnAttribute(-1), null, null)
         {
 
+        }
+
+        /// <inheritdoc/>
+        public override string ConvertToCsvItem(object objectItem)
+        {
+            return string.Empty;
+        }
+
+        /// <inheritdoc/>
+        public override bool TryConvertToObjectItem(ICsvItemContext context, out object result, out string errorMessage)
+        {
+            result = null;
+            errorMessage = string.Empty;
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override bool Validate(ICsvItemContext context, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+            return true;
         }
 
         /// <inheritdoc/>
@@ -33,14 +54,10 @@ namespace NCsv
         {
         }
 
-        /// <summary>
-        /// ダミーの<see cref="CsvProperty"/>を作成します。
-        /// </summary>
-        /// <returns><see cref="CsvProperty"/>。</returns>
-        private static CsvProperty CreateDummyProperty()
+        /// <inheritdoc/>
+        public override void AppendName(StringBuilder sb)
         {
-            var x = new { Dummy = string.Empty };
-            return new CsvProperty(x.GetType(), nameof(x.Dummy));
+            sb.Append(string.Empty);
         }
     }
 }
