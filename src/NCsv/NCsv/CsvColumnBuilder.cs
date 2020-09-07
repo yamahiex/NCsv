@@ -62,7 +62,8 @@ namespace NCsv
         {
             Validate();
 
-            var property = typeof(T).GetProperty(this.propertyName);
+            var type = typeof(T);
+            var property = type.GetProperty(this.propertyName);
 
             if (property == null)
             {
@@ -70,7 +71,7 @@ namespace NCsv
             }
 
             var attribute = new CsvColumnAttribute(this.index) { Name = this.name };
-            var csvProperty = new CsvProperty(property, CreateAttributesDictionary());
+            var csvProperty = new CsvProperty(type, this.propertyName, CreateAttributesDictionary());
             var converter = GetConverter(property);
             return new CsvColumn(attribute, csvProperty, converter);
         }

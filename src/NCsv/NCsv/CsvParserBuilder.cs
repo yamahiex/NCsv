@@ -149,7 +149,7 @@ namespace NCsv
                     continue;
                 }
 
-                yield return new CsvColumn(attribute, new CsvProperty(property), GetConverter(property));
+                yield return new CsvColumn(attribute, new CsvProperty(type, property.Name), GetConverter(property));
             }
         }
 

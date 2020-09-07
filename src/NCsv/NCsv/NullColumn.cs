@@ -40,7 +40,7 @@ namespace NCsv
         private static CsvProperty CreateDummyProperty()
         {
             var x = new { Dummy = string.Empty };
-            return new CsvProperty(x.GetType().GetProperty(nameof(x.Dummy)));
+            return new CsvProperty(x.GetType(), nameof(x.Dummy));
         }
     }
 }

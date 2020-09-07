@@ -1,4 +1,5 @@
-﻿using NCsv.Validations;
+﻿using FastMember;
+using NCsv.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,25 +27,29 @@ namespace NCsv
         /// </summary>
         public string Name => this.property.Name;
 
+        private readonly TypeAccessor typeAccessor = null;
+
         /// <summary>
         /// <see cref="CsvProperty"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
-        /// <param name="property"><see cref="PropertyInfo"/>。</param>
-        public CsvProperty(PropertyInfo property)
+        /// <param name="type"><see cref="Type"/>。</param>
+        /// <param name="name">プロパティ名。</param>
+        public CsvProperty(Type type, string name)
+            : this(type, name, new Dictionary<Type, List<Attribute>>())
         {
-            this.property = property;
-            this.attributeCache = new Dictionary<Type, List<Attribute>>();
         }
 
         /// <summary>
         /// <see cref="CsvProperty"/>クラスの新しいインスタンスを初期化します。
         /// </summary>
-        /// <param name="property"><see cref="PropertyInfo"/>。</param>
+        /// <param name="type"><see cref="Type"/>。</param>
+        /// <param name="name">プロパティ名。</param>
         /// <param name="attributeCache"><see cref="Attribute"/>のディクショナリ。</param>
-        public CsvProperty(PropertyInfo property, Dictionary<Type, List<Attribute>> attributeCache)
+        public CsvProperty(Type type, string name, Dictionary<Type, List<Attribute>> attributeCache)
         {
-            this.property = property;
+            this.property = type.GetProperty(name);
             this.attributeCache = attributeCache;
+            this.typeAccessor = TypeAccessor.Create(type);
         }
 
         /// <summary>
@@ -107,7 +112,7 @@ namespace NCsv
         /// <param name="value">プロパティ値。</param>
         internal void SetValue(object obj, object value)
         {
-            this.property.SetValue(obj, value);
+            this.typeAccessor[obj, this.property.Name] = value;
         }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace NCsv
         /// <returns>プロパティ値。</returns>
         internal object GetValue(object obj)
         {
-            return this.property.GetValue(obj);
+            return this.typeAccessor[obj, this.property.Name];
         }
 
         /// <summary>

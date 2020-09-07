@@ -45,14 +45,7 @@ namespace CsvSerializerTests.Converters
 
         private CsvProperty GetProperty(string name)
         {
-            var p = typeof(Foo).GetProperty(name);
-
-            if (p == null)
-            {
-                throw new AssertFailedException();
-            }
-
-            return new CsvProperty(p);
+            return new CsvProperty(typeof(Foo), name);
         }
 
         private class Foo

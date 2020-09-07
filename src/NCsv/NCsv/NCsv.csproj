@@ -4,7 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
      <Authors>YAMAMOTO Hiroyasu</Authors>
      <Company />
-     <Description>Object to CSV serialization and CSV to object deserialization.</Description>
+     <Description>A very flexible and fast CSV serializer.
+You can serialize and deserialize CSV.</Description>
      <AssemblyName>NCsv</AssemblyName>
      <RootNamespace>NCsv</RootNamespace>
      <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -25,6 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="CsvTextFieldParser" Version="1.2.1" />
+    <PackageReference Include="FastMember" Version="1.5.0" />
   </ItemGroup>
 
 </Project>
