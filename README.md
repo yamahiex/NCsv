@@ -101,7 +101,6 @@ class User
 ```
 
 How to use CsvSerializerBuilder  
-After you have instantiated CsvSerializer, see [here](#Serialization-and-Deserialization-(Use-Attribute)).
 
 ```c#
 var users = new User[]
@@ -129,6 +128,8 @@ cb.AddColumn(2, x => x.Height);
 // The rest is the same as using Attribute.
 var cs = cb.ToCsvSerializer();
 ```
+
+After you have instantiated CsvSerializer, see [here](#serialization-and-deserialization-use-attribute).
 
 ### Validation
 
