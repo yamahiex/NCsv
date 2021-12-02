@@ -125,8 +125,23 @@ cb.AddColumn(1, x => x.Birthday).Format("yyyy/MM/dd");
 cb.AddColumn(2, x => x.Height);
 
 // Convert to CsvSerializer.
-// The rest is the same as using Attribute.
 var cs = cb.ToCsvSerializer();
+
+// Serialize.
+string csv = cs.Serialize(users);
+
+try
+{
+    // Deserialize.
+    List<User> deserializedUsers = cs.Deserialize(csv);
+}
+catch (CsvValidationException ex)
+{
+    // Handle validation errors.
+    Debug.WriteLine(ex.Message);
+}
+
+// The rest is the same as using Attribute.
 ```
 
 After you have instantiated CsvSerializer, see [here](#serialization-and-deserialization-use-attribute).
