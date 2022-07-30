@@ -28,20 +28,6 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
-        public async Task SerializeAsyncTest()
-        {
-            var examples = CreateExamples();
-
-            var cs = new CsvSerializer<Example>
-            {
-                HasHeader = true
-            };
-
-            var csv = await cs.SerializeAsync(examples);
-            Assert.AreEqual(CreateExamplesCsv(), csv);
-        }
-
-        [TestMethod()]
         public void SerializeWriterTest()
         {
             var examples = CreateExamples();
@@ -53,22 +39,6 @@ namespace NCsv.Tests
 
             var writer = new StringWriter();
             cs.Serialize(writer, examples);
-
-            Assert.AreEqual(CreateExamplesCsv(), writer.ToString());
-        }
-
-        [TestMethod()]
-        public async Task SerializeWriterAsyncTest()
-        {
-            var examples = CreateExamples();
-
-            var cs = new CsvSerializer<Example>
-            {
-                HasHeader = true
-            };
-
-            var writer = new StringWriter();
-            await cs.SerializeAsync(writer, examples);
 
             Assert.AreEqual(CreateExamplesCsv(), writer.ToString());
         }
@@ -86,18 +56,6 @@ namespace NCsv.Tests
         }
 
         [TestMethod()]
-        public async Task DeserializeAsncTest()
-        {
-            var cs = new CsvSerializer<Example>
-            {
-                HasHeader = true
-            };
-
-            var examples = await cs.DeserializeAsync(CreateExamplesCsv());
-            CollectionAssert.AreEqual(CreateExamples(), examples);
-        }
-
-        [TestMethod()]
         public void DeserializeReaderTest()
         {
             var cs = new CsvSerializer<Example>
@@ -107,19 +65,6 @@ namespace NCsv.Tests
 
             var reader = new StringReader(CreateExamplesCsv());
             var examples = cs.Deserialize(reader);
-            CollectionAssert.AreEqual(CreateExamples(), examples);
-        }
-
-        [TestMethod()]
-        public async Task DeserializeReaderAsyncTest()
-        {
-            var cs = new CsvSerializer<Example>
-            {
-                HasHeader = true
-            };
-
-            var reader = new StringReader(CreateExamplesCsv());
-            var examples = await cs.DeserializeAsync(reader);
             CollectionAssert.AreEqual(CreateExamples(), examples);
         }
 
@@ -143,23 +88,6 @@ namespace NCsv.Tests
         {
             var cs = new CsvSerializer<ForDesirializeError>();
             var errors = cs.GetErrors("1000,2000\r\nx,y");
-
-            Assert.AreEqual(4, errors.Count);
-
-            var errorLine1 = errors[0];
-            Assert.AreEqual(1, errorLine1.Context.LineNumber);
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetPrecisionError(errorLine1.Context, 3), errorLine1.ErrorMessage);
-
-            var errorLine2 = errors[3];
-            Assert.AreEqual(2, errorLine2.Context.LineNumber);
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(errorLine2.Context), errorLine2.ErrorMessage);
-        }
-
-        [TestMethod()]
-        public async Task GetErrorsAsyncTest()
-        {
-            var cs = new CsvSerializer<ForDesirializeError>();
-            var errors = await cs.GetErrorsAsync("1000,2000\r\nx,y");
 
             Assert.AreEqual(4, errors.Count);
 
