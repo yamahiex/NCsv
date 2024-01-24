@@ -47,11 +47,21 @@ namespace NCsv
         }
 
         /// <summary>
+        /// 指定した<paramref name="object"/>をシリアル化し、生成されたCSVを返します。
+        /// </summary>
+        /// <param name="object">オブジェクト。</param>
+        /// <returns>CSV文字列。</returns>
+        public string Serialize(T @object)
+        {
+            return Serialize(new T[] { @object });
+        }
+
+        /// <summary>
         /// 指定した<paramref name="objects"/>をシリアル化し、生成されたCSVを返します。
         /// </summary>
         /// <param name="objects">オブジェクト。</param>
         /// <returns>CSV文字列。</returns>
-        public string Serialize(params T[] objects)
+        public string Serialize(IEnumerable<T> objects)
         {
             var writer = new StringWriter();
             Serialize(writer, objects);
@@ -64,7 +74,7 @@ namespace NCsv
         /// </summary>
         /// <param name="writer">CSVを書き込む<see cref="TextWriter"/>。</param>
         /// <param name="objects">オブジェクト。</param>
-        public void Serialize(TextWriter writer, params T[] objects)
+        public void Serialize(TextWriter writer, IEnumerable<T> objects)
         {
             if (this.HasHeader)
             {
