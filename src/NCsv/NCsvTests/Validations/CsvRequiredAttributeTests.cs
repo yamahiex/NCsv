@@ -23,7 +23,7 @@ namespace NCsv.Validations.Tests
             var a = new CsvRequiredAttribute();
             var context = new CsvValidationContext("foo", 1, string.Empty);
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
+            Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
 
         [TestMethod()]
@@ -36,7 +36,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext("foo", 1, "0");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
+            Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace NCsvTests.Converters
             var c = new LongConverter();
             var context = CreateConvertToObjectItemContext("x");
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(context), message);
+            Assert.AreEqual(CsvMessages.GetNumericConvertError(context), message);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace NCsvTests.Converters
             var c = new LongConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
+            Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
 
         private long? ConvertToObjectItem(string csvItem)

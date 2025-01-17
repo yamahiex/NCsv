@@ -32,7 +32,7 @@ namespace NCsv.Validations
                 return true;
             }
 
-            errorMessage = CsvConfig.Current.ValidationMessage.GetMaxLengthError(context, this.maxLength);
+            errorMessage = CsvMessages.GetMaxLengthError(context, this.maxLength);
 
             return false;
         }

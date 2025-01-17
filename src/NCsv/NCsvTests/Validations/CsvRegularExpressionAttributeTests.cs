@@ -25,7 +25,7 @@ namespace NCsv.Validations.Tests
 
             var context = new CsvValidationContext("foo", 1, "halfAlphanumericOnly");
             Assert.IsFalse(a.Validate(context, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetInvalidFormatError(context), message);
+            Assert.AreEqual(CsvMessages.GetInvalidFormatError(context), message);
         }
     }
 }

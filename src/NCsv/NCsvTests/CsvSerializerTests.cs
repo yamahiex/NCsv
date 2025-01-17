@@ -93,11 +93,11 @@ namespace NCsv.Tests
 
             var errorLine1 = errors[0];
             Assert.AreEqual(1, errorLine1.Context.LineNumber);
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetPrecisionError(errorLine1.Context, 3), errorLine1.ErrorMessage);
+            Assert.AreEqual(CsvMessages.GetPrecisionError(errorLine1.Context, 3), errorLine1.ErrorMessage);
 
             var errorLine2 = errors[3];
             Assert.AreEqual(2, errorLine2.Context.LineNumber);
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetNumericConvertError(errorLine2.Context), errorLine2.ErrorMessage);
+            Assert.AreEqual(CsvMessages.GetNumericConvertError(errorLine2.Context), errorLine2.ErrorMessage);
         }
 
         private Example[] CreateExamples()

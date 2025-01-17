@@ -155,7 +155,7 @@ namespace NCsv
 
                 if (!column.TryCreateCsvItemContext(items, out ICsvItemContext context))
                 {
-                    yield return new CsvErrorItem(CsvConfig.Current.ValidationMessage.GetItemNotExistError(context.LineNumber, context.Name), context);
+                    yield return new CsvErrorItem(CsvMessages.GetItemNotExistError(context.LineNumber, context.Name), context);
                     continue;
                 }
 
@@ -183,7 +183,7 @@ namespace NCsv
         {
             if (!column.TryCreateCsvItemContext(items, out ICsvItemContext context))
             {
-                throw new CsvValidationException(CsvConfig.Current.ValidationMessage.GetItemNotExistError(context.LineNumber, context.Name), context);
+                throw new CsvValidationException(CsvMessages.GetItemNotExistError(context.LineNumber, context.Name), context);
             }
 
             return context;

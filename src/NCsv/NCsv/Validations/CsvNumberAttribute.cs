@@ -56,7 +56,7 @@ namespace NCsv.Validations
 
             if (!decimal.TryParse(context.Value, out decimal x))
             {
-                errorMessage = CsvConfig.Current.ValidationMessage.GetNumericConvertError(context);
+                errorMessage = CsvMessages.GetNumericConvertError(context);
                 return false;
             }
 
@@ -68,19 +68,19 @@ namespace NCsv.Validations
 
             if (HasOutOfRangeError(x))
             {
-                errorMessage = CsvConfig.Current.ValidationMessage.GetNumberOutOfRangeError(context, this.MinValueDecimal ?? 0, this.MaxValueDecimal ?? 0);
+                errorMessage = CsvMessages.GetNumberOutOfRangeError(context, this.MinValueDecimal ?? 0, this.MaxValueDecimal ?? 0);
                 return false;
             }
 
             if (HasMinValueError(x))
             {
-                errorMessage = CsvConfig.Current.ValidationMessage.GetNumberMinValueError(context, this.MinValueDecimal ?? 0);
+                errorMessage = CsvMessages.GetNumberMinValueError(context, this.MinValueDecimal ?? 0);
                 return false;
             }
 
             if (HasMaxValueError(x))
             {
-                errorMessage = CsvConfig.Current.ValidationMessage.GetNumberMaxValueError(context, this.MaxValueDecimal ?? 0);
+                errorMessage = CsvMessages.GetNumberMaxValueError(context, this.MaxValueDecimal ?? 0);
                 return false;
             }
 
@@ -141,11 +141,11 @@ namespace NCsv.Validations
         {
             if (this.scale == 0)
             {
-                return CsvConfig.Current.ValidationMessage.GetPrecisionError(context, this.precision);
+                return CsvMessages.GetPrecisionError(context, this.precision);
             }
             else
             {
-                return CsvConfig.Current.ValidationMessage.GetPrecisionAndScaleError(context, this.precision, this.scale);
+                return CsvMessages.GetPrecisionAndScaleError(context, this.precision, this.scale);
             }
         }
 

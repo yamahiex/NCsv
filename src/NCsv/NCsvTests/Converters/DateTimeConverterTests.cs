@@ -32,7 +32,7 @@ namespace CsvSerializerTests.Converters
             var c = new DateTimeConverter();
             var context = CreateConvertToObjectItemContext("x");
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetDateTimeConvertError(context), message);
+            Assert.AreEqual(CsvMessages.GetDateTimeConvertError(context), message);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace CsvSerializerTests.Converters
             var c = new DateTimeConverter();
             var context = CreateConvertToObjectItemContext("2020/01/01 10:00:00", "FormattedValue");
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetDateTimeFormatError(context, "yyyy/MM/dd"), message);
+            Assert.AreEqual(CsvMessages.GetDateTimeFormatError(context, "yyyy/MM/dd"), message);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace CsvSerializerTests.Converters
             var c = new DateTimeConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
             Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
-            Assert.AreEqual(CsvConfig.Current.ValidationMessage.GetRequiredError(context), message);
+            Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
 
         private DateTime? ConvertToObjectItem(string csvItem, string name = nameof(Foo.Value))

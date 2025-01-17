@@ -33,7 +33,7 @@ namespace NCsv.Converters
 
             if (HasRequiredError(context.CsvItem))
             {
-                errorMessage = CsvConfig.Current.ValidationMessage.GetRequiredError(context);
+                errorMessage = CsvMessages.GetRequiredError(context);
                 return false;
             }
 
@@ -48,7 +48,7 @@ namespace NCsv.Converters
                 return true;
             }
 
-            errorMessage = CsvConfig.Current.ValidationMessage.GetNumericConvertError(context);
+            errorMessage = CsvMessages.GetNumericConvertError(context);
             return false;
         }
 

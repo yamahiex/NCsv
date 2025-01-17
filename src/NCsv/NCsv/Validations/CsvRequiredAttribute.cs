@@ -27,7 +27,7 @@ namespace NCsv.Validations
 
             if (IsEmpty(context.Value))
             {
-                errorMessage = CsvConfig.Current.ValidationMessage.GetRequiredError(context);
+                errorMessage = CsvMessages.GetRequiredError(context);
                 return false;
             }
 

@@ -165,27 +165,6 @@ class User
 }
 ```
 
-### Customize message
-
-Implement `ICsvValidationMessage` or inherit `CsvValidationDefaultMessage`.  
-See [CsvValidationDefaultMessage.cs](https://github.com/yamahix/NCsv/blob/master/src/NCsv/NCsv/CsvValidationDefaultMessage.cs) for an example.
-
-```c#
-class CustomMessage : ICsvValidationMessage
-{
-    public string GetNumericConvertError(ICsvItemContext context)
-    {
-        return $"The {context.Name} on line {context.LineNumber} must be set to a numeric value.";
-    }
-}
-```
-
-Use it.
-
-```c#
-CsvConfig.Current.ValidationMessage = new CustomMessage();
-```
-
 ### Custom validation attributes
 
 Inherit the `CsvValidationAttribute` to create your own validation attribute.
