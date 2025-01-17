@@ -14,9 +14,9 @@ namespace NCsvTests.Converters
         [TestMethod]
         public void ConvertToCsvItemTest()
         {
-            var c = new DoubleConverter();
-            Assert.AreEqual("1000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000d)));
-            Assert.AreEqual("1,000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000d, "FormattedValue")));
+            var sut = new DoubleConverter();
+            Assert.AreEqual("1000", sut.ConvertToCsvItem(CreateConvertToCsvItemContext(1000d)));
+            Assert.AreEqual("1,000", sut.ConvertToCsvItem(CreateConvertToCsvItemContext(1000d, "FormattedValue")));
         }
 
         [TestMethod]
@@ -29,25 +29,25 @@ namespace NCsvTests.Converters
         [TestMethod]
         public void TryConvertToObjectItemFailureTest()
         {
-            var c = new DoubleConverter();
+            var sut = new DoubleConverter();
             var context = CreateConvertToObjectItemContext("x");
-            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.IsFalse(sut.TryConvertToObjectItem(context, out object? _, out string message));
             Assert.AreEqual(CsvMessages.GetNumericConvertError(context), message);
         }
 
         [TestMethod]
         public void TryConvertToObjectItemRequireTest()
         {
-            var c = new DoubleConverter();
+            var sut = new DoubleConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
-            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.IsFalse(sut.TryConvertToObjectItem(context, out object? _, out string message));
             Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
 
         private double? ConvertToObjectItem(string csvItem)
         {
-            var c = new DoubleConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
+            var sut = new DoubleConverter();
+            Assert.IsTrue(sut.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
             return (double?)result;
         }
 

@@ -14,9 +14,9 @@ namespace CsvSerializerTests.Converters
         [TestMethod]
         public void ConvertToCsvItemTest()
         {
-            var c = new DecimalConverter();
-            Assert.AreEqual("1000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m)));
-            Assert.AreEqual("1,000", c.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m, "FormattedValue")));
+            var sut = new DecimalConverter();
+            Assert.AreEqual("1000", sut.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m)));
+            Assert.AreEqual("1,000", sut.ConvertToCsvItem(CreateConvertToCsvItemContext(1000m, "FormattedValue")));
         }
 
         [TestMethod]
@@ -29,25 +29,25 @@ namespace CsvSerializerTests.Converters
         [TestMethod]
         public void TryConvertToObjectItemFailureTest()
         {
-            var c = new DecimalConverter();
+            var sut = new DecimalConverter();
             var context = CreateConvertToObjectItemContext("x");
-            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.IsFalse(sut.TryConvertToObjectItem(context, out object? _, out string message));
             Assert.AreEqual(CsvMessages.GetNumericConvertError(context), message);
         }
 
         [TestMethod]
         public void TryConvertToObjectItemRequireTest()
         {
-            var c = new DecimalConverter();
+            var sut = new DecimalConverter();
             var context = CreateConvertToObjectItemContext(string.Empty);
-            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.IsFalse(sut.TryConvertToObjectItem(context, out object? _, out string message));
             Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
 
         private decimal? ConvertToObjectItem(string csvItem)
         {
-            var c = new DecimalConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
+            var sut = new DecimalConverter();
+            Assert.IsTrue(sut.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
             return (decimal?)result;
         }
 

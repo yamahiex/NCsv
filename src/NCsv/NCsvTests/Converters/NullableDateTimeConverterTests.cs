@@ -14,15 +14,15 @@ namespace CsvSerializerTests.Converters
         [TestMethod]
         public void ConvertToCsvItemTest()
         {
-            var c = new NullableDateTimeConverter();
-            Assert.AreEqual(string.Empty, c.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
+            var sut = new NullableDateTimeConverter();
+            Assert.AreEqual(string.Empty, sut.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
         }
 
         [TestMethod]
         public void TryConvertToObjectItemTest()
         {
-            var c = new NullableDateTimeConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(string.Empty), out object? result, out string _));
+            var sut = new NullableDateTimeConverter();
+            Assert.IsTrue(sut.TryConvertToObjectItem(CreateConvertToObjectItemContext(string.Empty), out object? result, out string _));
             Assert.IsNull(result);
         }
 

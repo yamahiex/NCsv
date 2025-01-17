@@ -14,9 +14,9 @@ namespace CsvSerializerTests.Converters
         [TestMethod]
         public void ConvertToCsvItemTest()
         {
-            var c = new BoolConverter();
-            Assert.AreEqual("True", c.ConvertToCsvItem(CreateConvertToCsvItemContext(true)));
-            Assert.AreEqual("False", c.ConvertToCsvItem(CreateConvertToCsvItemContext(false)));
+            var sut = new BoolConverter();
+            Assert.AreEqual("True", sut.ConvertToCsvItem(CreateConvertToCsvItemContext(true)));
+            Assert.AreEqual("False", sut.ConvertToCsvItem(CreateConvertToCsvItemContext(false)));
         }
 
         [TestMethod]
@@ -30,16 +30,16 @@ namespace CsvSerializerTests.Converters
         [TestMethod]
         public void TryConvertToObjectItemFailureTest()
         {
-            var c = new BoolConverter();
+            var sut = new BoolConverter();
             var context = CreateConvertToObjectItemContext("x");
-            Assert.IsFalse(c.TryConvertToObjectItem(context, out object? _, out string message));
+            Assert.IsFalse(sut.TryConvertToObjectItem(context, out object? _, out string message));
             Assert.AreEqual(CsvMessages.GetBooleanConvertError(context), message);
         }
 
         private bool? ConvertToObjectItem(string csvItem)
         {
-            var c = new BoolConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
+            var sut = new BoolConverter();
+            Assert.IsTrue(sut.TryConvertToObjectItem(CreateConvertToObjectItemContext(csvItem), out object? result, out string _));
             return (bool?)result;
         }
 

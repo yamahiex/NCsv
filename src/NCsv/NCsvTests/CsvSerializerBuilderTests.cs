@@ -14,17 +14,17 @@ namespace NCsv.Tests
         [TestMethod()]
         public void BuildTest()
         {
-            var cb = new CsvSerializerBuilder<User>();
-            cb.AddColumn(3, x => x.ValueObject)
+            var sut = new CsvSerializerBuilder<User>();
+            sut.AddColumn(3, x => x.ValueObject)
                 .Converter(new ValueObjectConverter());
-            cb.AddColumn(0, x => x.Name)
+            sut.AddColumn(0, x => x.Name)
                 .Name("CustomName")
                 .AddValidation(new CsvRequiredAttribute())
                 .AddValidation(new CsvMaxLengthAttribute(10));
-            cb.AddColumn(1, x => x.Birthday)
+            sut.AddColumn(1, x => x.Birthday)
                 .Format("yyyy/MM/dd");
 
-            var cs = cb.ToCsvSerializer();
+            var cs = sut.ToCsvSerializer();
             cs.HasHeader = true;
 
             var user = CreateUser();
@@ -39,13 +39,13 @@ namespace NCsv.Tests
         [TestMethod()]
         public void ValidationTest()
         {
-            var cb = new CsvSerializerBuilder<User>();
-            cb.AddColumn(0, x => x.Name)
+            var sut = new CsvSerializerBuilder<User>();
+            sut.AddColumn(0, x => x.Name)
                 .Name("CustomName")
                 .AddValidation(new CsvRequiredAttribute())
                 .AddValidation(new CsvMaxLengthAttribute(1));
 
-            var cs = cb.ToCsvSerializer();
+            var cs = sut.ToCsvSerializer();
 
             Assert.ThrowsException<CsvValidationException>(() => cs.Deserialize("abc,2000/01/01,foo\r\n"));
         }
@@ -53,32 +53,32 @@ namespace NCsv.Tests
         [TestMethod()]
         public void ValidationMultipleErrorTest()
         {
-            var cb = new CsvSerializerBuilder<User>();
-            cb.AddColumn(0, x => x.Name)
+            var sut = new CsvSerializerBuilder<User>();
+            sut.AddColumn(0, x => x.Name)
                 .Name("CustomName")
                 .AddValidation(new CsvMaxLengthAttribute(1))
                 .AddValidation(new CsvMaxLengthAttribute(2));
 
-            Assert.ThrowsException<InvalidOperationException>(() => cb.ToCsvSerializer());
+            Assert.ThrowsException<InvalidOperationException>(() => sut.ToCsvSerializer());
         }
 
         [TestMethod()]
         public void ValidationMultipleSuccesTest()
         {
-            var cb = new CsvSerializerBuilder<User>();
-            cb.AddColumn(0, x => x.Name)
+            var sut = new CsvSerializerBuilder<User>();
+            sut.AddColumn(0, x => x.Name)
                 .Name("CustomName")
                 .AddValidation(new CsvRegularExpressionAttribute(string.Empty))
                 .AddValidation(new CsvRegularExpressionAttribute(string.Empty));
 
-            Assert.IsNotNull(cb.ToCsvSerializer());
+            Assert.IsNotNull(sut.ToCsvSerializer());
         }
 
         [TestMethod()]
         public void ColumnNotFoundTest()
         {
-            var cb = new CsvSerializerBuilder<User>();
-            Assert.ThrowsException<InvalidOperationException>(() => cb.ToCsvSerializer());
+            var sut = new CsvSerializerBuilder<User>();
+            Assert.ThrowsException<InvalidOperationException>(() => sut.ToCsvSerializer());
         }
 
         private User CreateUser()

@@ -12,19 +12,19 @@ namespace NCsv.Validations.Tests
         [TestMethod()]
         public void ValidateTest()
         {
-            var a = new CsvRegularExpressionAttribute("^[a-zA-Z0-9]+$");
+            var sut = new CsvRegularExpressionAttribute("^[a-zA-Z0-9]+$");
 
             var context = new CsvValidationContext("foo", 1, "halfAlphanumericOnly");
-            Assert.IsTrue(a.Validate(context, out string _));
+            Assert.IsTrue(sut.Validate(context, out string _));
         }
 
         [TestMethod()]
         public void ValidateeFailureTest()
         {
-            var a = new CsvRegularExpressionAttribute("^[0-9]+$");
+            var sut = new CsvRegularExpressionAttribute("^[0-9]+$");
 
             var context = new CsvValidationContext("foo", 1, "halfAlphanumericOnly");
-            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.IsFalse(sut.Validate(context, out string message));
             Assert.AreEqual(CsvMessages.GetInvalidFormatError(context), message);
         }
     }

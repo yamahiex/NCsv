@@ -12,30 +12,30 @@ namespace NCsv.Validations.Tests
         [TestMethod()]
         public void ValidateTest()
         {
-            var a = new CsvRequiredAttribute();
+            var sut = new CsvRequiredAttribute();
             var context = new CsvValidationContext("foo", 1, "x");
-            Assert.IsTrue(a.Validate(context, out string _));
+            Assert.IsTrue(sut.Validate(context, out string _));
         }
 
         [TestMethod()]
         public void ValidateFailureTest()
         {
-            var a = new CsvRequiredAttribute();
+            var sut = new CsvRequiredAttribute();
             var context = new CsvValidationContext("foo", 1, string.Empty);
-            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.IsFalse(sut.Validate(context, out string message));
             Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
 
         [TestMethod()]
         public void ValidateZeroFailureTest()
         {
-            var a = new CsvRequiredAttribute()
+            var sut = new CsvRequiredAttribute()
             {
                 ZeroIsEmpty = true,
             };
 
             var context = new CsvValidationContext("foo", 1, "0");
-            Assert.IsFalse(a.Validate(context, out string message));
+            Assert.IsFalse(sut.Validate(context, out string message));
             Assert.AreEqual(CsvMessages.GetRequiredError(context), message);
         }
     }

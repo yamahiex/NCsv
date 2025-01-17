@@ -14,15 +14,15 @@ namespace NCsvTests.Converters
         [TestMethod]
         public void ConvertToCsvItemTest()
         {
-            var c = new NullableLongConverter();
-            Assert.AreEqual(string.Empty, c.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
+            var sut = new NullableLongConverter();
+            Assert.AreEqual(string.Empty, sut.ConvertToCsvItem(CreateConvertToCsvItemContext(null)));
         }
 
         [TestMethod]
         public void TryConvertToObjectItemTest()
         {
-            var c = new NullableLongConverter();
-            Assert.IsTrue(c.TryConvertToObjectItem(CreateConvertToObjectItemContext(string.Empty), out object? result, out string _));
+            var sut = new NullableLongConverter();
+            Assert.IsTrue(sut.TryConvertToObjectItem(CreateConvertToObjectItemContext(string.Empty), out object? result, out string _));
             Assert.IsNull(result);
         }
 

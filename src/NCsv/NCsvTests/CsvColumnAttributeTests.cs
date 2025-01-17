@@ -12,9 +12,9 @@ namespace NCsv.Tests
         [TestMethod()]
         public void CsvColumnAttributeTest()
         {
-            CsvColumnAttribute a = new CsvColumnAttribute(0) { Name = "foo" };
-            Assert.AreEqual(a.Index, 0);
-            Assert.AreEqual(a.Name, "foo");
+            var sut = new CsvColumnAttribute(0) { Name = "foo" };
+            Assert.AreEqual(sut.Index, 0);
+            Assert.AreEqual(sut.Name, "foo");
         }
     }
 }

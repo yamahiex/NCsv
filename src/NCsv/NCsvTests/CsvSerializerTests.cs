@@ -18,12 +18,12 @@ namespace NCsv.Tests
         {
             var examples = CreateExamples();
 
-            var cs = new CsvSerializer<Example>
+            var sut = new CsvSerializer<Example>
             {
                 HasHeader = true
             };
 
-            var csv = cs.Serialize(examples);
+            var csv = sut.Serialize(examples);
             Assert.AreEqual(CreateExamplesCsv(), csv);
         }
 
@@ -32,13 +32,13 @@ namespace NCsv.Tests
         {
             var examples = CreateExamples();
 
-            var cs = new CsvSerializer<Example>
+            var sut = new CsvSerializer<Example>
             {
                 HasHeader = true
             };
 
             var writer = new StringWriter();
-            cs.Serialize(writer, examples);
+            sut.Serialize(writer, examples);
 
             Assert.AreEqual(CreateExamplesCsv(), writer.ToString());
         }
@@ -46,48 +46,48 @@ namespace NCsv.Tests
         [TestMethod()]
         public void DeserializeTest()
         {
-            var cs = new CsvSerializer<Example>
+            var sut = new CsvSerializer<Example>
             {
                 HasHeader = true
             };
 
-            var examples = cs.Deserialize(CreateExamplesCsv());
+            var examples = sut.Deserialize(CreateExamplesCsv());
             CollectionAssert.AreEqual(CreateExamples(), examples);
         }
 
         [TestMethod()]
         public void DeserializeReaderTest()
         {
-            var cs = new CsvSerializer<Example>
+            var sut = new CsvSerializer<Example>
             {
                 HasHeader = true
             };
 
             var reader = new StringReader(CreateExamplesCsv());
-            var examples = cs.Deserialize(reader);
+            var examples = sut.Deserialize(reader);
             CollectionAssert.AreEqual(CreateExamples(), examples);
         }
 
         [TestMethod()]
         public void DeserializeErrorTest()
         {
-            var cs = new CsvSerializer<ForDesirializeError>();
-            Assert.ThrowsException<CsvValidationException>(() => cs.Deserialize("x"));
+            var sut = new CsvSerializer<ForDesirializeError>();
+            Assert.ThrowsException<CsvValidationException>(() => sut.Deserialize("x"));
         }
 
         [TestMethod()]
         public void ParseErrorTest()
         {
-            var cs = new CsvSerializer<Example>();
-            Assert.ThrowsException<CsvParseException>(() => cs.Deserialize("\"foo\",\"ba\"r\""));
+            var sut = new CsvSerializer<Example>();
+            Assert.ThrowsException<CsvParseException>(() => sut.Deserialize("\"foo\",\"ba\"r\""));
         }
 
 
         [TestMethod()]
         public void GetErrorsTest()
         {
-            var cs = new CsvSerializer<ForDesirializeError>();
-            var errors = cs.GetErrors("1000,2000\r\nx,y");
+            var sut = new CsvSerializer<ForDesirializeError>();
+            var errors = sut.GetErrors("1000,2000\r\nx,y");
 
             Assert.AreEqual(4, errors.Count);
 
