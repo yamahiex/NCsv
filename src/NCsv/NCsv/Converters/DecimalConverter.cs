@@ -1,4 +1,6 @@
-﻿namespace NCsv.Converters
+﻿using System.Globalization;
+
+namespace NCsv.Converters
 {
     /// <summary>
     /// <see cref="decimal"/>のコンバーターです。
@@ -13,14 +15,15 @@
                 return string.Empty;
             }
 
+            var objectItem = (decimal)context.ObjectItem;
             var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
 
             if (format != null)
             {
-                return ((decimal)context.ObjectItem).ToString(format.Format);
+                return objectItem.ToString(format.Format, CultureInfo.InvariantCulture);
             }
 
-            return context.ObjectItem.ToString();
+            return objectItem.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc/>
@@ -40,7 +43,7 @@
                 return true;
             }
 
-            if (decimal.TryParse(context.CsvItem, out decimal x))
+            if (decimal.TryParse(context.CsvItem, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal x))
             {
                 result = x;
                 return true;

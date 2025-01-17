@@ -15,14 +15,15 @@ namespace NCsv.Converters
                 return string.Empty;
             }
 
+            var objectItem = (long)context.ObjectItem;
             var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
 
             if (format != null)
             {
-                return ((long)context.ObjectItem).ToString(format.Format);
+                return objectItem.ToString(format.Format, CultureInfo.InvariantCulture);
             }
 
-            return context.ObjectItem.ToString();
+            return objectItem.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc/>
@@ -42,7 +43,7 @@ namespace NCsv.Converters
                 return true;
             }
 
-            if (long.TryParse(context.CsvItem, NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out long x))
+            if (long.TryParse(context.CsvItem, NumberStyles.Number, CultureInfo.InvariantCulture, out long x))
             {
                 result = x;
                 return true;

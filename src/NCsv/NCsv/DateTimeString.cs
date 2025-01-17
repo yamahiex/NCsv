@@ -29,7 +29,7 @@ namespace NCsv
         /// <returns>変換できた場合にtrue。</returns>
         public bool TryParse(out DateTime result)
         {
-            if (DateTime.TryParse(value, out result))
+            if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
             {
                 return true;
             }
@@ -45,7 +45,7 @@ namespace NCsv
         /// <returns></returns>
         public bool TryParse(string format, out DateTime result)
         {
-            if (DateTime.TryParseExact(this.value, format, CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.None, out result))
+            if (DateTime.TryParseExact(this.value, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
             {
                 return true;
             }

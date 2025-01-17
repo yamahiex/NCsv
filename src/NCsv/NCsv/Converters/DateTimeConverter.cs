@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace NCsv.Converters
 {
@@ -15,14 +16,15 @@ namespace NCsv.Converters
                 return string.Empty;
             }
 
+            var objectItem = (DateTime)context.ObjectItem;
             var format = context.Property.GetCustomAttribute<CsvFormatAttribute>();
 
             if (format != null)
             {
-                return ((DateTime)context.ObjectItem).ToString(format.Format);
+                return objectItem.ToString(format.Format, CultureInfo.InvariantCulture);
             }
 
-            return context.ObjectItem.ToString();
+            return objectItem.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc/>

@@ -15,7 +15,7 @@ namespace CsvSerializerTests.Converters
         public void ConvertToCsvItemTest()
         {
             var c = new DateTimeConverter();
-            Assert.AreEqual("2020/01/01 10:20:01", c.ConvertToCsvItem(CreateConvertToCsvItemContext(new DateTime(2020, 1, 1, 10, 20, 1))));
+            Assert.AreEqual("01/01/2020 10:20:01", c.ConvertToCsvItem(CreateConvertToCsvItemContext(new DateTime(2020, 1, 1, 10, 20, 1))));
             Assert.AreEqual("2020/01/01", c.ConvertToCsvItem(CreateConvertToCsvItemContext(new DateTime(2020, 1, 1, 10, 20, 1), "FormattedValue")));
         }
 

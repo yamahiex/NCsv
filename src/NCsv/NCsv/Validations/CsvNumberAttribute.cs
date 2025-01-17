@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace NCsv.Validations
 {
@@ -31,12 +32,12 @@ namespace NCsv.Validations
         /// <summary>
         /// 最大値をdecimalで取得します。
         /// </summary>
-        private decimal? MinValueDecimal => string.IsNullOrEmpty(this.MinValue) ? (decimal?)null : decimal.Parse(this.MinValue);
+        private decimal? MinValueDecimal => string.IsNullOrEmpty(this.MinValue) ? (decimal?)null : decimal.Parse(this.MinValue, NumberStyles.Number, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// 最大値をdecimalで取得します。
         /// </summary>
-        private decimal? MaxValueDecimal => string.IsNullOrEmpty(this.MaxValue) ? (decimal?)null : decimal.Parse(this.MaxValue);
+        private decimal? MaxValueDecimal => string.IsNullOrEmpty(this.MaxValue) ? (decimal?)null : decimal.Parse(this.MaxValue, NumberStyles.Number, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// <see cref="CsvNumberAttribute"/>クラスの新しいインスタンスを初期化します。
@@ -54,7 +55,7 @@ namespace NCsv.Validations
         {
             errorMessage = string.Empty;
 
-            if (!decimal.TryParse(context.Value, out decimal x))
+            if (!decimal.TryParse(context.Value, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal x))
             {
                 errorMessage = CsvMessages.GetNumericConvertError(context);
                 return false;
