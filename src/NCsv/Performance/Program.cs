@@ -11,9 +11,10 @@ namespace ConsoleApp1
     {
         static void Main()
         {
+            // This code is for the performance profiler.
             var cs = new CsvSerializer<Example>() { HasHeader = true };
-            var csv = cs.Serialize(CreateExamples(100000).ToArray());
-            cs.Deserialize(csv);
+            var csv = cs.Serialize(CreateExamples(100000));
+            var deserialized = cs.Deserialize(csv);
         }
 
         private static IEnumerable<Example> CreateExamples(int count)
